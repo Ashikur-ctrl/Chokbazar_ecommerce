@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /orders
+Disallow: /profile
+Disallow: /wishlist
+Disallow: /compare
+
+Sitemap: {{ route('sitemap') }}

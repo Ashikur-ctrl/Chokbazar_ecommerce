@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .skeleton {
+        @apply animate-skeleton rounded bg-gray-200;
+    }
+    .skeleton-text {
+        @apply skeleton h-4 w-full;
+    }
+    .skeleton-text-sm {
+        @apply skeleton h-3 w-3/4;
+    }
+    .skeleton-avatar {
+        @apply skeleton h-10 w-10 rounded-full;
+    }
+    .skeleton-card {
+        @apply skeleton h-48 w-full rounded-card;
+    }
+    .skeleton-thumb {
+        @apply skeleton aspect-square w-full rounded-card;
+    }
+    .skeleton-stat {
+        @apply skeleton h-24 w-full rounded-card;
+    }
+}
+
+@layer utilities {
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+}

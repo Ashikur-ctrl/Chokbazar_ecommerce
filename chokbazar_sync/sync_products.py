@@ -1,0 +1,266 @@
+#!/usr/bin/env python3
+"""
+Chokbazar Product Sync Script
+==============================
+Reads products.xlsx and uploads products + images to chokbazar.com.
+
+Folder structure expected:
+    chokbazar_sync/
+    ├── products.xlsx
+    └── product_images/
+        └── <image_folder>/
+            ├── main.jpg       (first = primary)
+            ├── side.jpg
+            └── box.jpg
+
+Excel columns (case-insensitive):
+    name* | selling_price* | stock* | image_folder | cost_price | category
+    sku | description | short_description | specs | tags | seo_title | seo_description
+
+Usage:
+    # Preview what will be uploaded
+    python sync_products.py --dry-run
+
+    # Upload everything
+    python sync_products.py --api-url https://chokbazar.com/api/products/import --token YOUR_TOKEN
+
+    # Upload, skip existing SKUs, regenerate sitemap after
+    python sync_products.py --api-url https://chokbazar.com/api/products/import --token YOUR_TOKEN --skip-existing --sitemap
+"""
+
+import os
+import sys
+import glob
+import json
+import time
+import argparse
+import mimetypes
+from pathlib import Path
+from urllib.parse import urljoin
+
+try:
+    import requests
+except ImportError:
+    print("Missing 'requests' library. Install: pip install requests")
+    sys.exit(1)
+
+try:
+    import openpyxl
+except ImportError:
+    print("Missing 'openpyxl' library. Install: pip install openpyxl")
+    sys.exit(1)
+
+BASE_DIR = Path(__file__).parent.resolve()
+EXCEL_PATH = BASE_DIR / "products.xlsx"
+IMAGES_DIR = BASE_DIR / "product_images"
+
+COLUMN_MAP = {
+    'name': 'name',
+    'selling_price': 'selling_price',
+    'cost_price': 'cost_price',
+    'stock': 'stock',
+    'image_folder': 'image_folder',
+    'category': 'category',
+    'sku': 'sku',
+    'description': 'description',
+    'short_description': 'short_description',
+    'specs': 'specs',
+    'tags': 'tags',
+    'seo_title': 'seo_title',
+    'seo_description': 'seo_description',
+}
+
+
+def normalize_columns(ws):
+    """Map header row to normalized column names (case-insensitive)."""
+    headers = {}
+    for col_idx, cell in enumerate(next(ws.iter_rows(min_row=1, max_row=1, values_only=True)), 1):
+        if cell:
+            key = str(cell).strip().lower().replace(' ', '_')
+            headers[col_idx] = COLUMN_MAP.get(key, key)
+    return headers
+
+
+def read_excel(path: Path):
+    """Read products.xlsx and return list of dicts."""
+    wb = openpyxl.load_workbook(path, data_only=True)
+    ws = wb.active
+    col_map = normalize_columns(ws)
+    products = []
+
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        product = {}
+        for col_idx, value in enumerate(row, 1):
+            key = col_map.get(col_idx)
+            if key and value is not None:
+                product[key] = str(value).strip() if isinstance(value, str) else value
+        if product.get('name'):
+            products.append(product)
+
+    return products
+
+
+def collect_images(folder_name: str) -> list:
+    """Return list of image file paths from a product_images subfolder."""
+    folder = IMAGES_DIR / folder_name
+    if not folder.exists():
+        return []
+    extensions = ('*.jpg', '*.jpeg', '*.png', '*.webp')
+    files = []
+    for ext in extensions:
+        files.extend(sorted(folder.glob(ext)))
+    return files
+
+
+def upload_product(api_url: str, token: str, product: dict, image_files: list, retries: int = 3):
+    """Send one product + its images to the API."""
+    files = []
+    for img_path in image_files:
+        mime = mimetypes.guess_type(str(img_path))[0] or 'image/jpeg'
+        files.append(('images[]', (img_path.name, open(img_path, 'rb'), mime)))
+
+    data = {k: v for k, v in product.items() if v is not None and k != 'image_folder'}
+
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Accept': 'application/json',
+    }
+
+    for attempt in range(retries):
+        try:
+            resp = requests.post(
+                api_url,
+                data=data,
+                files=files or None,
+                headers=headers,
+                timeout=120,
+            )
+
+            # Close file handles
+            for _, f in files:
+                f[1].close()
+
+            if resp.status_code == 201:
+                return resp.json()
+            elif resp.status_code == 422:
+                errors = resp.json().get('errors', {})
+                return {'error': f"Validation failed: {errors}", 'product': product.get('name')}
+            else:
+                return {'error': f"HTTP {resp.status_code}: {resp.text[:200]}", 'product': product.get('name')}
+
+        except requests.exceptions.RequestException as e:
+            if attempt < retries - 1:
+                time.sleep(3)
+                continue
+            return {'error': str(e), 'product': product.get('name')}
+
+    return {'error': 'Max retries exceeded', 'product': product.get('name')}
+
+
+def regenerate_sitemap(api_url: str, token: str):
+    """Hit the sitemap URL to trigger regeneration."""
+    try:
+        # The sitemap is generated by the command, but we can trigger artisan via URL
+        # or just notify. We use the public sitemap URL to warm cache.
+        sitemap_url = api_url.replace('/api/products/import', '/sitemap.xml')
+        requests.get(sitemap_url, timeout=30)
+        print("  ✓ Sitemap refreshed.")
+    except Exception as e:
+        print(f"  ⚠ Sitemap refresh failed: {e}")
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Sync products to chokbazar.com')
+    parser.add_argument('--api-url', default=os.environ.get('CHOKBAZAR_API_URL', ''),
+                        help='API endpoint URL (e.g. https://chokbazar.com/api/products/import)')
+    parser.add_argument('--token', default=os.environ.get('CHOKBAZAR_API_TOKEN', ''),
+                        help='Sanctum API token')
+    parser.add_argument('--dry-run', action='store_true',
+                        help='Preview products without uploading')
+    parser.add_argument('--skip-existing', action='store_true',
+                        help='Skip products whose SKU already exists')
+    parser.add_argument('--sitemap', action='store_true',
+                        help='Refresh sitemap after upload')
+    parser.add_argument('--delay', type=float, default=1.0,
+                        help='Seconds to wait between uploads (default: 1)')
+
+    args = parser.parse_args()
+
+    if not EXCEL_PATH.exists():
+        print(f"✗ products.xlsx not found at: {EXCEL_PATH}")
+        print("  Create it or copy your spreadsheet to that path.")
+        sys.exit(1)
+
+    if not args.dry_run and (not args.api_url or not args.token):
+        print("✗ --api-url and --token are required (or set CHOKBAZAR_API_URL / CHOKBAZAR_API_TOKEN)")
+        sys.exit(1)
+
+    products = read_excel(EXCEL_PATH)
+    if not products:
+        print("✗ No products found in spreadsheet (need at least a 'name' column).")
+        sys.exit(1)
+
+    print(f"\n📋 Found {len(products)} product(s) in spreadsheet.\n")
+
+    if args.skip_existing:
+        # Check which SKUs exist by asking the API
+        existing_skus = set()
+        try:
+            resp = requests.get(args.api_url.replace('/import', '/filter?per_page=1000'),
+                                headers={'Accept': 'application/json'}, timeout=30)
+            if resp.status_code == 200:
+                for p in resp.json().get('products', {}).get('data', []):
+                    existing_skus.add(p.get('sku'))
+        except Exception:
+            pass
+
+        before = len(products)
+        products = [p for p in products if not (p.get('sku') and p['sku'] in existing_skus)]
+        print(f"  Skipping {before - len(products)} existing product(s) by SKU.\n")
+
+    results = {'success': 0, 'failed': 0, 'errors': []}
+
+    for i, product in enumerate(products, 1):
+        folder = product.get('image_folder', '') or ''
+        image_files = collect_images(folder) if folder else []
+
+        print(f"[{i}/{len(products)}] {product.get('name', '?')}")
+        print(f"       Price: ৳{product.get('selling_price', '?')}  |  "
+              f"Stock: {product.get('stock', '?')}  |  "
+              f"Images: {len(image_files)}")
+        print(f"       Folder: {folder or '(none)'}")
+
+        if args.dry_run:
+            print(f"       → DRY RUN, skipped.\n")
+            results['success'] += 1
+            continue
+
+        result = upload_product(args.api_url, args.token, product, image_files)
+
+        if result.get('error'):
+            print(f"       ✗ FAILED: {result['error']}\n")
+            results['failed'] += 1
+            results['errors'].append(result)
+        else:
+            url = result.get('product', {}).get('url', '')
+            print(f"       ✓ Created: {url}\n")
+            results['success'] += 1
+
+        time.sleep(args.delay)
+
+    # Summary
+    print("=" * 50)
+    print(f" Done: {results['success']} uploaded, {results['failed']} failed.")
+    if results['errors']:
+        print("\n Errors:")
+        for e in results['errors']:
+            print(f"  - {e.get('product', '?')}: {e.get('error', '?')}")
+
+    if results['success'] > 0 and args.sitemap and not args.dry_run:
+        regenerate_sitemap(args.api_url, args.token)
+
+    return 0 if results['failed'] == 0 else 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())
