@@ -10,9 +10,12 @@ use Illuminate\View\View;
 
 class ReturnRequestController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $returnRequests = ReturnRequest::with(['order', 'user', 'orderItem'])->latest()->paginate(20);
+        $returnRequests = ReturnRequest::with(['order', 'user', 'orderItem'])
+            ->when($request->filled('status'), fn($q) => $q->where('status', $request->status))
+            ->latest()
+            ->paginate(20);
         return view('admin.returns.index', compact('returnRequests'));
     }
 
