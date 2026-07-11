@@ -1,9 +1,9 @@
 @props(['title', 'description' => null, 'searchRoute' => null, 'categories' => []])
 
-<section {{ $attributes->merge(['class' => 'relative overflow-hidden bg-gradient-to-br from-brand-50 via-white to-secondary-50']) }}>
+<section {{ $attributes->merge(['class' => 'relative overflow-hidden bg-gradient-to-br from-brand-50 via-white to-brand-50']) }}>
     <div class="absolute inset-0 pointer-events-none">
         <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-brand-100/30 blur-3xl"></div>
-        <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-secondary-100/30 blur-3xl"></div>
+        <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-brand-100/30 blur-3xl"></div>
     </div>
 
     <div class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">

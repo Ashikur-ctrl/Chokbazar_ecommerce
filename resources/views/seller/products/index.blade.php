@@ -6,19 +6,19 @@
     <div class="bg-white rounded-xl border border-gray-200">
         <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <form method="GET" class="flex flex-col sm:flex-row gap-3 flex-1">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..." class="rounded-lg border-gray-300 text-sm focus:border-orange-500 focus:ring-orange-500 sm:w-64">
-                <select name="status" class="rounded-lg border-gray-300 text-sm focus:border-orange-500 focus:ring-orange-500">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..." class="rounded-lg border-gray-300 text-sm focus:border-brand-500 focus:ring-brand-500 sm:w-64">
+                <select name="status" class="rounded-lg border-gray-300 text-sm focus:border-brand-500 focus:ring-brand-500">
                     <option value="">All status</option>
                     <option value="active" @selected(request('status') === 'active')>Active</option>
                     <option value="inactive" @selected(request('status') === 'inactive')>Inactive</option>
                     <option value="low_stock" @selected(request('status') === 'low_stock')>Low Stock</option>
                 </select>
-                <button type="submit" class="rounded-lg bg-orange-600 px-4 py-2 text-sm font-bold text-white hover:bg-orange-700">Filter</button>
+                <button type="submit" class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-bold text-white hover:bg-brand-700">Filter</button>
                 @if(request()->anyFilled(['search', 'status']))
                     <a href="{{ route('seller.products.index') }}" class="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50">Clear</a>
                 @endif
             </form>
-            <a href="{{ route('seller.products.create') }}" class="rounded-lg bg-orange-600 px-4 py-2 text-sm font-bold text-white hover:bg-orange-700 whitespace-nowrap">+ Add Product</a>
+            <a href="{{ route('seller.products.create') }}" class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-bold text-white hover:bg-brand-700 whitespace-nowrap">+ Add Product</a>
         </div>
 
         <div class="overflow-x-auto">
@@ -70,7 +70,7 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('seller.products.edit', $product) }}" class="text-orange-600 hover:text-orange-700 text-sm font-medium">Edit</a>
+                                    <a href="{{ route('seller.products.edit', $product) }}" class="text-brand-600 hover:text-brand-700 text-sm font-medium">Edit</a>
                                     <form method="POST" action="{{ route('seller.products.destroy', $product) }}" class="inline ml-3" onsubmit="return confirm('Delete this product?')">
                                         @csrf @method('DELETE')
                                         <button class="text-red-600 hover:text-red-700 text-sm font-medium">Delete</button>
@@ -83,7 +83,7 @@
             @else
                 <div class="p-12 text-center">
                     <p class="text-gray-500">No products found.</p>
-                    <a href="{{ route('seller.products.create') }}" class="mt-2 inline-block text-orange-600 hover:underline text-sm font-medium">Add your first product</a>
+                    <a href="{{ route('seller.products.create') }}" class="mt-2 inline-block text-brand-600 hover:underline text-sm font-medium">Add your first product</a>
                 </div>
             @endif
         </div>

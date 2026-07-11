@@ -10,7 +10,7 @@
                      class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                      loading="lazy">
             @else
-                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-50 to-secondary-50">
+                <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-50 to-brand-50">
                     <span class="text-5xl font-black text-brand-200">{{ strtoupper(substr($product->name, 0, 2)) }}</span>
                 </div>
             @endif
@@ -34,7 +34,7 @@
     </div>
 
     <div class="p-4 space-y-2">
-        <p class="text-xs font-semibold uppercase tracking-wider text-secondary-600">
+        <p class="text-xs font-semibold uppercase tracking-wider text-brand-600">
             {{ $product->category->name ?? 'Uncategorized' }}
         </p>
 

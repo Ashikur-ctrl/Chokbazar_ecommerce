@@ -3,7 +3,7 @@
 
     <div class="bg-gray-50">
         <!-- Hero -->
-        <div class="bg-gradient-to-r from-brand-600 via-brand-700 to-secondary-700 py-16 px-4 text-center text-white">
+        <div class="bg-gradient-to-r from-brand-600 via-brand-700 to-brand-800 py-16 px-4 text-center text-white">
             <h1 class="text-4xl font-extrabold sm:text-5xl">Hot Deals</h1>
             <p class="mt-3 text-brand-100 max-w-lg mx-auto">Limited time offers — grab them before they're gone!</p>
             <div class="mt-6 inline-flex items-center gap-2 rounded-xl bg-white/20 px-6 py-3 backdrop-blur-sm">

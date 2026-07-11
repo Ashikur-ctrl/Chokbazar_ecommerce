@@ -42,7 +42,7 @@
                 <div x-data="productGallery({ images: {{ json_encode($product->images->map(fn($img) => asset('storage/' . $img->image_path))->values()) }} })"
                      class="space-y-4">
                     <div class="relative aspect-square overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-card">
-                        <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-50 to-secondary-50 p-4">
+                        <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-50 to-brand-50 p-4">
                             @if($product->image)
                                 <img :src="currentImage || '{{ asset('storage/' . $product->image) }}'"
                                      alt="{{ $product->name }}"
@@ -97,7 +97,7 @@
                 <!-- Right: Product Info -->
                 <div class="space-y-6">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-secondary-600">{{ $product->category->name ?? 'Uncategorized' }}</p>
+                        <p class="text-xs font-semibold uppercase tracking-wider text-brand-600">{{ $product->category->name ?? 'Uncategorized' }}</p>
                         <h1 class="mt-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">{{ $product->name }}</h1>
 
                         <div class="mt-3 flex items-center gap-4">
@@ -185,7 +185,7 @@
                         <div class="rounded-2xl border border-gray-100 bg-white p-5 shadow-card">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-50 to-secondary-50 flex items-center justify-center text-lg font-bold text-brand-600">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-50 to-brand-50 flex items-center justify-center text-lg font-bold text-brand-600">
                                         {{ strtoupper(substr($product->seller->company_name ?? $product->seller->name, 0, 1)) }}
                                     </div>
                                     <div>

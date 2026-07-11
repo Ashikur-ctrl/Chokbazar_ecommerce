@@ -4,7 +4,7 @@
 
     <!-- Loading State -->
     <div x-show="loading" class="flex items-center justify-center py-4">
-        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-600"></div>
+        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-600"></div>
     </div>
 
     <!-- Products Grid -->
@@ -16,7 +16,7 @@
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform">
                 </div>
                 <h4 class="font-medium text-slate-900 text-xs mb-1 line-clamp-2" x-text="product.name"></h4>
-                <span class="font-bold text-orange-600 text-sm" x-text="'৳' + product.price"></span>
+                <span class="font-bold text-brand-600 text-sm" x-text="'৳' + product.price"></span>
             </a>
         </template>
     </div>

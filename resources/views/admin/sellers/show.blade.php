@@ -77,7 +77,7 @@
                                 <code class="text-xs font-mono text-slate-600">{{ substr($seller->api_key ?? '', 0, 20) }}...</code>
                                 <form method="POST" action="{{ route('admin.sellers.regenerate-api-key', $seller) }}" class="inline">
                                     @csrf
-                                    <button type="submit" class="text-orange-600 hover:text-orange-700 text-sm font-semibold">Regenerate</button>
+                                    <button type="submit" class="text-brand-600 hover:text-brand-700 text-sm font-semibold">Regenerate</button>
                                 </form>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
             <div class="mb-8 grid gap-6 md:grid-cols-4">
                 <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm text-center">
                     <p class="text-sm text-slate-600">Total Orders</p>
-                    <p class="text-4xl font-bold text-orange-600">{{ $stats['total_orders'] }}</p>
+                    <p class="text-4xl font-bold text-brand-600">{{ $stats['total_orders'] }}</p>
                 </div>
                 <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm text-center">
                     <p class="text-sm text-slate-600">Pending</p>
@@ -109,7 +109,7 @@
             <div class="mb-8 grid gap-6 md:grid-cols-2">
                 <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
                     <p class="text-sm text-slate-600">Total Revenue</p>
-                    <p class="text-3xl font-bold text-orange-600">৳{{ number_format($stats['total_revenue'], 2) }}</p>
+                    <p class="text-3xl font-bold text-brand-600">৳{{ number_format($stats['total_revenue'], 2) }}</p>
                 </div>
                 <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
                     <p class="text-sm text-slate-600">Last 30 Days Revenue</p>

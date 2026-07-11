@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-orange-100 shadow-sm">
+<nav x-data="{ open: false }" class="bg-white border-b border-brand-100 shadow-sm">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -12,35 +12,35 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <a href="{{ route('shop.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-orange-600 hover:border-orange-300 focus:outline-none transition duration-150 ease-in-out {{ request()->routeIs('shop.*') ? 'border-orange-500 text-orange-600' : '' }}">
+                    <a href="{{ route('shop.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 focus:outline-none transition duration-150 ease-in-out {{ request()->routeIs('shop.*') ? 'border-brand-500 text-brand-600' : '' }}">
                         Shop
                     </a>
-                    <a href="{{ route('deals') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-orange-600 hover:border-orange-300 transition duration-150 ease-in-out {{ request()->routeIs('deals') ? 'border-orange-500 text-orange-600' : '' }}">
+                    <a href="{{ route('deals') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 transition duration-150 ease-in-out {{ request()->routeIs('deals') ? 'border-brand-500 text-brand-600' : '' }}">
                         Deals
                     </a>
-                    <a href="{{ route('categories') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-orange-600 hover:border-orange-300 transition duration-150 ease-in-out {{ request()->routeIs('categories') ? 'border-orange-500 text-orange-600' : '' }}">
+                    <a href="{{ route('categories') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 transition duration-150 ease-in-out {{ request()->routeIs('categories') ? 'border-brand-500 text-brand-600' : '' }}">
                         Categories
                     </a>
-                    <a href="{{ route('contact') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-orange-600 hover:border-orange-300 transition duration-150 ease-in-out {{ request()->routeIs('contact') ? 'border-orange-500 text-orange-600' : '' }}">
+                    <a href="{{ route('contact') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 transition duration-150 ease-in-out {{ request()->routeIs('contact') ? 'border-brand-500 text-brand-600' : '' }}">
                         Support
                     </a>
-                    <a href="{{ route('compare') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-orange-600 hover:border-orange-300 transition duration-150 ease-in-out {{ request()->routeIs('compare') ? 'border-orange-500 text-orange-600' : '' }}">
+                    <a href="{{ route('compare') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 transition duration-150 ease-in-out {{ request()->routeIs('compare') ? 'border-brand-500 text-brand-600' : '' }}">
                         Compare
                     </a>
-                    <a href="{{ route('cart.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-orange-600 hover:border-orange-300 focus:outline-none transition duration-150 ease-in-out {{ request()->routeIs('cart.*') ? 'border-orange-500 text-orange-600' : '' }}">
+                    <a href="{{ route('cart.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 focus:outline-none transition duration-150 ease-in-out {{ request()->routeIs('cart.*') ? 'border-brand-500 text-brand-600' : '' }}">
                         Cart
                         @auth
                             <span id="cart-count" class="ml-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full hidden">0</span>
                         @endauth
                     </a>
                     @auth
-                        <a href="{{ route('wishlist.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-orange-600 hover:border-orange-300 transition duration-150 ease-in-out {{ request()->routeIs('wishlist.*') ? 'border-orange-500 text-orange-600' : '' }}">
+                        <a href="{{ route('wishlist.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 transition duration-150 ease-in-out {{ request()->routeIs('wishlist.*') ? 'border-brand-500 text-brand-600' : '' }}">
                             Wishlist
                         </a>
-                        <a href="{{ route('recently-viewed') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-orange-600 hover:border-orange-300 transition duration-150 ease-in-out {{ request()->routeIs('recently-viewed') ? 'border-orange-500 text-orange-600' : '' }}">
+                        <a href="{{ route('recently-viewed') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 transition duration-150 ease-in-out {{ request()->routeIs('recently-viewed') ? 'border-brand-500 text-brand-600' : '' }}">
                             Recent
                         </a>
-                        <a href="{{ route('dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-orange-600 hover:border-orange-300 transition duration-150 ease-in-out {{ request()->routeIs('dashboard') ? 'border-orange-500 text-orange-600' : '' }}">
+                        <a href="{{ route('dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 transition duration-150 ease-in-out {{ request()->routeIs('dashboard') ? 'border-brand-500 text-brand-600' : '' }}">
                             Dashboard
                         </a>
                         <a href="{{ route('orders.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out {{ request()->routeIs('orders.*') ? 'border-indigo-400 text-gray-900' : '' }}">
@@ -86,8 +86,8 @@
                     </x-dropdown>
                 @else
                     <div class="space-x-4">
-                        <a href="{{ route('login') }}" class="text-slate-700 hover:text-orange-600">Login</a>
-                        <a href="{{ route('register') }}" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-md">Register</a>
+                        <a href="{{ route('login') }}" class="text-slate-700 hover:text-brand-600">Login</a>
+                        <a href="{{ route('register') }}" class="bg-brand-600 hover:bg-brand-700 text-white font-bold py-2 px-4 rounded-md">Register</a>
                     </div>
                 @endauth
             </div>
@@ -123,7 +123,7 @@
                 <a href="{{ route('orders.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('orders.*') ? 'border-indigo-400 text-indigo-700 bg-indigo-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
                     Orders
                 </a>
-                <a href="{{ route('wishlist.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('wishlist.*') ? 'border-orange-400 text-orange-700 bg-orange-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
+                <a href="{{ route('wishlist.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('wishlist.*') ? 'border-brand-400 text-brand-700 bg-brand-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
                     Wishlist
                 </a>
                 @if(auth()->user()->isAdmin())

@@ -40,7 +40,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-slate-600">Seller</p>
-                            <a href="{{ route('admin.sellers.show', $fulfillmentRequest->seller) }}" class="font-semibold text-orange-600 hover:text-orange-700">
+                            <a href="{{ route('admin.sellers.show', $fulfillmentRequest->seller) }}" class="font-semibold text-brand-600 hover:text-brand-700">
                                 {{ $fulfillmentRequest->seller->name }}
                             </a>
                         </div>
@@ -56,7 +56,7 @@
                     <div class="space-y-3">
                         <div>
                             <p class="text-sm text-slate-600">Order Number</p>
-                            <a href="{{ route('admin.fulfillment.order', $fulfillmentRequest->order) }}" class="font-semibold text-orange-600 hover:text-orange-700">
+                            <a href="{{ route('admin.fulfillment.order', $fulfillmentRequest->order) }}" class="font-semibold text-brand-600 hover:text-brand-700">
                                 {{ $fulfillmentRequest->order->order_number }}
                             </a>
                         </div>

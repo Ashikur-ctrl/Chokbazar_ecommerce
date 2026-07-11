@@ -25,7 +25,7 @@
                                     @if($item['image'])
                                         <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="w-full h-full object-cover">
                                     @else
-                                        <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-50 to-secondary-50">
+                                        <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-50 to-brand-50">
                                             <span class="text-lg font-black text-brand-200">{{ strtoupper(substr($item['name'], 0, 2)) }}</span>
                                         </div>
                                     @endif

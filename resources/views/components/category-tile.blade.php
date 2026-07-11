@@ -2,7 +2,7 @@
 
 <a href="{{ route('shop.index', ['category' => $category->id]) }}"
    {{ $attributes->merge(['class' => 'group relative overflow-hidden rounded-card bg-white border border-gray-100 shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-0.5']) }}>
-    <div class="aspect-[4/3] overflow-hidden bg-gradient-to-br from-brand-50 to-secondary-50">
+    <div class="aspect-[4/3] overflow-hidden bg-gradient-to-br from-brand-50 to-brand-50">
         @if($image)
             <img data-src="{{ $image }}" alt="{{ $category->name }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy">
         @else

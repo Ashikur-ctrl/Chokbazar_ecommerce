@@ -92,12 +92,12 @@
                             <div>
                                 <label for="tracking_number" class="block text-sm font-medium text-gray-700">Tracking Number</label>
                                 <input id="tracking_number" name="tracking_number" type="text"
-                                       class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-sm">
+                                       class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 text-sm">
                             </div>
                             <div>
                                 <label for="courier_name" class="block text-sm font-medium text-gray-700">Courier</label>
                                 <input id="courier_name" name="courier_name" type="text" placeholder="e.g. Pathao, RedX, Steadfast"
-                                       class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 text-sm">
+                                       class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-brand-500 focus:ring-brand-500 text-sm">
                             </div>
                             <button type="submit" class="w-full rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-700">
                                 Mark as Shipped

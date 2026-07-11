@@ -16,7 +16,7 @@
                 <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
                     <h3 class="text-lg font-semibold text-slate-900 mb-2">Personalized</h3>
                     <p class="text-sm text-slate-600 mb-4">Based on your browsing and purchase history</p>
-                    <button onclick="loadRecommendations('personalized')" class="w-full rounded-lg bg-orange-600 px-4 py-2 text-white font-semibold hover:bg-orange-700">
+                    <button onclick="loadRecommendations('personalized')" class="w-full rounded-lg bg-brand-600 px-4 py-2 text-white font-semibold hover:bg-brand-700">
                         Load Recommendations
                     </button>
                 </div>
@@ -72,7 +72,7 @@
 
                 <div class="grid gap-4 md:grid-cols-3">
                     <div class="text-center">
-                        <p class="text-2xl font-bold text-orange-600" id="total-behaviors">0</p>
+                        <p class="text-2xl font-bold text-brand-600" id="total-behaviors">0</p>
                         <p class="text-sm text-slate-600">Total User Behaviors</p>
                     </div>
                     <div class="text-center">
@@ -152,7 +152,7 @@
                          class="w-full h-32 object-cover rounded-md mb-3">
                     <h4 class="font-semibold text-slate-900 text-sm mb-1 line-clamp-2">${product.name}</h4>
                     <div class="flex items-center justify-between">
-                        <span class="font-bold text-orange-600">৳${product.price}</span>
+                        <span class="font-bold text-brand-600">৳${product.price}</span>
                         ${product.is_on_sale ? `<span class="text-xs text-red-600">-${product.discount_percentage}%</span>` : ''}
                     </div>
                     <p class="text-xs text-slate-600 mt-1">${product.category || 'Uncategorized'}</p>

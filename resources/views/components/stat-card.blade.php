@@ -3,7 +3,7 @@
 @php
     $colors = [
         'brand' => 'text-brand-600',
-        'secondary' => 'text-secondary-600',
+        'secondary' => 'text-brand-600',
         'emerald' => 'text-emerald-600',
         'red' => 'text-red-600',
         'amber' => 'text-amber-600',

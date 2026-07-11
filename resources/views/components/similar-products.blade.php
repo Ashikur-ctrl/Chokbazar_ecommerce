@@ -4,7 +4,7 @@
 
     <!-- Loading State -->
     <div x-show="loading" class="flex items-center justify-center py-4">
-        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-600"></div>
+        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-600"></div>
     </div>
 
     <!-- Products Grid -->
@@ -17,7 +17,7 @@
                 </div>
                 <h4 class="font-semibold text-slate-900 text-sm mb-1 line-clamp-2" x-text="product.name"></h4>
                 <div class="flex items-center justify-between mb-2">
-                    <span class="font-bold text-orange-600" x-text="'৳' + product.price"></span>
+                    <span class="font-bold text-brand-600" x-text="'৳' + product.price"></span>
                     <template x-if="product.is_on_sale">
                         <span class="text-xs text-red-600" x-text="'-' + product.discount_percentage + '%'"></span>
                     </template>

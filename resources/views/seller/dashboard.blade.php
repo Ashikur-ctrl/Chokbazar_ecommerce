@@ -12,7 +12,7 @@
         </div>
         <div class="bg-white rounded-xl border border-gray-200 p-6">
             <p class="text-sm font-medium text-gray-500">Orders Pending</p>
-            <p class="mt-2 text-3xl font-extrabold text-orange-600">{{ $pendingOrders }}</p>
+            <p class="mt-2 text-3xl font-extrabold text-brand-600">{{ $pendingOrders }}</p>
         </div>
         <div class="bg-white rounded-xl border border-gray-200 p-6">
             <p class="text-sm font-medium text-gray-500">Total Fulfilled</p>
@@ -29,7 +29,7 @@
         <div class="bg-white rounded-xl border border-gray-200">
             <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                 <h2 class="text-lg font-bold text-gray-900">Recent Orders</h2>
-                <a href="{{ route('seller.orders.index') }}" class="text-sm text-orange-600 hover:text-orange-700 font-medium">View all</a>
+                <a href="{{ route('seller.orders.index') }}" class="text-sm text-brand-600 hover:text-brand-700 font-medium">View all</a>
             </div>
             <div class="p-6">
                 @if($recentOrders->count() > 0)
@@ -61,7 +61,7 @@
         <div class="bg-white rounded-xl border border-gray-200">
             <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                 <h2 class="text-lg font-bold text-gray-900">Recent Products</h2>
-                <a href="{{ route('seller.products.index') }}" class="text-sm text-orange-600 hover:text-orange-700 font-medium">View all</a>
+                <a href="{{ route('seller.products.index') }}" class="text-sm text-brand-600 hover:text-brand-700 font-medium">View all</a>
             </div>
             <div class="p-6">
                 @if($recentProducts->count() > 0)
@@ -85,7 +85,7 @@
                 @else
                     <p class="text-sm text-gray-500 text-center py-4">
                         No products yet.
-                        <a href="{{ route('seller.products.create') }}" class="text-orange-600 hover:underline">Add your first product</a>
+                        <a href="{{ route('seller.products.create') }}" class="text-brand-600 hover:underline">Add your first product</a>
                     </p>
                 @endif
             </div>

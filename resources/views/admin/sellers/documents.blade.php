@@ -7,7 +7,7 @@
                         @foreach($docs as $doc)
                             <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                                 <span class="text-sm font-medium text-gray-900">{{ $doc['name'] ?? 'Document' }}</span>
-                                <a href="{{ asset('storage/' . $doc['path']) }}" target="_blank" class="text-sm text-orange-600 hover:underline">View</a>
+                                <a href="{{ asset('storage/' . $doc['path']) }}" target="_blank" class="text-sm text-brand-600 hover:underline">View</a>
                             </li>
                         @endforeach
                     </ul>

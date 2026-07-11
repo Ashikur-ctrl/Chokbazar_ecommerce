@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">My Return Requests</h2>
-            <a href="{{ route('orders.index') }}" class="text-sm font-medium text-orange-600 hover:text-orange-800">My Orders</a>
+            <a href="{{ route('orders.index') }}" class="text-sm font-medium text-brand-600 hover:text-brand-800">My Orders</a>
         </div>
     </x-slot>
 
@@ -17,7 +17,7 @@
                     <div class="p-6 flex items-center justify-between">
                         <div>
                             <p class="font-semibold text-gray-900">Return Request #{{ $return->id }}</p>
-                            <p class="text-sm text-gray-500 mt-1">Order: <a href="{{ route('orders.show', $return->order) }}" class="text-orange-600 hover:text-orange-800">{{ $return->order->order_number }}</a></p>
+                            <p class="text-sm text-gray-500 mt-1">Order: <a href="{{ route('orders.show', $return->order) }}" class="text-brand-600 hover:text-brand-800">{{ $return->order->order_number }}</a></p>
                             <p class="text-sm text-gray-500">Reason: {{ $return->reason }}</p>
                             @if($return->description)
                                 <p class="text-sm text-gray-600 mt-2">{{ $return->description }}</p>
@@ -39,7 +39,7 @@
                 <div class="bg-white shadow-sm sm:rounded-lg">
                     <div class="p-12 text-center">
                         <p class="text-gray-500 mb-4">You haven't submitted any return requests yet.</p>
-                        <a href="{{ route('orders.index') }}" class="inline-block rounded-lg bg-orange-600 px-6 py-2 text-sm font-semibold text-white hover:bg-orange-700">View Orders</a>
+                        <a href="{{ route('orders.index') }}" class="inline-block rounded-lg bg-brand-600 px-6 py-2 text-sm font-semibold text-white hover:bg-brand-700">View Orders</a>
                     </div>
                 </div>
             @endforelse

@@ -1,6 +1,6 @@
 <div x-data="{ promoOpen: true, menuOpen: false, categoryOpen: false, searchOpen: false }" class="relative">
     <!-- Promo Bar -->
-    <div x-show="promoOpen" class="relative bg-gradient-to-r from-brand-600 via-secondary-600 to-brand-700 py-2 text-center text-xs font-semibold text-white sm:text-sm">
+    <div x-show="promoOpen" class="relative bg-gradient-to-r from-brand-600 via-brand-600 to-brand-700 py-2 text-center text-xs font-semibold text-white sm:text-sm">
         <span>@yield('promo_text', 'আজকের ডিল চলছে — দ্রুত অর্ডার করুন, Cash on Delivery available')</span>
         <button @click="promoOpen = false" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -93,7 +93,7 @@
                         @php $headerCategories = \App\Models\Category::active()->orderBy('name')->get(); @endphp
                         @foreach($headerCategories as $cat)
                             <a href="{{ route('shop.index', ['category' => $cat->id]) }}" class="flex items-center gap-3 p-2 rounded-lg hover:bg-brand-50 transition-colors group">
-                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-50 to-secondary-50 flex items-center justify-center text-sm font-bold text-brand-600 group-hover:scale-110 transition-transform">
+                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-50 to-brand-50 flex items-center justify-center text-sm font-bold text-brand-600 group-hover:scale-110 transition-transform">
                                     {{ strtoupper(substr($cat->name, 0, 1)) }}
                                 </div>
                                 <span class="text-sm font-medium text-gray-700 group-hover:text-brand-600">{{ $cat->name }}</span>

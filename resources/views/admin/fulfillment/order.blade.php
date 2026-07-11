@@ -9,7 +9,7 @@
             <div class="mb-8 grid gap-4 md:grid-cols-4">
                 <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
                     <p class="text-sm text-slate-600">Total Requests</p>
-                    <p class="text-3xl font-bold text-orange-600">{{ $status['total_requests'] }}</p>
+                    <p class="text-3xl font-bold text-brand-600">{{ $status['total_requests'] }}</p>
                 </div>
                 <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
                     <p class="text-sm text-slate-600">Pending</p>
@@ -58,7 +58,7 @@
                         <div class="mb-4 border-t border-slate-200 pt-4">
                             <div class="flex items-center justify-between">
                                 <span class="font-semibold text-slate-900">Total Amount:</span>
-                                <span class="text-2xl font-bold text-orange-600">৳{{ number_format($request->total_amount, 2) }}</span>
+                                <span class="text-2xl font-bold text-brand-600">৳{{ number_format($request->total_amount, 2) }}</span>
                             </div>
                         </div>
 
@@ -72,7 +72,7 @@
 
                         <!-- Actions -->
                         <div class="border-t border-slate-200 pt-4">
-                            <a href="{{ route('admin.fulfillment.show', $request) }}" class="text-orange-600 hover:text-orange-700 font-semibold">View Details →</a>
+                            <a href="{{ route('admin.fulfillment.show', $request) }}" class="text-brand-600 hover:text-brand-700 font-semibold">View Details →</a>
                         </div>
                     </div>
                 @empty

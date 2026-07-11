@@ -6,14 +6,14 @@
     <div class="bg-white rounded-xl border border-gray-200">
         <div class="p-6 border-b border-gray-100">
             <form method="GET" class="flex gap-3">
-                <select name="status" class="rounded-lg border-gray-300 text-sm focus:border-orange-500 focus:ring-orange-500">
+                <select name="status" class="rounded-lg border-gray-300 text-sm focus:border-brand-500 focus:ring-brand-500">
                     <option value="">All status</option>
                     <option value="pending" @selected(request('status') === 'pending')>Pending</option>
                     <option value="confirmed" @selected(request('status') === 'confirmed')>Confirmed</option>
                     <option value="shipped" @selected(request('status') === 'shipped')>Shipped</option>
                     <option value="cancelled" @selected(request('status') === 'cancelled')>Cancelled</option>
                 </select>
-                <button type="submit" class="rounded-lg bg-orange-600 px-4 py-2 text-sm font-bold text-white hover:bg-orange-700">Filter</button>
+                <button type="submit" class="rounded-lg bg-brand-600 px-4 py-2 text-sm font-bold text-white hover:bg-brand-700">Filter</button>
                 @if(request('status'))
                     <a href="{{ route('seller.orders.index') }}" class="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-600 hover:bg-gray-50">Clear</a>
                 @endif
@@ -51,7 +51,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-gray-500">{{ $fr->created_at->format('d M Y') }}</td>
                                 <td class="px-6 py-4 text-right">
-                                    <a href="{{ route('seller.orders.show', $fr) }}" class="text-orange-600 hover:text-orange-700 text-sm font-medium">View</a>
+                                    <a href="{{ route('seller.orders.show', $fr) }}" class="text-brand-600 hover:text-brand-700 text-sm font-medium">View</a>
                                 </td>
                             </tr>
                         @endforeach

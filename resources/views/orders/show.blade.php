@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $order->order_number }}</h2>
             <div class="flex gap-3">
-                <a href="{{ route('orders.tracking', $order) }}" class="text-sm font-medium text-orange-600 hover:text-orange-800">Track order</a>
+                <a href="{{ route('orders.tracking', $order) }}" class="text-sm font-medium text-brand-600 hover:text-brand-800">Track order</a>
                 <a href="{{ route('orders.index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-800">My orders</a>
             </div>
         </div>
