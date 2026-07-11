@@ -11,9 +11,8 @@
     <header class="sticky top-0 z-40 border-b border-gray-100 bg-white/95 shadow-sm backdrop-blur">
         <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <!-- Logo -->
-            <a href="{{ route('shop.index') }}" class="flex items-center gap-2 text-lg font-extrabold text-gray-900 shrink-0">
-                <span class="rounded-md bg-gradient-to-br from-brand-500 to-brand-700 px-2 py-1 text-sm text-white">BD</span>
-                <span class="hidden sm:inline">{{ config('app.name', 'Market') }}</span>
+            <a href="{{ route('shop.index') }}" class="flex items-center shrink-0">
+                <img src="{{ asset('images/logo.svg') }}" alt="{{ config('app.name') }}" class="h-8 w-auto sm:h-10">
             </a>
 
             <!-- Search (Desktop) -->

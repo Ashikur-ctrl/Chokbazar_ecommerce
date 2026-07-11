@@ -16,10 +16,10 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-white border-r border-gray-200 fixed h-full z-30 overflow-y-auto">
             <div class="p-6 border-b border-gray-100">
-                <a href="{{ route('admin.dashboard') }}" class="text-xl font-bold">
-                    <span class="bg-gradient-to-r from-brand-600 to-secondary-600 bg-clip-text text-transparent">{{ config('app.name') }}</span>
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center">
+                    <img src="{{ asset('images/logo.svg') }}" alt="{{ config('app.name') }}" class="h-8 w-auto">
+                    <span class="ml-2 text-xs text-gray-400">Admin Panel</span>
                 </a>
-                <p class="text-xs text-gray-400 mt-1">Admin Panel</p>
             </div>
 
             <nav class="p-4 space-y-1">

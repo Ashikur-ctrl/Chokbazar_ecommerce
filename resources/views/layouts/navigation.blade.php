@@ -5,9 +5,8 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('shop.index') }}" class="flex items-center gap-2 text-xl font-black text-slate-900">
-                        <span class="rounded-md bg-gradient-to-br from-orange-500 to-rose-600 px-2 py-1 text-sm text-white">BD</span>
-                        {{ config('app.name', 'E-Commerce') }}
+                    <a href="{{ route('shop.index') }}" class="flex items-center">
+                        <img src="{{ asset('images/logo.svg') }}" alt="{{ config('app.name') }}" class="h-8 w-auto">
                     </a>
                 </div>
 

@@ -3,8 +3,8 @@
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <!-- About -->
             <div>
-                <h3 class="text-sm font-bold uppercase tracking-wider text-gray-900">{{ config('app.name') }}</h3>
-                <p class="mt-3 text-sm text-gray-500 leading-relaxed">
+                <img src="{{ asset('images/logo.svg') }}" alt="{{ config('app.name') }}" class="h-8 w-auto mb-3">
+                <p class="text-sm text-gray-500 leading-relaxed">
                     Bangladesh's trusted online marketplace. Shop electronics, fashion, home essentials and more with fast delivery across the country.
                 </p>
                 <div class="mt-4 flex gap-3">

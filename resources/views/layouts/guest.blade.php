@@ -11,10 +11,9 @@
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gradient-to-br from-brand-50 via-white to-secondary-50">
-            <div class="mb-6">
-                <a href="{{ route('shop.index') }}" class="flex items-center gap-2 text-2xl font-extrabold text-gray-900">
-                    <span class="rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 px-2.5 py-1 text-white">BD</span>
-                    {{ config('app.name') }}
+            <div class="mb-8">
+                <a href="{{ route('shop.index') }}" class="flex items-center justify-center">
+                    <img src="{{ asset('images/logo.svg') }}" alt="{{ config('app.name') }}" class="h-10 w-auto">
                 </a>
             </div>
             <div class="w-full sm:max-w-md px-8 py-8 bg-white rounded-2xl shadow-card border border-gray-100 animate-fade-in">

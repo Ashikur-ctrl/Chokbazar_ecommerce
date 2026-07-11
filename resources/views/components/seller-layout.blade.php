@@ -14,8 +14,10 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-white border-r border-gray-200 fixed h-full z-30">
             <div class="p-6 border-b border-gray-100">
-                <a href="{{ route('seller.dashboard') }}" class="text-xl font-bold text-orange-600">{{ config('app.name') }}</a>
-                <p class="text-xs text-gray-500 mt-1">Seller Portal</p>
+                <a href="{{ route('seller.dashboard') }}" class="flex items-center">
+                    <img src="{{ asset('images/logo.svg') }}" alt="{{ config('app.name') }}" class="h-8 w-auto">
+                    <span class="ml-2 text-xs text-gray-500">Seller Portal</span>
+                </a>
             </div>
 
             @php
