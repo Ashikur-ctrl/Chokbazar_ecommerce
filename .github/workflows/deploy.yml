@@ -8,40 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.3
-          tools: composer:v2
-
-      - name: Install dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      - name: Deploy via SSH
-        uses: easingthemes/ssh-deploy@v4
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.CPANEL_SSH_KEY }}
-          REMOTE_HOST: ${{ secrets.CPANEL_HOST }}
-          REMOTE_USER: ${{ secrets.CPANEL_USER }}
-          REMOTE_PORT: ${{ secrets.CPANEL_PORT || '22' }}
-          SOURCE: /
-          TARGET: /home/chokbazar/public_html/
-          EXCLUDE: |
-            .git
-            .env
-            .env.*
-            node_modules
-            storage/logs/*
-            storage/framework/cache/data/*
-            storage/framework/sessions/*
-            storage/framework/views/*
-            .github
-            Chokbazar_ecommerce
-
-      - name: Post-deploy on server
+      - name: SSH into server, pull, and deploy
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.CPANEL_HOST }}
@@ -49,7 +16,28 @@ jobs:
           key: ${{ secrets.CPANEL_SSH_KEY }}
           port: ${{ secrets.CPANEL_PORT || '22' }}
           script: |
-            cd /home/chokbazar/public_html
-            [ -f artisan ] && /usr/bin/php artisan migrate --force
-            [ -f artisan ] && /usr/bin/php artisan optimize:clear
+            REPO_DIR=/home/chokbazar/repositories/Chokbazar_ecommerce
+            DEPLOY_DIR=/home/chokbazar/public_html
+
+            cd "$REPO_DIR" || exit 1
+            git pull origin main
+
+            rsync -avz --delete \
+              --exclude='.env' \
+              --exclude='.env.*' \
+              --exclude='node_modules' \
+              --exclude='vendor' \
+              --exclude='.git' \
+              --exclude='storage/logs/*.log' \
+              --exclude='storage/framework/cache/data/*' \
+              --exclude='storage/framework/sessions/*' \
+              --exclude='storage/framework/views/*' \
+              --exclude='.github' \
+              --exclude='Chokbazar_ecommerce' \
+              --exclude='.cpanel.yml' \
+              ./ "$DEPLOY_DIR/"
+
+            cd "$DEPLOY_DIR" || exit 1
+            /usr/bin/php artisan migrate --force
+            /usr/bin/php artisan optimize:clear
             chmod -R 755 storage bootstrap/cache
