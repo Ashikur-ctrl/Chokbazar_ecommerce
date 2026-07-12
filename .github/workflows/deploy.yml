@@ -21,15 +21,15 @@ jobs:
         run: composer install --no-dev --optimize-autoloader
 
       - name: Deploy via SSH
-        uses: easingthemes/ssh-deploy@v4
+        uses: easingthemes/ssh-deploy@v5
         with:
-          ssh-private-key: ${{ secrets.CPANEL_SSH_KEY }}
-          remote-host: ${{ secrets.CPANEL_HOST }}
-          remote-user: ${{ secrets.CPANEL_USER }}
-          remote-port: ${{ secrets.CPANEL_PORT || '22' }}
-          source: /
-          target: /home/chokbazar/public_html/
-          exclude: |
+          SSH_PRIVATE_KEY: ${{ secrets.CPANEL_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.CPANEL_HOST }}
+          REMOTE_USER: ${{ secrets.CPANEL_USER }}
+          REMOTE_PORT: ${{ secrets.CPANEL_PORT || '22' }}
+          SOURCE: /
+          TARGET: /home/chokbazar/public_html/
+          EXCLUDE: |
             .git
             .env
             .env.*
