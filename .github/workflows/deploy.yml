@@ -1,0 +1,55 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Deploy via SSH
+        uses: easingthemes/ssh-deploy@v4
+        with:
+          ssh-private-key: ${{ secrets.CPANEL_SSH_KEY }}
+          remote-host: ${{ secrets.CPANEL_HOST }}
+          remote-user: ${{ secrets.CPANEL_USER }}
+          remote-port: ${{ secrets.CPANEL_PORT || '22' }}
+          source: /
+          target: /home/chokbazar/public_html/
+          exclude: |
+            .git
+            .env
+            .env.*
+            node_modules
+            storage/logs/*
+            storage/framework/cache/data/*
+            storage/framework/sessions/*
+            storage/framework/views/*
+            .github
+            Chokbazar_ecommerce
+
+      - name: Post-deploy on server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.CPANEL_HOST }}
+          username: ${{ secrets.CPANEL_USER }}
+          key: ${{ secrets.CPANEL_SSH_KEY }}
+          port: ${{ secrets.CPANEL_PORT || '22' }}
+          script: |
+            cd /home/chokbazar/public_html
+            [ -f artisan ] && /usr/bin/php artisan migrate --force
+            [ -f artisan ] && /usr/bin/php artisan optimize:clear
+            chmod -R 755 storage bootstrap/cache
