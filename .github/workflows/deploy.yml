@@ -5,39 +5,26 @@ on:
     branches: [main]
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: SSH into server, pull, and deploy
-        uses: appleboy/ssh-action@v1
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          host: ${{ secrets.CPANEL_HOST }}
-          username: ${{ secrets.CPANEL_USER }}
-          key: ${{ secrets.CPANEL_SSH_KEY }}
-          port: ${{ secrets.CPANEL_PORT || '22' }}
-          script: |
-            REPO_DIR=/home/chokbazar/repositories/Chokbazar_ecommerce
-            DEPLOY_DIR=/home/chokbazar/public_html
+          node-version: 22
 
-            cd "$REPO_DIR" || exit 1
-            git pull origin main
+      - name: Build assets
+        run: |
+          npm ci
+          npm run build
 
-            rsync -avz --delete \
-              --exclude='.env' \
-              --exclude='.env.*' \
-              --exclude='node_modules' \
-              --exclude='vendor' \
-              --exclude='.git' \
-              --exclude='storage/logs/*.log' \
-              --exclude='storage/framework/cache/data/*' \
-              --exclude='storage/framework/sessions/*' \
-              --exclude='storage/framework/views/*' \
-              --exclude='.github' \
-              --exclude='Chokbazar_ecommerce' \
-              --exclude='.cpanel.yml' \
-              ./ "$DEPLOY_DIR/"
-
-            cd "$DEPLOY_DIR" || exit 1
-            /usr/bin/php artisan migrate --force
-            /usr/bin/php artisan optimize:clear
-            chmod -R 755 storage bootstrap/cache
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/
