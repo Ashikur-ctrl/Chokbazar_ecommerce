@@ -41,7 +41,7 @@
                 <div class="space-y-6">
                     <div class="bg-white p-6 shadow-sm sm:rounded-lg">
                         <h3 class="font-semibold text-gray-900 mb-4">Update Status</h3>
-                        <form method="POST" action="{{ route('admin.orders.update-status', $order) }}" class="space-y-4">
+                        <form method="POST" action="{{ route('admin-legacy.orders.update-status', $order) }}" class="space-y-4">
                             @csrf
                             @method('PATCH')
                             <div>
@@ -70,7 +70,7 @@
                             </div>
                             <button type="submit" class="w-full rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700">Save</button>
                         </form>
-                        <a href="{{ route('admin.orders.invoice', $order) }}" class="mt-3 block rounded-md border border-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-700 hover:bg-gray-50">Print invoice</a>
+                        <a href="{{ route('admin-legacy.orders.invoice', $order) }}" class="mt-3 block rounded-md border border-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-700 hover:bg-gray-50">Print invoice</a>
                     </div>
 
                     <div class="bg-white p-6 shadow-sm sm:rounded-lg">

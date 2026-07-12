@@ -17,11 +17,11 @@ class WishlistTest extends TestCase
 
         $product = Product::factory()->create(['name' => 'Wish Product', 'price' => 50, 'stock' => 3]);
 
-        $response = $this->actingAs($user)->postJson('/wishlist/'.$product->id);
+        $response = $this->actingAs($user)->postJson('/wishlist/'.$product->slug);
         $response->assertStatus(200)->assertJson(['success' => true, 'added' => true]);
 
         // Toggling again should remove
-        $response2 = $this->actingAs($user)->postJson('/wishlist/'.$product->id);
+        $response2 = $this->actingAs($user)->postJson('/wishlist/'.$product->slug);
         $response2->assertStatus(200)->assertJson(['success' => true, 'removed' => true]);
     }
 }

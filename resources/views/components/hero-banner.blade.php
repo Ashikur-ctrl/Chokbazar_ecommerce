@@ -1,47 +1,61 @@
-@props(['title', 'description' => null, 'searchRoute' => null, 'categories' => []])
+@props([
+    'title' => '',
+    'description' => '',
+    'searchRoute' => '#',
+    'categories' => collect([]),
+    'compact' => false,
+])
 
-<section {{ $attributes->merge(['class' => 'relative overflow-hidden bg-gradient-to-br from-brand-50 via-white to-brand-50']) }}>
-    <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-brand-100/30 blur-3xl"></div>
-        <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-brand-100/30 blur-3xl"></div>
-    </div>
+<section {{ $attributes->merge(['class' => 'relative overflow-hidden bg-gradient-to-b from-[#8f3c1f] to-[#6e2c15] text-white']) }}>
+    {{-- Decorative pattern overlay --}}
+    <div class="absolute inset-0 opacity-[0.04]" style="background-image: radial-gradient(circle at 25% 25%, white 1px, transparent 1px); background-size: 32px 32px;" aria-hidden="true"></div>
 
-    <div class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 {{ $compact ? 'py-12 sm:py-16' : 'py-16 sm:py-24 lg:py-32' }}">
         <div class="max-w-2xl">
-            <p class="text-sm font-extrabold uppercase tracking-[0.2em] text-brand-600">Bangladesh Online Shopping</p>
-            <h1 class="mt-4 text-4xl font-extrabold leading-tight text-gray-900 sm:text-5xl lg:text-6xl">
+            <p class="font-bengali text-sm font-medium uppercase tracking-[0.2em] text-amber-300/90">
+                চোকবাজার
+            </p>
+
+            <h1 class="font-display mt-4 text-3xl sm:text-4xl lg:text-5xl leading-tight font-normal tracking-tight">
                 {{ $title }}
             </h1>
-            @if($description)
-                <p class="mt-5 max-w-xl text-lg leading-relaxed text-gray-600">
+
+            @if ($description)
+                <p class="mt-4 text-base sm:text-lg text-white/80 max-w-xl leading-relaxed font-sans">
                     {{ $description }}
                 </p>
             @endif
-        </div>
 
-        @if($searchRoute)
-            <form method="GET" action="{{ $searchRoute }}" class="mt-8 flex flex-col gap-3 sm:flex-row max-w-2xl">
-                <div class="flex-1 relative">
-                    <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search products..."
-                           class="w-full rounded-lg border-gray-200 bg-white/90 pl-10 pr-4 py-3 text-sm shadow-sm focus:border-brand-500 focus:ring-brand-500 backdrop-blur-sm">
+            @if (!$compact)
+                <div class="mt-8 flex flex-col sm:flex-row gap-3 max-w-lg">
+                    <form action="{{ $searchRoute }}" method="GET" class="flex-1 flex rounded-lg overflow-hidden ring-1 ring-white/20 focus-within:ring-2 focus-within:ring-amber-400 transition-all">
+                        <input
+                            type="text"
+                            name="search"
+                            placeholder="পণ্য খুঁজুন… (Search products)"
+                            class="flex-1 bg-white/10 px-4 py-3 text-sm text-white placeholder-white/50 focus:outline-none backdrop-blur-sm"
+                            value="{{ request('search') }}"
+                        />
+                        <button type="submit" class="bg-amber-400/20 px-4 py-3 text-amber-300 hover:bg-amber-400/30 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </button>
+                    </form>
+
+                    @if ($categories->isNotEmpty())
+                        <select name="category" onchange="if(this.value) window.location=this.value" class="rounded-lg bg-white/10 px-4 py-3 text-sm text-white backdrop-blur-sm border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-400 appearance-none cursor-pointer">
+                            <option value="" class="text-gray-800">All Categories</option>
+                            @foreach ($categories as $cat)
+                                <option value="{{ route('shop.index', ['category' => $cat->id]) }}" class="text-gray-800">{{ $cat->name }}</option>
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
-                @if(count($categories) > 0)
-                    <select name="category" class="rounded-lg border-gray-200 bg-white/90 py-3 text-sm shadow-sm focus:border-brand-500 focus:ring-brand-500 backdrop-blur-sm">
-                        <option value="">All Categories</option>
-                        @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}" @selected(request('category') == $cat->id)>{{ $cat->name }}</option>
-                        @endforeach
-                    </select>
-                @endif
-                <button type="submit" class="rounded-lg bg-brand-600 px-6 py-3 text-sm font-bold text-white hover:bg-brand-700 transition-colors shadow-sm">
-                    Search
-                </button>
-            </form>
-        @endif
-
-        {{ $slot ?? '' }}
+            @endif
+        </div>
     </div>
+
+    {{-- Bottom fade --}}
+    <div class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#f6f1ec] to-transparent" aria-hidden="true"></div>
 </section>

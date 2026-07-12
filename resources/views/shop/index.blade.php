@@ -12,7 +12,7 @@
         } else {
             $seo->forPage(
                 __('Online Shopping in Bangladesh'),
-                __('Shop the best electronics, fashion, and home essentials in Bangladesh. Fast delivery, cash on delivery, and the best prices.')
+                __('Shop electronics, fashion, books, and home essentials in Bangladesh with cash on delivery, fast shipping, and the best prices. Chokbazar — your marketplace.')
             );
         }
     @endphp
@@ -21,84 +21,99 @@
     {!! $seo->renderMeta() !!}
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=dm+serif+display:400&family=dm+sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=noto+sans+bengali:100..900&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-50 font-sans text-gray-900 antialiased">
+<body class="bg-[#f6f1ec] font-sans text-[#1a1a1a] antialiased">
     <div class="min-h-screen">
         <x-shop-header />
 
         <main>
-            <!-- Hero Banner -->
+            {{-- Hero --}}
             <x-hero-banner
-                title="Shop the Best of Bangladesh"
-                description="Electronics, fashion, books, home essentials — all at the best prices with fast delivery across the country."
+                title="বাংলাদেশের সেরা অনলাইন শপ"
+                description="ইলেকট্রনিক্স, ফ্যাশন, বই, হোম এসেনশিয়াল — প্রথম অর্ডারে ফ্রি ডেলিভারি, নগদে পেমেন্ট, সেরা দামের নিশ্চয়তা।"
                 :searchRoute="route('shop.index')"
-                :categories="$categories ?? collect([])">
+                :categories="$categories ?? []">
+                <x-slot:title-en>Chokbazar — Bangladesh's Best Online Shop</x-slot:title-en>
             </x-hero-banner>
 
-            <!-- Trust Badges -->
+            {{-- Trust Badges — redesigned --}}
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 -mt-6 relative z-10">
-                <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-animate>
-                    <div class="rounded-card border border-gray-100 bg-white p-5 shadow-card flex items-center gap-4">
-                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4a1 1 0 100-2 1 1 0 000 2zm0 0c-.552 0-1.052-.224-1.414-.586M15 9V5a2 2 0 012-2h4a2 2 0 012 2v5a2 2 0 01-2 2h-1"/></svg>
-                        </div>
+                <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" data-animate>
+                    <div class="rounded-lg bg-[#1a6b5e]/5 px-5 py-4 flex items-center gap-3 border border-[#1a6b5e]/10">
+                        <span class="text-xl">📦</span>
                         <div>
-                            <p class="text-sm font-bold text-gray-900">Cash on Delivery</p>
-                            <p class="text-xs text-gray-500 mt-0.5">Pay when you receive</p>
+                            <p class="text-sm font-semibold text-[#1a1a1a]">Cash on Delivery</p>
+                            <p class="text-xs text-[#6b6b6b] mt-0.5">Pay when you receive</p>
                         </div>
                     </div>
-                    <div class="rounded-card border border-gray-100 bg-white p-5 shadow-card flex items-center gap-4">
-                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-brand-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-                        </div>
+                    <div class="rounded-lg bg-brand-600/5 px-5 py-4 flex items-center gap-3 border border-brand-600/10">
+                        <span class="text-xl">📋</span>
                         <div>
-                            <p class="text-sm font-bold text-gray-900">Live Stock Checks</p>
-                            <p class="text-xs text-gray-500 mt-0.5">Real-time availability</p>
+                            <p class="text-sm font-semibold text-[#1a1a1a]">Live Stock Checks</p>
+                            <p class="text-xs text-[#6b6b6b] mt-0.5">Real-time availability</p>
                         </div>
                     </div>
-                    <div class="rounded-card border border-gray-100 bg-white p-5 shadow-card flex items-center gap-4">
-                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        </div>
+                    <div class="rounded-lg bg-[#1a6b5e]/5 px-5 py-4 flex items-center gap-3 border border-[#1a6b5e]/10">
+                        <span class="text-xl">📍</span>
                         <div>
-                            <p class="text-sm font-bold text-gray-900">Order Tracking</p>
-                            <p class="text-xs text-gray-500 mt-0.5">Track in real-time</p>
+                            <p class="text-sm font-semibold text-[#1a1a1a]">Order Tracking</p>
+                            <p class="text-xs text-[#6b6b6b] mt-0.5">Track in real-time</p>
                         </div>
                     </div>
-                    <div class="rounded-card border border-gray-100 bg-white p-5 shadow-card flex items-center gap-4">
-                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 019.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/></svg>
-                        </div>
+                    <div class="rounded-lg bg-[#d4a853]/10 px-5 py-4 flex items-center gap-3 border border-[#d4a853]/20">
+                        <span class="text-xl">💰</span>
                         <div>
-                            <p class="text-sm font-bold text-gray-900">Best Price</p>
-                            <p class="text-xs text-gray-500 mt-0.5">BDT pricing guaranteed</p>
+                            <p class="text-sm font-semibold text-[#1a1a1a]">Best Price</p>
+                            <p class="text-xs text-[#6b6b6b] mt-0.5">BDT pricing guaranteed</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Categories -->
+            {{-- Nakshi divider --}}
+            <x-nakshi-divider />
+
+            {{-- Categories --}}
             @if(isset($categories) && $categories->count() > 0)
-                <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-10" data-animate>
-                    <x-section-header title="Shop by Category" actionUrl="{{ route('categories') }}" actionLabel="View All" />
-                    <div class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" data-animate>
+                    <div class="text-center mb-10">
+                        <p class="font-bengali text-xs font-medium uppercase tracking-[0.2em] text-brand-600">ক্যাটাগরি</p>
+                        <h2 class="font-display mt-2 text-3xl sm:text-4xl text-[#1a1a1a] leading-tight">Shop by Category</h2>
+                        <p class="mt-2 text-sm text-[#6b6b6b]">Find what you need, fast</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
                         @foreach($categories->take(6) as $category)
                             <x-category-tile :category="$category" :count="$category->products_count ?? null" />
                         @endforeach
                     </div>
+                    @if($categories->count() > 6)
+                        <div class="text-center mt-8">
+                            <a href="{{ route('categories') }}" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700 transition-colors">
+                                View all categories <span aria-hidden="true">&rarr;</span>
+                            </a>
+                        </div>
+                    @endif
                 </section>
             @endif
 
-            <!-- Featured Products -->
+            {{-- Nakshi divider --}}
+            <x-nakshi-divider />
+
+            {{-- Featured Products --}}
             @if(isset($products) && $products->count() > 0)
-                <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-12">
+                <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                         <div>
-                            <h2 class="text-2xl font-extrabold text-gray-900">Featured Products</h2>
-                            <p class="mt-1 text-sm text-gray-500">{{ $products->total() }} products available</p>
+                            <p class="font-bengali text-xs font-medium uppercase tracking-[0.2em] text-brand-600">পণ্য</p>
+                            <h2 class="font-display mt-1 text-3xl sm:text-4xl text-[#1a1a1a] leading-tight">
+                                {{ ($sourcingMode ?? 'local') === 'import' ? 'Import Products' : 'Featured Products' }}
+                            </h2>
+                            <p class="mt-1 text-sm text-[#6b6b6b]">{{ $products->total() }} products available</p>
                         </div>
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <x-sourcing-toggle :mode="$sourcingMode ?? 'local'" />
                         <form method="GET" action="{{ route('shop.index') }}" class="flex gap-2">
                             @if(request('search')) <input type="hidden" name="search" value="{{ request('search') }}"> @endif
                             @if(request('category')) <input type="hidden" name="category" value="{{ request('category') }}"> @endif
@@ -116,7 +131,7 @@
                         </form>
                     </div>
 
-                    <div id="product-grid" class="mt-6">
+                    <div id="product-grid" class="mt-8">
                         @if($products->count() > 0)
                             <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" data-animate>
                                 @foreach($products as $product)
@@ -133,14 +148,21 @@
                 </section>
             @endif
 
-            <!-- CTA Section -->
-            <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-16 mb-10" data-animate>
-                <div class="rounded-2xl bg-gradient-to-br from-brand-600 to-brand-800 p-8 sm:p-12 text-center text-white">
-                    <h2 class="text-2xl sm:text-3xl font-extrabold">Start Selling on {{ config('app.name') }}</h2>
-                    <p class="mt-3 max-w-lg mx-auto text-brand-100 text-sm sm:text-base">Join hundreds of sellers across Bangladesh. Reach thousands of customers every day.</p>
-                    <a href="{{ route('seller.register') }}" class="mt-6 inline-flex items-center rounded-xl bg-white px-6 py-3 text-sm font-bold text-brand-700 hover:bg-brand-50 transition-colors shadow-elevated">
-                        Become a Seller &rarr;
-                    </a>
+            {{-- Nakshi divider --}}
+            <x-nakshi-divider />
+
+            {{-- CTA Section --}}
+            <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-10" data-animate>
+                <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a6b5e] to-[#0e4a40] p-8 sm:p-12 text-center text-white">
+                    <div class="absolute inset-0 opacity-[0.04]" style="background-image: radial-gradient(circle at 75% 25%, white 1px, transparent 1px); background-size: 24px 24px;" aria-hidden="true"></div>
+                    <div class="relative">
+                        <p class="font-bengali text-sm font-medium uppercase tracking-[0.2em] text-[#d4a853]/80">বিক্রেতা হোন</p>
+                        <h2 class="font-display mt-3 text-2xl sm:text-3xl leading-tight">Start Selling on Chokbazar</h2>
+                        <p class="mt-3 max-w-lg mx-auto text-white/70 text-sm sm:text-base">Join hundreds of sellers across Bangladesh. Reach thousands of customers every day.</p>
+                        <a href="{{ route('seller.register') }}" class="mt-6 inline-flex items-center rounded-xl bg-[#d4a853] px-6 py-3 text-sm font-bold text-[#1a1a1a] hover:bg-[#c49a3e] transition-colors shadow-lg">
+                            Become a Seller &rarr;
+                        </a>
+                    </div>
                 </div>
             </section>
         </main>

@@ -72,7 +72,7 @@
 
                         <!-- Actions -->
                         <div class="border-t border-slate-200 pt-4">
-                            <a href="{{ route('admin.fulfillment.show', $request) }}" class="text-brand-600 hover:text-brand-700 font-semibold">View Details →</a>
+                            <a href="{{ route('admin-legacy.fulfillment.show', $request) }}" class="text-brand-600 hover:text-brand-700 font-semibold">View Details →</a>
                         </div>
                     </div>
                 @empty

@@ -1,7 +1,7 @@
 <x-admin-layout title="Fulfillment Request {{ $fulfillmentRequest->fulfillment_request_number }}">
     <div class="flex items-center justify-between mb-6">
                 @if($fulfillmentRequest->status === 'pending')
-                    <form method="POST" action="{{ route('admin.fulfillment.confirm', $fulfillmentRequest) }}" class="inline">
+                    <form method="POST" action="{{ route('admin-legacy.fulfillment.confirm', $fulfillmentRequest) }}" class="inline">
                         @csrf
                         <button type="submit" class="rounded-lg bg-purple-600 px-4 py-2 text-white font-semibold hover:bg-purple-700">
                             Confirm Fulfillment
@@ -12,7 +12,7 @@
                         Mark as Shipped
                     </button>
                 @endif
-                <a href="{{ route('admin.fulfillment.export-csv', $fulfillmentRequest) }}" class="rounded-lg bg-blue-600 px-4 py-2 text-white font-semibold hover:bg-blue-700">
+                <a href="{{ route('admin-legacy.fulfillment.export-csv', $fulfillmentRequest) }}" class="rounded-lg bg-blue-600 px-4 py-2 text-white font-semibold hover:bg-blue-700">
                     Export CSV
                 </a>
             </div>
@@ -40,7 +40,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-slate-600">Seller</p>
-                            <a href="{{ route('admin.sellers.show', $fulfillmentRequest->seller) }}" class="font-semibold text-brand-600 hover:text-brand-700">
+                            <a href="{{ route('admin-legacy.sellers.show', $fulfillmentRequest->seller) }}" class="font-semibold text-brand-600 hover:text-brand-700">
                                 {{ $fulfillmentRequest->seller->name }}
                             </a>
                         </div>
@@ -56,7 +56,7 @@
                     <div class="space-y-3">
                         <div>
                             <p class="text-sm text-slate-600">Order Number</p>
-                            <a href="{{ route('admin.fulfillment.order', $fulfillmentRequest->order) }}" class="font-semibold text-brand-600 hover:text-brand-700">
+                            <a href="{{ route('admin-legacy.fulfillment.order', $fulfillmentRequest->order) }}" class="font-semibold text-brand-600 hover:text-brand-700">
                                 {{ $fulfillmentRequest->order->order_number }}
                             </a>
                         </div>
@@ -119,7 +119,7 @@
     <dialog id="shipModal" class="rounded-lg border border-slate-200 shadow-lg">
         <div class="p-6">
             <h3 class="mb-4 text-lg font-semibold text-slate-900">Mark as Shipped</h3>
-            <form method="POST" action="{{ route('admin.fulfillment.mark-shipped', $fulfillmentRequest) }}">
+            <form method="POST" action="{{ route('admin-legacy.fulfillment.mark-shipped', $fulfillmentRequest) }}">
                 @csrf
                 <div class="mb-4">
                     <label for="tracking_number" class="block text-sm font-semibold text-slate-900">Tracking Number (Optional)</label>

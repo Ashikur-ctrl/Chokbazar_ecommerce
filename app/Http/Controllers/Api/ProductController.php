@@ -85,7 +85,7 @@ class ProductController extends Controller
         $compareIds = session()->get('compare', []);
 
         return response()->json([
-            'products' => $products->through(function ($product) use ($wishlisted) {
+            'products' => $products->through(function ($product) use ($wishlisted, $compareIds) {
                 return [
                     'id' => $product->id,
                     'name' => $product->name,

@@ -112,38 +112,87 @@
                         </div>
                     </div>
 
-                    <!-- Price -->
-                    <div class="flex items-baseline gap-3">
-                        <span class="text-4xl font-black text-brand-600">{{ taka($product->current_price) }}</span>
-                        @if($product->is_on_sale)
-                            <span class="text-xl text-gray-400 line-through">{{ taka($product->price) }}</span>
-                            <x-badge variant="danger">Save {{ taka($product->price - $product->current_price) }}</x-badge>
+                    @php $mode = session('sourcing_mode', 'local'); @endphp
+
+                    @if ($mode === 'import' && $product->is_importable)
+                        {{-- Import mode CTA --}}
+                        <div class="flex items-center gap-2 mb-4">
+                            <x-sourcing-toggle :mode="$mode" />
+                        </div>
+
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-3xl font-bold text-blue-600 font-mono">{{ $product->fob_price_formatted }}</span>
+                            <span class="text-sm text-gray-400 font-medium">FOB / USD</span>
+                        </div>
+                        @if($product->short_description)
+                            <p class="mt-3 text-base text-gray-600 leading-relaxed">{{ $product->short_description }}</p>
                         @endif
-                    </div>
 
-                    <!-- Short Description -->
-                    @if($product->short_description)
-                        <p class="text-base text-gray-600 leading-relaxed">{{ $product->short_description }}</p>
-                    @endif
+                        <div class="mt-4 grid grid-cols-2 gap-3">
+                            <div class="rounded-xl bg-blue-50 p-4 text-center">
+                                <p class="text-xs text-gray-500">MOQ</p>
+                                <p class="mt-1 text-lg font-bold text-blue-700">{{ $product->moq ?? 100 }} pcs</p>
+                            </div>
+                            <div class="rounded-xl bg-blue-50 p-4 text-center">
+                                <p class="text-xs text-gray-500">Lead Time</p>
+                                <p class="mt-1 text-lg font-bold text-blue-700">{{ $product->lead_time_days ?? 30 }} days</p>
+                            </div>
+                            <div class="rounded-xl bg-blue-50 p-4 text-center">
+                                <p class="text-xs text-gray-500">Origin</p>
+                                <p class="mt-1 text-lg font-bold text-blue-700">{{ $product->origin_country ?? 'China' }}</p>
+                            </div>
+                            <div class="rounded-xl bg-blue-50 p-4 text-center">
+                                <p class="text-xs text-gray-500">Shipping</p>
+                                <p class="mt-1 text-lg font-bold text-blue-700">Sea freight</p>
+                            </div>
+                        </div>
 
-                    <!-- Stats Cards -->
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="rounded-xl bg-gray-50 p-4 text-center">
-                            <p class="text-xs text-gray-500">Stock</p>
-                            <p class="mt-1 text-lg font-bold {{ $product->stock > 0 ? 'text-emerald-600' : 'text-red-600' }}">{{ $product->stock > 0 ? $product->stock . ' units' : 'Sold out' }}</p>
+                        <div class="mt-6 rounded-2xl border border-blue-100 bg-white p-6 shadow-card">
+                            <a href="{{ route('contact') }}" class="block w-full rounded-xl bg-blue-600 px-6 py-3.5 text-center text-sm font-bold text-white hover:bg-blue-700 transition-all duration-200 active:scale-[0.98] shadow-card">
+                                Request Quotation
+                            </a>
+                            <p class="mt-2 text-xs text-gray-400 text-center">Quotes typically within 24 hours</p>
                         </div>
-                        <div class="rounded-xl bg-gray-50 p-4 text-center">
-                            <p class="text-xs text-gray-500">SKU</p>
-                            <p class="mt-1 text-sm font-bold text-gray-900 truncate">{{ $product->sku ?: 'N/A' }}</p>
+                    @elseif ($mode === 'import' && !$product->is_importable)
+                        {{-- Import mode but product is local-only --}}
+                        <div class="flex items-center gap-2 mb-4">
+                            <x-sourcing-toggle :mode="$mode" />
                         </div>
-                        <div class="rounded-xl bg-gray-50 p-4 text-center">
-                            <p class="text-xs text-gray-500">Delivery</p>
-                            <p class="mt-1 text-sm font-bold text-gray-900">3-7 days</p>
+                        <div class="rounded-2xl border border-gray-200 bg-gray-50 p-6 text-center shadow-card">
+                            <p class="text-lg font-semibold text-gray-700">Local Stock Only</p>
+                            <p class="mt-1 text-sm text-gray-500">This product is only available for local delivery.</p>
+                            <a href="{{ route('shop.index') }}" class="mt-4 inline-block text-sm font-semibold text-brand-600 hover:text-brand-700">Browse import products →</a>
                         </div>
-                    </div>
+                    @else
+                        {{-- Local mode — existing UI --}}
+                        <div class="flex items-baseline gap-3">
+                            <span class="text-4xl font-black text-brand-600">{{ taka($product->current_price) }}</span>
+                            @if($product->is_on_sale)
+                                <span class="text-xl text-gray-400 line-through">{{ taka($product->price) }}</span>
+                                <x-badge variant="danger">Save {{ taka($product->price - $product->current_price) }}</x-badge>
+                            @endif
+                        </div>
 
-                    <!-- Add to Cart -->
-                    <div class="rounded-2xl border border-gray-100 bg-white p-6 shadow-card">
+                        @if($product->short_description)
+                            <p class="text-base text-gray-600 leading-relaxed">{{ $product->short_description }}</p>
+                        @endif
+
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="rounded-xl bg-gray-50 p-4 text-center">
+                                <p class="text-xs text-gray-500">Stock</p>
+                                <p class="mt-1 text-lg font-bold {{ $product->stock > 0 ? 'text-emerald-600' : 'text-red-600' }}">{{ $product->stock > 0 ? $product->stock . ' units' : 'Sold out' }}</p>
+                            </div>
+                            <div class="rounded-xl bg-gray-50 p-4 text-center">
+                                <p class="text-xs text-gray-500">SKU</p>
+                                <p class="mt-1 text-sm font-bold text-gray-900 truncate">{{ $product->sku ?: 'N/A' }}</p>
+                            </div>
+                            <div class="rounded-xl bg-gray-50 p-4 text-center">
+                                <p class="text-xs text-gray-500">Delivery</p>
+                                <p class="mt-1 text-sm font-bold text-gray-900">3-7 days</p>
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl border border-gray-100 bg-white p-6 shadow-card">
                         <div class="flex items-center gap-4">
                             <x-quantity-input name="quantity" :min="max(1, $product->moq)" :max="$product->stock" />
                             <form method="POST" action="{{ route('cart.add') }}" class="flex-1">
@@ -179,6 +228,8 @@
                             </form>
                         </div>
                     </div>
+
+                    @endif {{-- End sourcing mode if/elseif/else --}}
 
                     <!-- Seller Card -->
                     @if($product->seller)
@@ -321,29 +372,45 @@
         <x-shop-footer />
     </div>
 
-    <!-- Sticky Mobile Add to Cart -->
-    <div x-show="true" x-data="{ atBottom: false }"
-         x-init="window.addEventListener('scroll', () => { atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100; })"
-         class="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-100 bg-white/95 backdrop-blur p-4 lg:hidden shadow-elevated"
-         :class="atBottom ? 'hidden' : ''">
-        <div class="flex items-center gap-3 max-w-lg mx-auto">
-            <div>
-                <span class="text-lg font-black text-brand-600">{{ taka($product->current_price) }}</span>
-                @if($product->is_on_sale)
-                    <span class="text-sm text-gray-400 line-through ml-1">{{ taka($product->price) }}</span>
-                @endif
+    @php $mode = session('sourcing_mode', 'local'); @endphp
+
+    <!-- Sticky Mobile CTA -->
+    @if ($mode === 'import' && $product->is_importable)
+        <div class="fixed bottom-0 left-0 right-0 z-40 border-t border-blue-100 bg-white/95 backdrop-blur p-4 lg:hidden shadow-elevated">
+            <div class="flex items-center gap-3 max-w-lg mx-auto">
+                <div>
+                    <span class="text-lg font-bold text-blue-600 font-mono">{{ $product->fob_price_formatted }}</span>
+                    <span class="text-[10px] text-gray-400 ml-1">FOB</span>
+                </div>
+                <a href="{{ route('contact') }}" class="flex-1 block w-full rounded-xl bg-blue-600 px-6 py-3 text-center text-sm font-bold text-white hover:bg-blue-700 transition-all duration-200">
+                    Request Quotation
+                </a>
             </div>
-            <form method="POST" action="{{ route('cart.add') }}" class="flex-1">
-                @csrf
-                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" @disabled($product->stock <= 0)
-                        class="w-full rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-3 text-sm font-bold text-white hover:from-brand-700 hover:to-brand-800 disabled:from-gray-300 disabled:to-gray-300 transition-all duration-200">
-                    {{ $product->stock > 0 ? 'Add to Cart' : 'Sold Out' }}
-                </button>
-            </form>
         </div>
-    </div>
+    @else
+        <div x-show="true" x-data="{ atBottom: false }"
+             x-init="window.addEventListener('scroll', () => { atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100; })"
+             class="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-100 bg-white/95 backdrop-blur p-4 lg:hidden shadow-elevated"
+             :class="atBottom ? 'hidden' : ''">
+            <div class="flex items-center gap-3 max-w-lg mx-auto">
+                <div>
+                    <span class="text-lg font-black text-brand-600">{{ taka($product->current_price) }}</span>
+                    @if($product->is_on_sale)
+                        <span class="text-sm text-gray-400 line-through ml-1">{{ taka($product->price) }}</span>
+                    @endif
+                </div>
+                <form method="POST" action="{{ route('cart.add') }}" class="flex-1">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" @disabled($product->stock <= 0)
+                            class="w-full rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-3 text-sm font-bold text-white hover:from-brand-700 hover:to-brand-800 disabled:from-gray-300 disabled:to-gray-300 transition-all duration-200">
+                        {{ $product->stock > 0 ? 'Add to Cart' : 'Sold Out' }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    @endif
 
     <x-facebook-sdk />
 </body>

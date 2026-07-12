@@ -49,15 +49,15 @@
                             ">{{ ucfirst($seller->verification_status ?? 'pending') }}</span>
                             @if($seller->verification_status === 'pending')
                                 <div class="mt-2 flex gap-2">
-                                    <form method="POST" action="{{ route('admin.sellers.approve', $seller) }}" class="inline">
+                                    <form method="POST" action="{{ route('admin-legacy.sellers.approve', $seller) }}" class="inline">
                                         @csrf
                                         <button class="text-sm text-emerald-600 hover:underline font-medium">Approve</button>
                                     </form>
-                                    <form method="POST" action="{{ route('admin.sellers.reject', $seller) }}" class="inline">
+                                    <form method="POST" action="{{ route('admin-legacy.sellers.reject', $seller) }}" class="inline">
                                         @csrf
                                         <button class="text-sm text-red-600 hover:underline">Reject</button>
                                     </form>
-                                    <a href="{{ route('admin.sellers.documents', $seller) }}" class="text-sm text-indigo-600 hover:underline">Documents</a>
+                                    <a href="{{ route('admin-legacy.sellers.documents', $seller) }}" class="text-sm text-indigo-600 hover:underline">Documents</a>
                                 </div>
                             @endif
                         </div>
@@ -75,7 +75,7 @@
                             <p class="text-sm text-slate-600">API Key</p>
                             <div class="mt-1 flex items-center gap-2">
                                 <code class="text-xs font-mono text-slate-600">{{ substr($seller->api_key ?? '', 0, 20) }}...</code>
-                                <form method="POST" action="{{ route('admin.sellers.regenerate-api-key', $seller) }}" class="inline">
+                                <form method="POST" action="{{ route('admin-legacy.sellers.regenerate-api-key', $seller) }}" class="inline">
                                     @csrf
                                     <button type="submit" class="text-brand-600 hover:text-brand-700 text-sm font-semibold">Regenerate</button>
                                 </form>

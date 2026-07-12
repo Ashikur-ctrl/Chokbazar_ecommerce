@@ -34,7 +34,7 @@
                         @forelse($orders as $order)
                             <tr class="hover:bg-gray-50/50 transition-colors">
                                 <td class="px-5 py-4">
-                                    <a href="{{ route('admin.orders.show', $order) }}" class="font-semibold text-brand-600 hover:text-brand-700">{{ $order->order_number }}</a>
+                                    <a href="{{ route('admin-legacy.orders.show', $order) }}" class="font-semibold text-brand-600 hover:text-brand-700">{{ $order->order_number }}</a>
                                     <p class="text-xs text-gray-500 mt-0.5">{{ $order->created_at->format('M d, Y') }}</p>
                                 </td>
                                 <td class="px-5 py-4 text-gray-700">{{ $order->customer_name }}<br><span class="text-xs text-gray-500">{{ $order->customer_email }}</span></td>

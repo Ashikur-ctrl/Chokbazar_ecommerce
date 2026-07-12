@@ -51,7 +51,7 @@
                 </div>
                 <div class="divide-y divide-gray-50">
                     @forelse($recentOrders as $order)
-                        <a href="{{ route('admin.orders.show', $order) }}" class="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors">
+                        <a href="{{ route('admin-legacy.orders.show', $order) }}" class="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors">
                             <div>
                                 <p class="font-medium text-gray-900 text-sm">{{ $order->order_number }}</p>
                                 <p class="text-xs text-gray-500 mt-0.5">{{ $order->customer_name }} &middot; {{ $order->created_at->format('M d, Y') }}</p>
@@ -73,7 +73,7 @@
                 </div>
                 <div class="divide-y divide-gray-50">
                     @forelse($lowStockProducts as $product)
-                        <a href="{{ route('admin.products.edit', $product) }}" class="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors">
+                        <a href="{{ route('admin-legacy.products.edit', $product) }}" class="flex items-center justify-between p-4 hover:bg-gray-50/50 transition-colors">
                             <div>
                                 <p class="font-medium text-gray-900 text-sm">{{ $product->name }}</p>
                                 <p class="text-xs text-gray-500 mt-0.5">{{ $product->category->name ?? 'Uncategorized' }}</p>

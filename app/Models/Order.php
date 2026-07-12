@@ -9,6 +9,14 @@ use Illuminate\Support\Str;
 
 class Order extends Model
 {
+    use \Spatie\Activitylog\Traits\LogsActivity;
+
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logOnly(['status', 'payment_status', 'tracking_number'])
+            ->logOnlyDirty();
+    }
     protected $fillable = [
         'order_number',
         'invoice_number',

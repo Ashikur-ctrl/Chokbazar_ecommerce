@@ -64,6 +64,12 @@ class PublicProductController extends Controller
                 break;
         }
 
+        // Sourcing mode filter
+        $sourcingMode = session('sourcing_mode', 'local');
+        if (in_array($sourcingMode, ['local', 'import'])) {
+            $query->sourcingType($sourcingMode);
+        }
+
         $products = $query->paginate(12);
         $categories = cache()->remember('categories_active', 3600, function () {
             return Category::active()->withCount('products')->get();
@@ -83,7 +89,7 @@ class PublicProductController extends Controller
                 ->toArray();
         }
 
-        return view('shop.index', compact('products', 'categories', 'selectedCategory', 'wishlistedIds'));
+        return view('shop.index', compact('products', 'categories', 'selectedCategory', 'wishlistedIds', 'sourcingMode'));
     }
 
     /**

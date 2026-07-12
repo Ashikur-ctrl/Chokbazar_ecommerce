@@ -3,7 +3,7 @@
         <!-- Add Expense Form -->
         <div class="rounded-card border border-gray-100 bg-white p-6 shadow-card">
             <h3 class="font-bold text-gray-900 mb-4">Add Expense</h3>
-            <form method="POST" action="{{ route('admin.expenses.store') }}" class="space-y-4">
+            <form method="POST" action="{{ route('admin-legacy.expenses.store') }}" class="space-y-4">
                 @csrf
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Category</label>

@@ -11,6 +11,14 @@ use Laravel\Scout\Searchable;
 class Product extends Model
 {
     use HasFactory, Searchable;
+    use \Spatie\Activitylog\Traits\LogsActivity;
+
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logOnly(['name', 'price', 'sale_price', 'stock', 'is_active', 'is_featured'])
+            ->logOnlyDirty();
+    }
     protected $fillable = [
         'name',
         'slug',
@@ -33,7 +41,11 @@ class Product extends Model
         'is_active',
         'visibility_status',
         'category_id',
-        'seller_id'
+        'seller_id',
+        'sourcing_type',
+        'fob_price_usd',
+        'origin_country',
+        'lead_time_days',
     ];
 
     protected $casts = [
@@ -46,6 +58,8 @@ class Product extends Model
         'is_wholesale' => 'boolean',
         'is_b2b_only' => 'boolean',
         'moq' => 'integer',
+        'fob_price_usd' => 'decimal:2',
+        'lead_time_days' => 'integer',
     ];
 
     // Automatically generate slug from name
@@ -139,6 +153,23 @@ class Product extends Model
     public function scopeInStock($query)
     {
         return $query->where('stock', '>', 0);
+    }
+
+    public function scopeSourcingType($query, string $type)
+    {
+        if ($type === 'local') {
+            return $query->whereIn('sourcing_type', ['local', 'both']);
+        }
+        if ($type === 'import') {
+            return $query->whereIn('sourcing_type', ['import', 'both']);
+        }
+        return $query;
+    }
+
+    public function scopeImportable($query)
+    {
+        return $query->whereIn('sourcing_type', ['import', 'both'])
+            ->whereNotNull('fob_price_usd');
     }
 
     // Laravel Scout search configuration
@@ -238,5 +269,22 @@ class Product extends Model
         }
 
         return $labels;
+    }
+
+    // Sourcing accessors
+    public function getFobPriceFormattedAttribute(): string
+    {
+        return '$' . number_format((float) $this->fob_price_usd, 2);
+    }
+
+    public function getIsImportableAttribute(): bool
+    {
+        return in_array($this->sourcing_type, ['import', 'both'])
+            && $this->fob_price_usd !== null;
+    }
+
+    public function getIsLocallyAvailableAttribute(): bool
+    {
+        return in_array($this->sourcing_type, ['local', 'both']);
     }
 }

@@ -136,6 +136,8 @@ class SeoHelper
         $this->description = $description;
         $this->image = $image;
         $this->type = 'website';
+        $this->url = url()->current();
+        $this->canonical = url()->current();
         return $this;
     }
 

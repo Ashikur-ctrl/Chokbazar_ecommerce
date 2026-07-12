@@ -13,7 +13,11 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['DM Sans', ...defaultTheme.fontFamily.sans],
+                serif: ['DM Serif Display', ...defaultTheme.fontFamily.serif],
+                display: ['DM Serif Display', ...defaultTheme.fontFamily.serif],
+                bengali: ['Noto Sans Bengali', ...defaultTheme.fontFamily.sans],
+                mono: ['JetBrains Mono', ...defaultTheme.fontFamily.mono],
             },
             colors: {
                 brand: {

@@ -5,21 +5,28 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <link rel="canonical" href="{{ url()->current() }}">
+        <meta property="og:title" content="@yield('title', config('app.name'))">
+        <meta property="og:description" content="@yield('description', config('app.name') . ' - ' . __('Bangladesh-ready ecommerce'))">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta name="twitter:card" content="summary">
+
         <title>@yield('title', config('app.name', 'Laravel'))</title>
         <meta name="description" content="@yield('description', config('app.name') . ' - ' . __('Bangladesh-ready ecommerce'))">
         @yield('meta')
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=dm+serif+display:400&family=dm+sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=noto+sans+bengali:100..900&family=jetbrains+mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <script type="application/ld+json">
         {
-            "@context": "https://schema.org",
-            "@type": "Store",
+            "@@context": "https://schema.org",
+            "@@type": "Store",
             "name": "{{ config('app.name') }}",
             "url": "{{ url('/') }}",
             "description": "{{ __('Bangladesh-ready ecommerce store.') }}",

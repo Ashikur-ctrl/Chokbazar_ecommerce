@@ -28,3 +28,20 @@ Thumbs.db
 
 # Deployment artifacts
 /public_html
+
+# Agent/IDE configs
+.agents/
+.claude/
+.commandcode/
+
+# Temp/dev files
+design-plan.md
+seo-audit-report.md
+fix_form_schema.php
+sourcing-mode-spec.md
+server.ini
+skills-lock.json
+ecommerce
+
+# Sensitive keys
+logo/id_rsa

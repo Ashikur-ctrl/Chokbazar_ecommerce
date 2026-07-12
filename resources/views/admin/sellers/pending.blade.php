@@ -37,12 +37,12 @@
                                         </td>
                                         <td class="px-6 py-4 text-gray-500">{{ $seller->created_at->format('d M Y') }}</td>
                                         <td class="px-6 py-4 text-right space-x-2">
-                                            <a href="{{ route('admin.sellers.show', $seller) }}" class="text-sm text-indigo-600 hover:underline">View</a>
-                                            <form method="POST" action="{{ route('admin.sellers.approve', $seller) }}" class="inline">
+                                            <a href="{{ route('admin-legacy.sellers.show', $seller) }}" class="text-sm text-indigo-600 hover:underline">View</a>
+                                            <form method="POST" action="{{ route('admin-legacy.sellers.approve', $seller) }}" class="inline">
                                                 @csrf
                                                 <button class="text-sm text-emerald-600 hover:underline font-medium">Approve</button>
                                             </form>
-                                            <form method="POST" action="{{ route('admin.sellers.reject', $seller) }}" class="inline" onsubmit="return confirm('Reject this seller?')">
+                                            <form method="POST" action="{{ route('admin-legacy.sellers.reject', $seller) }}" class="inline" onsubmit="return confirm('Reject this seller?')">
                                                 @csrf
                                                 <button class="text-sm text-red-600 hover:underline">Reject</button>
                                             </form>

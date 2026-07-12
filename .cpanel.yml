@@ -1,0 +1,20 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/chokbazar/public_html/
+    - /bin/rsync -avz --delete \
+        --exclude='.env' \
+        --exclude='.env.*' \
+        --exclude='node_modules' \
+        --exclude='vendor' \
+        --exclude='.git' \
+        --exclude='storage/logs/*.log' \
+        --exclude='storage/framework/cache/data/*' \
+        --exclude='storage/framework/sessions/*' \
+        --exclude='storage/framework/views/*' \
+        --exclude='deploy.sh' \
+        --exclude='.cpanel.yml' \
+        ./ "$DEPLOYPATH"
+    - /bin/chmod -R 755 "$DEPLOYPATH/storage"
+    - /usr/bin/php "$DEPLOYPATH/artisan" migrate --force
+    - /usr/bin/php "$DEPLOYPATH/artisan" optimize:clear

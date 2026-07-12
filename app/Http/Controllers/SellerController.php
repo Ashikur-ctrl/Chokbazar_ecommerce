@@ -50,7 +50,7 @@ class SellerController extends Controller
         $seller = Seller::create($validated);
         $seller->generateApiKey();
 
-        return redirect()->route('admin.sellers.show', $seller)
+        return redirect()->route('admin-legacy.sellers.show', $seller)
                        ->with('success', 'Seller created successfully');
     }
 
@@ -95,7 +95,7 @@ class SellerController extends Controller
 
         $seller->update($validated);
 
-        return redirect()->route('admin.sellers.show', $seller)
+        return redirect()->route('admin-legacy.sellers.show', $seller)
                        ->with('success', 'Seller updated successfully');
     }
 
@@ -106,7 +106,7 @@ class SellerController extends Controller
     {
         $seller->delete();
 
-        return redirect()->route('admin.sellers.index')
+        return redirect()->route('admin-legacy.sellers.index')
                        ->with('success', 'Seller deleted successfully');
     }
 
@@ -117,7 +117,7 @@ class SellerController extends Controller
     {
         $newKey = $seller->generateApiKey();
 
-        return redirect()->route('admin.sellers.show', $seller)
+        return redirect()->route('admin-legacy.sellers.show', $seller)
                        ->with('success', "API Key regenerated: $newKey");
     }
 

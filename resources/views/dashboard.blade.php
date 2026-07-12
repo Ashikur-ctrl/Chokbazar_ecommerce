@@ -27,7 +27,7 @@
             @if(auth()->user()->isAdmin())
                 <div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <a href="{{ route('admin.dashboard') }}" class="font-medium text-indigo-600 hover:text-indigo-800">Open admin dashboard</a>
+                        <a href="{{ route('admin-legacy.dashboard') }}" class="font-medium text-indigo-600 hover:text-indigo-800">Open admin dashboard</a>
                     </div>
                 </div>
             @endif

@@ -2,10 +2,10 @@
     <div class="space-y-6">
         <!-- Status Filter Tabs -->
         <div class="flex gap-2">
-            <a href="{{ route('admin.fulfillment.index') }}"
+            <a href="{{ route('admin-legacy.fulfillment.index') }}"
                class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors {{ !request('status') ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">All</a>
             @foreach(['pending' => 'warning', 'confirmed' => 'info', 'shipped' => 'success'] as $status => $variant)
-                <a href="{{ route('admin.fulfillment.index', ['status' => $status]) }}"
+                <a href="{{ route('admin-legacy.fulfillment.index', ['status' => $status]) }}"
                    class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors {{ request('status') === $status ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">{{ ucfirst($status) }}</a>
             @endforeach
         </div>
@@ -34,7 +34,7 @@
                                     <x-badge :variant="match($fr->status) { 'pending' => 'warning', 'confirmed' => 'info', 'shipped' => 'success', default => 'neutral' }">{{ ucfirst($fr->status) }}</x-badge>
                                 </td>
                                 <td class="px-5 py-4 text-right">
-                                    <a href="{{ route('admin.fulfillment.show', $fr) }}" class="text-sm font-semibold text-brand-600 hover:text-brand-700 transition-colors">View</a>
+                                    <a href="{{ route('admin-legacy.fulfillment.show', $fr) }}" class="text-sm font-semibold text-brand-600 hover:text-brand-700 transition-colors">View</a>
                                 </td>
                             </tr>
                         @empty

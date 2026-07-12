@@ -2,10 +2,10 @@
     <div class="space-y-6">
         <!-- Status Filter Tabs -->
         <div class="flex gap-2">
-            <a href="{{ route('admin.returns.index') }}"
+            <a href="{{ route('admin-legacy.returns.index') }}"
                class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors {{ !request('status') ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">All</a>
             @foreach(['pending', 'approved', 'rejected', 'refunded'] as $status)
-                <a href="{{ route('admin.returns.index', ['status' => $status]) }}"
+                <a href="{{ route('admin-legacy.returns.index', ['status' => $status]) }}"
                    class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors {{ request('status') === $status ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">{{ ucfirst($status) }}</a>
             @endforeach
         </div>
@@ -29,7 +29,7 @@
                             <tr class="hover:bg-gray-50/50 transition-colors">
                                 <td class="px-5 py-4 font-medium text-gray-900">#{{ $return->id }}</td>
                                 <td class="px-5 py-4">
-                                    <a href="{{ route('admin.orders.show', $return->order) }}" class="font-semibold text-brand-600 hover:text-brand-700">{{ $return->order->order_number }}</a>
+                                    <a href="{{ route('admin-legacy.orders.show', $return->order) }}" class="font-semibold text-brand-600 hover:text-brand-700">{{ $return->order->order_number }}</a>
                                 </td>
                                 <td class="px-5 py-4 text-gray-700">{{ $return->user->name ?? 'N/A' }}<br><span class="text-xs text-gray-500">{{ $return->user->email ?? '' }}</span></td>
                                 <td class="px-5 py-4 text-gray-600 max-w-xs truncate">{{ $return->reason }}</td>
@@ -46,18 +46,18 @@
                                 <td class="px-5 py-4 text-right">
                                     @if($return->status === 'pending')
                                         <div class="flex gap-2 justify-end">
-                                            <form method="POST" action="{{ route('admin.returns.approve', $return) }}" class="inline">
+                                            <form method="POST" action="{{ route('admin-legacy.returns.approve', $return) }}" class="inline">
                                                 @csrf
                                                 <button class="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">Approve</button>
                                             </form>
-                                            <form method="POST" action="{{ route('admin.returns.reject', $return) }}" class="inline" onsubmit="var note = prompt('Rejection reason:'); if(note === null) return false; this.querySelector('[name=admin_note]').value = note; return true;">
+                                            <form method="POST" action="{{ route('admin-legacy.returns.reject', $return) }}" class="inline" onsubmit="var note = prompt('Rejection reason:'); if(note === null) return false; this.querySelector('[name=admin_note]').value = note; return true;">
                                                 @csrf
                                                 <input type="hidden" name="admin_note" value="">
                                                 <button class="text-sm font-semibold text-red-600 hover:text-red-700 transition-colors">Reject</button>
                                             </form>
                                         </div>
                                     @elseif($return->status === 'approved')
-                                        <form method="POST" action="{{ route('admin.returns.refund', $return) }}" class="inline">
+                                        <form method="POST" action="{{ route('admin-legacy.returns.refund', $return) }}" class="inline">
                                             @csrf
                                             <button class="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">Process Refund</button>
                                         </form>

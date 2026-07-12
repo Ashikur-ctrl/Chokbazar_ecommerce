@@ -77,6 +77,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/returns', [ReturnRequestController::class, 'myReturns'])->name('returns.index');
 });
 
+// Sourcing mode toggle
+Route::get('/sourcing/mode/{mode}', [App\Http\Controllers\SourcingController::class, 'setMode'])->name('sourcing.mode');
+
 // Public shop routes
 Route::prefix('shop')->name('shop.')->group(function () {
     Route::get('/', [PublicProductController::class, 'index'])->name('index');
@@ -131,7 +134,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/orders/{order}/resend-otp', [CheckoutController::class, 'resendOtp'])->name('orders.otp.resend');
 });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin-legacy')->name('admin-legacy.')->group(function () {
     Route::get('/', [CheckoutController::class, 'adminDashboard'])->name('dashboard');
 
     // Admin product management

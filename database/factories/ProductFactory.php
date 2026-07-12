@@ -20,7 +20,7 @@ class ProductFactory extends Factory
             'short_description' => fake()->sentence(),
             'price' => fake()->randomFloat(2, 10, 500),
             'sale_price' => null,
-            'cost_price' => null,
+            'cost_price' => fake()->randomFloat(2, 5, 200),
             'stock' => fake()->numberBetween(0, 100),
             'low_stock_threshold' => 5,
             'sku' => strtoupper(Str::random(8)),
@@ -31,7 +31,7 @@ class ProductFactory extends Factory
             'is_featured' => false,
             'is_active' => true,
             'visibility_status' => 'active',
-            'category_id' => null,
+            'category_id' => \App\Models\Category::firstOrCreate(['slug' => 'default-category'], ['name' => 'Default Category'])->id,
             'seller_id' => null,
         ];
     }

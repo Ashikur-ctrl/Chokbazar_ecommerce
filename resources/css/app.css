@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply text-gray-900 antialiased;
+        font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+    }
+
+    ::selection {
+        @apply bg-brand-600/20 text-brand-900;
+    }
+}
+
 @layer components {
     .skeleton {
         @apply animate-skeleton rounded bg-gray-200;
