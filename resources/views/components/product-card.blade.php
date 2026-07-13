@@ -41,8 +41,8 @@
             </form>
         @endauth
 
-        {{-- Quick add overlay on hover --}}
-        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/40 to-transparent h-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
+        {{-- Quick add overlay on hover (desktop) / always visible (mobile) --}}
+        <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/40 to-transparent h-20 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
             @if($product->stock > 0)
                 <form method="POST" action="{{ route('cart.add') }}" class="w-full">
                     @csrf

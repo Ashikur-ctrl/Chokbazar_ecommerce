@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @php $productSeo = \App\Services\SeoHelper::make()->forProduct($product); @endphp
     <title>{{ $productSeo->getTitle() }}</title>
@@ -13,10 +13,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 antialiased">
-    <div class="min-h-screen">
+    <div class="min-h-screen has-bottom-nav">
         <x-shop-header />
 
-        <main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 pb-20 lg:pb-6">
             <!-- Breadcrumb -->
             <nav class="mb-6 flex items-center gap-2 text-sm text-gray-500">
                 <a href="{{ route('shop.index') }}" class="hover:text-brand-600 transition-colors">Shop</a>
