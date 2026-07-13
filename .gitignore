@@ -1,47 +1,45 @@
-*.log
-.DS_Store
-.env
-.env.backup
-.env.production
-.phpactor.json
-.phpunit.result.cache
-/.codex
-/.cursor/
-/.idea
-/.nova
-/.phpunit.cache
-/.vscode
-/.zed
-/auth.json
-/node_modules
-/public/build
-/public/fonts-manifest.dev.json
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
-/vendor
-_ide_helper.php
-Homestead.json
-Homestead.yaml
-Thumbs.db
-
-# Deployment artifacts
-/public_html
 
 # Agent/IDE configs
 .agents/
+/auth.json
+Chokbazar_ecommerce
 .claude/
+/.codex
 .commandcode/
-
-# Temp/dev files
+/.cursor/
+# Deployment artifacts
 design-plan.md
-seo-audit-report.md
+.DS_Store
+ecommerce
+.env
+.env.backup
+.env.production
 fix_form_schema.php
-sourcing-mode-spec.md
+Homestead.json
+Homestead.yaml
+/.idea
+_ide_helper.php
+*.log
+logo/id_rsa
+/node_modules
+/.nova
+.phpactor.json
+/.phpunit.cache
+.phpunit.result.cache
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public_html
+/public/storage
+# Sensitive keys
+seo-audit-report.md
 server.ini
 skills-lock.json
-ecommerce
-
-# Sensitive keys
-logo/id_rsa
+sourcing-mode-spec.md
+/storage/*.key
+/storage/pail
+# Temp/dev files
+Thumbs.db
+/vendor
+/.vscode
+/.zed
