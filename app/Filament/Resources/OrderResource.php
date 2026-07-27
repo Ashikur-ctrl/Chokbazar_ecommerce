@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Schemas\Schema;
 use Filament\Resources\Resource;
@@ -178,7 +179,7 @@ class OrderResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('invoice')
+                Action::make('invoice')
                     ->label('Invoice')
                     ->icon('heroicon-o-document-text')
                     ->url(fn (Order $record) => route('admin-legacy.orders.invoice', $record))

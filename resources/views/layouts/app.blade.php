@@ -16,6 +16,15 @@
         <meta name="description" content="@yield('description', config('app.name') . ' - ' . __('Bangladesh-ready ecommerce'))">
         @yield('meta')
 
+        <!-- Dark mode init (prevents flash) -->
+        <script>
+            (function() {
+                const dark = localStorage.getItem('darkMode') === 'true' ||
+                    (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                if (dark) document.documentElement.classList.add('dark');
+            })();
+        </script>
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=dm+serif+display:400&family=dm+sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=noto+sans+bengali:100..900&family=jetbrains+mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet" />
@@ -35,14 +44,14 @@
         }
         </script>
     </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+    <body class="font-sans antialiased bg-[#f6f1ec] text-[#1a1a1a]">
+        <div class="min-h-screen">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
             @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <header class="bg-white/90 backdrop-blur-md border-b border-gray-100/80">
+                    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>

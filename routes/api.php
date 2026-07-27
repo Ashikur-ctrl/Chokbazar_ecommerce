@@ -23,6 +23,41 @@ Route::middleware('throttle:60,1')->group(function () {
 // Public product filter API (rate limited)
 Route::get('/products/filter', [ProductController::class, 'filter'])->middleware('throttle:30,1');
 
+// Global search for command palette
+Route::get('/search', function (\Illuminate\Http\Request $request) {
+    $query = $request->query('q');
+    $limit = min((int) $request->query('limit', 8), 20);
+
+    if (!$query || strlen($query) < 2) {
+        return response()->json([]);
+    }
+
+    $products = \App\Models\Product::where('is_active', true)
+        ->where('visibility_status', 'published')
+        ->where(function ($q) use ($query) {
+            $q->where('name', 'like', "%{$query}%")
+              ->orWhere('sku', 'like', "%{$query}%")
+              ->orWhere('short_description', 'like', "%{$query}%");
+        })
+        ->limit($limit)
+        ->get(['id', 'name', 'slug', 'price', 'sale_price', 'image', 'sku']);
+
+    return response()->json($products->map(function ($product) {
+        $price = $product->sale_price ?: $product->price;
+        return [
+            'id' => $product->id,
+            'type' => 'Product',
+            'name' => $product->name,
+            'url' => route('shop.show', $product->slug),
+            'subtitle' => 'SKU: ' . ($product->sku ?? 'N/A'),
+            'image' => $product->image ? asset('storage/' . $product->image) : null,
+            'price' => '৳' . number_format($price, 0),
+            'badge' => $product->sale_price ? 'Sale' : null,
+            'icon' => 'inventory_2',
+        ];
+    }));
+})->middleware('throttle:60,1');
+
 // Public location API for checkout
 Route::get('/locations/districts', function () {
     return response()->json(

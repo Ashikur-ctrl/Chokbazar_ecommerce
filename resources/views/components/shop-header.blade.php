@@ -1,4 +1,12 @@
-<div x-data="{ promoOpen: true, menuOpen: false, categoryOpen: false, searchOpen: false }" class="relative">
+<div x-data="{ promoOpen: true, menuOpen: false, categoryOpen: false, searchOpen: false, isDark: document.documentElement.classList.contains('dark') }"
+     x-init="
+        $watch('isDark', val => {
+            document.documentElement.classList.toggle('dark', val);
+            localStorage.setItem('darkMode', val);
+        });
+        function toggleDark() { isDark = !isDark; }
+    "
+     class="relative">
     <!-- Promo Bar -->
     <div x-show="promoOpen" class="relative bg-[#1a6b5e] py-2.5 text-center text-xs font-medium text-white/90 sm:text-sm font-bengali tracking-wide">
         <span>@yield('promo_text', '🎉 প্রথম অর্ডারে — ডেলিভারি চার্জ ফ্রি! 🚚')</span>
@@ -27,7 +35,40 @@
             </div>
 
             <!-- Right Actions -->
-            <div class="flex items-center gap-2 sm:gap-4">
+            <div class="flex items-center gap-1 sm:gap-2">
+                <!-- Dark Mode Toggle -->
+                <button @click="isDark = !isDark" class="p-2 text-gray-500 hover:text-brand-600 transition-colors" title="Toggle dark mode">
+                    <svg x-show="!isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                    <svg x-show="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="display:none">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </button>
+
+                <!-- Notifications -->
+                @auth
+                    <a href="{{ route('notifications') }}" class="relative p-2 text-gray-500 hover:text-brand-600 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        @php $unreadCount = \App\Models\AdminNotification::whereNull('read_at')->count(); @endphp
+                        @if($unreadCount > 0)
+                            <span class="absolute -top-0.5 -right-0.5 h-4 w-4 flex items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white">{{ min($unreadCount, 9) }}</span>
+                        @endif
+                    </a>
+                @endauth
+
+                <!-- ⌘K Command Palette (Desktop) -->
+                <button @click="$dispatch('open-command-palette')"
+                        class="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-400 border border-gray-200 rounded-lg hover:border-gray-300 hover:text-gray-600 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <span class="hidden lg:inline">Search...</span>
+                    <kbd class="hidden lg:inline-flex text-[10px] font-mono px-1 py-0.5 rounded bg-gray-100 border border-gray-200">⌘K</kbd>
+                </button>
+
                 <!-- Cart -->
                 <a href="{{ route('cart.index') }}" class="relative p-2 text-gray-600 hover:text-brand-600 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -54,6 +95,8 @@
                             <a href="{{ route('orders.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">My Orders</a>
                             <a href="{{ route('wishlist.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Wishlist</a>
                             <a href="{{ route('recently-viewed') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Recently Viewed</a>
+                            <a href="{{ route('notifications') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Notifications</a>
+                            <a href="{{ route('audit-log') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-mono">Activity Log</a>
                             <hr class="my-1 border-gray-100">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -213,4 +256,7 @@
             @endauth
         </div>
     </nav>
+
+    <!-- ⌘K Command Palette -->
+    <x-command-palette :categories="$categories ?? collect()" />
 </div>

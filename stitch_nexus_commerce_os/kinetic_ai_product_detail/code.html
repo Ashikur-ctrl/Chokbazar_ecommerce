@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OmniOS | Kinetic Commerce AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+        .linear-shadow {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#191c1e",
+                        "glass-bg": "rgba(255, 255, 255, 0.7)",
+                        "on-secondary-fixed": "#00174b",
+                        "on-tertiary-fixed": "#001f26",
+                        "surface-container": "#eceef0",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#004e5c",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#dae2fd",
+                        "on-primary-fixed": "#131b2e",
+                        "error": "#ba1a1a",
+                        "background": "#f7f9fb",
+                        "surface-container-low": "#f2f4f6",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "inverse-on-surface": "#eff1f3",
+                        "tertiary-container": "#001f26",
+                        "tertiary": "#000000",
+                        "tertiary-fixed-dim": "#4cd7f6",
+                        "primary-fixed-dim": "#bec6e0",
+                        "on-secondary-container": "#fefcff",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary-fixed": "#dbe1ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#565e74",
+                        "on-background": "#191c1e",
+                        "on-primary-container": "#7c839b",
+                        "on-primary": "#ffffff",
+                        "secondary": "#0051d5",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "outline": "#76777d",
+                        "surface-dim": "#d8dadc",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "surface-container-high": "#e6e8ea",
+                        "primary": "#000000",
+                        "inverse-surface": "#2d3133",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#acedff",
+                        "success": "#22C55E",
+                        "surface-bright": "#f7f9fb",
+                        "surface-variant": "#e0e3e5",
+                        "on-tertiary-container": "#0090a9",
+                        "secondary-container": "#316bf3",
+                        "surface-dark": "#020617",
+                        "border-subtle": "rgba(15, 23, 42, 0.08)",
+                        "primary-container": "#131b2e",
+                        "surface": "#f7f9fb",
+                        "outline-variant": "#c6c6cd",
+                        "inverse-primary": "#bec6e0",
+                        "on-surface-variant": "#45464d",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "section-gap": "80px",
+                        "container-max": "1440px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "mono-label": ["JetBrains Mono"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "mono-label": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary/20 overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-glass-bg dark:bg-surface-dark/80 backdrop-blur-md border-b border-subtle dark:border-white/5 shadow-sm">
+<div class="flex justify-between items-center px-gutter max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold tracking-tight text-on-surface dark:text-inverse-on-surface">OmniOS</span>
+<div class="hidden md:flex gap-6">
+<a class="font-body-md text-body-md text-secondary dark:text-secondary-fixed-dim font-semibold border-b-2 border-secondary pb-1" href="#">Marketplace</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors" href="#">Inventory</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors" href="#">Analytics</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors" href="#">Logistics</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition-all duration-150 ease-in-out active:scale-95">
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary">shopping_cart</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low dark:hover:bg-inverse-surface rounded-lg transition-all duration-150 ease-in-out active:scale-95">
+<span class="material-symbols-outlined text-primary dark:text-inverse-primary">account_circle</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-16 pb-24">
+<!-- Hero Gallery Section -->
+<section class="max-w-container-max mx-auto px-gutter pt-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+<!-- Left Side: Interactive 360 Gallery -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<div class="relative group aspect-[16/10] bg-surface-container-lowest rounded-3xl overflow-hidden border border-subtle flex items-center justify-center cursor-grab active:cursor-grabbing">
+<!-- 360 Animation Placeholder -->
+
+<div class="relative z-10 text-center flex flex-col items-center">
+<img class="w-[80%] h-auto animate-float drop-shadow-2xl" data-alt="A professional product photography of a high-tech sleek metallic robotic arm with carbon fiber accents, floating in a clean clinical white studio. The lighting is crisp and multi-directional, highlighting the premium brushed metal texture and intricate mechanical joints. The overall aesthetic is minimalist, tech-forward, and premium, following a light-mode color palette with subtle blue secondary highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh250Rtc_ZinMbkoSpFeEuSpn7LWi-jZ4Ux0BVMrIhChmpIIW_smXTJ_IH1af5hfkYGUvIZcrmkqfnhv2fMiLo2xhp7x7s3KYnC-MlCCdyX-32q_8P8ls0mWmCopqUjWRH2X3hB-8c4YlBjKl55YdD5YY923Xp0-uUdtMGKFf4kw-BZOpU7xp8FytL-aVJZGyADarpopB9SNgitWGH94Mn1gHS2UqPCx4GdaUSvkHVx0Sfkq08_8g_Xp7311vJ0r8zPTvnmV5YWEw"/>
+<div class="mt-8 flex items-center gap-4 bg-glass-bg backdrop-blur-md px-6 py-2 rounded-full border border-subtle shadow-sm transition-opacity group-hover:opacity-100 opacity-60">
+<span class="material-symbols-outlined text-secondary">360</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">Drag to rotate • 360° View</span>
+</div>
+</div>
+<!-- Gallery Thumbnails Overlay -->
+<div class="absolute bottom-6 left-6 flex gap-3">
+<div class="w-12 h-12 rounded-lg border-2 border-secondary bg-white p-1 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A detailed close up of a carbon fiber mechanical joint on a high-tech robotic device. Precision engineering, metallic highlights, minimalist studio lighting, premium feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFA0RHXCxx-gKavO-BTNDcKBE-L6tEWvB_wuR3Gidu7orVODCdW03SOtlmqh9qBuSPfLHy25meuYxorig5NJuiae4yPMr9Of8ER8ydEv1lcOAPCY_PnIsTI_waA72AXs6qDt3rgiQyGeX9Q6DX_8lTuO-vA9U-DSBsn5bcY8g0j_VV2jwW1aygZqxVS7Pc1BHzCO7oqDUkHEMWyept22LiYlcIwm5LmY-PDR-UeKw1mxkcDRwG9M4_alEyGbbyn0FcaaW4_8dTXvk"/>
+</div>
+<div class="w-12 h-12 rounded-lg border border-subtle bg-white/50 p-1 overflow-hidden opacity-60 hover:opacity-100 cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A side view of a futuristic metallic robotic arm. Sleek design, tech-focused, bright white studio setting with blue accent lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCoE-nvSr4QrE0dRnuWr7DwSqxsw1sug0H6ZFkJFZGTeWjNvrRLrjGsm7N3s6XlkCta0uyH-2zPnUI8tniLh6Z4q0jfladwK9YbcCDeQ0cW-KPv3kXD6KmvsGXrGA3Adlef2OkhBapjaMbWgYTjAfqawP_cQSRK4oaHkQcUnL1zQWO63yXxuhhwL3i746ilLWBKoTWzfX4O-yt9zxFVtMXwHydyQ0jCe5-oKQ7xZoz2tAjnQ3HQLtLOz1qz_RzmV45Mfc70EM4-jw"/>
+</div>
+<div class="w-12 h-12 rounded-lg border border-subtle bg-white/50 p-1 overflow-hidden opacity-60 hover:opacity-100 cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="Macro photography of the sensors and lenses on a high-end AI powered device. Glass reflections, intricate tech details, clean white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAfvQ8XGmSUlurtsKci3loOf3FsFfg80pczzRFTVIBBlTm_H1qF_9jseR0BY6iXO8_Pfbu-C_Dn2XoyoQJ5FqpIFVnqy8y4xwmfU4wkKyPElcdiGGLiVqVX1Dkg2_3aR32x_ntAFpszgjRc1Ia_lXf-uxUlJh9apxD7igUJ1cH7-Ak5UwZFr60WozbcPPI8hY35BS5AUH_MxAi-oX02adEpwT694woVgvW5rKjLXJhjL-xU4rl5eV6jbIM889Aberj39_PyCKu3ww"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Product Info & One-Tap Checkout -->
+<div class="lg:col-span-4 flex flex-col gap-8">
+<div class="sticky top-24">
+<div class="flex flex-col gap-4">
+<span class="font-mono-label text-mono-label text-on-tertiary-container bg-tertiary-fixed px-3 py-1 rounded-full w-fit">AI-OPTIMIZED PRICE</span>
+<h1 class="font-display-lg text-display-lg leading-tight">Kinetic Arm v4.2</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Precision-engineered haptic feedback with real-time neural processing. The future of autonomous manual dexterity.</p>
+</div>
+<div class="mt-8 p-6 rounded-2xl glass-panel linear-shadow flex flex-col gap-6">
+<div class="flex justify-between items-end">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Current Value</span>
+<div class="flex items-center gap-2">
+<span class="text-3xl font-bold">$2,899.00</span>
+<span class="text-success font-semibold text-sm">+2.4% Dynamic Yield</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Stock status</span>
+<span class="text-on-surface font-semibold">In Global Hubs</span>
+</div>
+</div>
+<div class="h-[1px] bg-subtle w-full"></div>
+<div class="flex flex-col gap-3">
+<button class="w-full bg-secondary text-on-secondary py-4 rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-3 transition-transform hover:scale-[1.02] active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                                One-Tap AI Checkout
+                            </button>
+<button class="w-full bg-surface-container-highest text-on-surface py-4 rounded-xl font-headline-md text-headline-md border border-subtle transition-all hover:bg-surface-container-high active:scale-95">
+                                Add to Fleet
+                            </button>
+</div>
+<div class="flex items-center gap-2 justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">verified_user</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">OmniOS Secured Transaction • 2yr Warranty</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Sticky Sub-Nav -->
+<div class="sticky top-16 z-40 bg-glass-bg border-b border-subtle mt-16">
+<div class="max-w-container-max mx-auto px-gutter h-14 flex items-center gap-12">
+<a class="font-label-sm text-label-sm text-secondary font-bold h-full flex items-center border-b-2 border-secondary" href="#summary">AI Summary</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface h-full flex items-center" href="#specs">Technical Specs</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface h-full flex items-center" href="#pricing">Price History</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface h-full flex items-center" href="#bundles">Smart Bundles</a>
+</div>
+</div>
+<!-- AI Review Summary -->
+<section class="max-w-container-max mx-auto px-gutter mt-section-gap" id="summary">
+<div class="flex items-center gap-4 mb-10">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant">psychology</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md">AI Sentiment Analysis</h2>
+<p class="text-on-surface-variant text-sm">Summarized from 4,281 authenticated enterprise reviews</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Pros -->
+<div class="p-8 rounded-3xl bg-success/5 border border-success/20">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-success">thumb_up</span>
+<span class="font-headline-md text-headline-md text-success">Key Strengths</span>
+</div>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-success text-sm mt-1">check_circle</span>
+<div>
+<strong class="block text-on-surface">Unmatched Latency</strong>
+<span class="text-sm text-on-surface-variant">The 4.2ms response time is consistently cited as industry-leading for delicate assembly tasks.</span>
+</div>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-success text-sm mt-1">check_circle</span>
+<div>
+<strong class="block text-on-surface">Universal Compatibility</strong>
+<span class="text-sm text-on-surface-variant">Seamless integration with major warehouse OS platforms without custom drivers.</span>
+</div>
+</li>
+</ul>
+</div>
+<!-- Cons -->
+<div class="p-8 rounded-3xl bg-error/5 border border-error/20">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-error">thumb_down</span>
+<span class="font-headline-md text-headline-md text-error">Considerations</span>
+</div>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-error text-sm mt-1">info</span>
+<div>
+<strong class="block text-on-surface">Power Consumption</strong>
+<span class="text-sm text-on-surface-variant">Requires high-voltage infrastructure; may drain legacy battery packs 15% faster.</span>
+</div>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-error text-sm mt-1">info</span>
+<div>
+<strong class="block text-on-surface">Calibration Curve</strong>
+<span class="text-sm text-on-surface-variant">AI requires approximately 72 hours of training to reach peak precision for non-standard items.</span>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Price History & Optimization -->
+<section class="max-w-container-max mx-auto px-gutter mt-section-gap" id="pricing">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Chart Area -->
+<div class="lg:col-span-2 p-8 rounded-3xl glass-panel border border-subtle">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline-md text-headline-md">Value Trajectory</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1 rounded-full bg-surface-container-highest text-label-sm font-mono-label">1M</button>
+<button class="px-3 py-1 rounded-full bg-secondary text-on-secondary text-label-sm font-mono-label">6M</button>
+<button class="px-3 py-1 rounded-full bg-surface-container-highest text-label-sm font-mono-label">1Y</button>
+</div>
+</div>
+<!-- Simplified Visual Chart using Divs -->
+<div class="h-64 flex items-end gap-1 relative">
+<div class="flex-1 bg-secondary/10 hover:bg-secondary/30 transition-colors h-[70%] rounded-t-sm group relative">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-on-surface text-white text-[10px] px-2 py-1 rounded">$2,450</div>
+</div>
+<div class="flex-1 bg-secondary/10 hover:bg-secondary/30 transition-colors h-[65%] rounded-t-sm group relative"></div>
+<div class="flex-1 bg-secondary/10 hover:bg-secondary/30 transition-colors h-[68%] rounded-t-sm group relative"></div>
+<div class="flex-1 bg-secondary/10 hover:bg-secondary/30 transition-colors h-[72%] rounded-t-sm group relative"></div>
+<div class="flex-1 bg-secondary/20 hover:bg-secondary/40 transition-colors h-[75%] rounded-t-sm group relative"></div>
+<div class="flex-1 bg-secondary/30 hover:bg-secondary/50 transition-colors h-[85%] rounded-t-sm group relative"></div>
+<div class="flex-1 bg-secondary/40 hover:bg-secondary/60 transition-colors h-[90%] rounded-t-sm group relative"></div>
+<div class="flex-1 bg-secondary/50 hover:bg-secondary/70 transition-colors h-[95%] rounded-t-sm group relative"></div>
+<div class="flex-1 bg-secondary h-full rounded-t-sm group relative">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-on-surface text-white text-[10px] px-2 py-1 rounded font-bold">CURRENT</div>
+</div>
+</div>
+<div class="flex justify-between mt-4 font-mono-label text-[10px] text-on-surface-variant px-2">
+<span>JAN 2024</span>
+<span>MAR 2024</span>
+<span>JUN 2024</span>
+</div>
+</div>
+<!-- Optimization Sidebar -->
+<div class="p-8 rounded-3xl bg-on-surface text-white flex flex-col gap-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary-fixed-dim">auto_awesome</span>
+<h3 class="text-lg font-bold">AI Price Optimizer</h3>
+</div>
+<p class="text-surface-container text-sm leading-relaxed">Our neural engine predicts a price plateau for the next 45 days. Supply chain fluctuations indicate now is the <strong>optimal acquisition window</strong> for maximum ROI.</p>
+<div class="p-4 rounded-2xl bg-white/10 border border-white/10">
+<span class="text-xs text-white/60 block mb-1">Buy Efficiency Score</span>
+<div class="flex items-center justify-between">
+<span class="text-2xl font-bold">98/100</span>
+<span class="material-symbols-outlined text-success">trending_up</span>
+</div>
+</div>
+<button class="mt-auto w-full py-4 rounded-xl border border-white/20 hover:bg-white/5 transition-colors font-semibold">Track Value</button>
+</div>
+</div>
+</section>
+<!-- Technical Specs Accordion -->
+<section class="max-w-container-max mx-auto px-gutter mt-section-gap" id="specs">
+<h2 class="font-headline-md text-headline-md mb-10">Technical Specifications</h2>
+<div class="flex flex-col gap-4">
+<!-- Accordion 1 -->
+<div class="glass-panel rounded-2xl overflow-hidden border border-subtle">
+<button class="w-full px-8 py-6 flex justify-between items-center group" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.arrow').classList.toggle('rotate-180')">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">hardware</span>
+<span class="font-headline-md text-headline-md">Mechanical Architecture</span>
+</div>
+<span class="material-symbols-outlined arrow transition-transform duration-300">expand_more</span>
+</button>
+<div class="px-8 pb-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div>
+<span class="text-xs font-mono-label text-on-surface-variant block mb-1">Degrees of Freedom</span>
+<span class="text-on-surface font-bold">7 Axis + Haptic Tip</span>
+</div>
+<div>
+<span class="text-xs font-mono-label text-on-surface-variant block mb-1">Payload Capacity</span>
+<span class="text-on-surface font-bold">12kg (Static) / 8kg (Dynamic)</span>
+</div>
+<div>
+<span class="text-xs font-mono-label text-on-surface-variant block mb-1">Repeatability</span>
+<span class="text-on-surface font-bold">± 0.02 mm</span>
+</div>
+</div>
+</div>
+<!-- Accordion 2 -->
+<div class="glass-panel rounded-2xl overflow-hidden border border-subtle">
+<button class="w-full px-8 py-6 flex justify-between items-center group" onclick="this.nextElementSibling.classList.toggle('hidden'); this.querySelector('.arrow').classList.toggle('rotate-180')">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">memory</span>
+<span class="font-headline-md text-headline-md">Onboard Processing</span>
+</div>
+<span class="material-symbols-outlined arrow transition-transform duration-300">expand_more</span>
+</button>
+<div class="hidden px-8 pb-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div>
+<span class="text-xs font-mono-label text-on-surface-variant block mb-1">AI Core</span>
+<span class="text-on-surface font-bold">Omni-NPU Gen 4</span>
+</div>
+<div>
+<span class="text-xs font-mono-label text-on-surface-variant block mb-1">Local Memory</span>
+<span class="text-on-surface font-bold">64GB LPDDR5X</span>
+</div>
+<div>
+<span class="text-xs font-mono-label text-on-surface-variant block mb-1">Connectivity</span>
+<span class="text-on-surface font-bold">6G / Local Mesh Hub</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Smart Bundles -->
+<section class="max-w-container-max mx-auto px-gutter mt-section-gap" id="bundles">
+<div class="flex justify-between items-end mb-10">
+<div>
+<h2 class="font-headline-md text-headline-md">Frequently Bought Together</h2>
+<p class="text-on-surface-variant">OmniOS AI suggests these additions to complete your workflow.</p>
+</div>
+<div class="hidden md:block">
+<span class="font-mono-label text-secondary bg-secondary/10 px-4 py-2 rounded-full">BUNDLE SAVINGS: $240.00</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Bundle Item 1 -->
+<div class="p-6 rounded-3xl bg-surface-container border border-subtle flex flex-col gap-4 relative group">
+<div class="absolute top-4 right-4 h-6 w-6 rounded-full bg-secondary text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">add</span>
+</div>
+<div class="aspect-square rounded-2xl bg-white flex items-center justify-center overflow-hidden">
+<img class="w-[70%] group-hover:scale-110 transition-transform duration-500" data-alt="A small autonomous docking station for high-tech robotics. Minimalist white design with glowing LED indicators, sleek aesthetic, high-key lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBimAyb7kOS-wTK7LNm4Tvv4d872cuFKV2kymh07yMlgjcAjtcAbKW3awyE1VjqaaUZ16U-xcGhnprVsjQ3YRmR53YxhbbqZkpubG-DdtE-Rwpl2l65nNJ7LovxW_b83MhOq_tRZ0Z5Mt2LTusRzcp3f2DW1dRMsdBKbtjAmfyFBqccuarSFA3pP_e1ESKjiI1f45xJZ4705xD21MdNkTGoTHsMR7VfB0oO1DhjTIW046uE2FBmvpSbdX9GRY8jIvCD3V_kfrM37q0"/>
+</div>
+<div>
+<h4 class="font-bold">Kinetic Dock Pro</h4>
+<span class="text-on-surface-variant text-sm">$399.00</span>
+</div>
+</div>
+<!-- Bundle Item 2 -->
+<div class="p-6 rounded-3xl bg-surface-container border border-subtle flex flex-col gap-4 relative group">
+<div class="absolute top-4 right-4 h-6 w-6 rounded-full bg-secondary text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">add</span>
+</div>
+<div class="aspect-square rounded-2xl bg-white flex items-center justify-center overflow-hidden">
+<img class="w-[70%] group-hover:scale-110 transition-transform duration-500" data-alt="A set of precision interchangeable tool tips for a robotic arm. Chrome finish, arranged neatly in a premium case. Modern industrial design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-lSRkTzIumCoMtGJxXO3hnXHRFpwkf3cCTflqUq15xBEeaTcmYP3Rn9N2fAjRO_sBR3FwHIeIbAzSVlRKCEPoluwMRGsP6ivGdkgFVMqcEh9dm3Kktcwq8vaJhgvSSyi4JloSEZuzPDGRaCAiuwCzfnz5RcvomVw52BIyN1CTYwB7TKfKG8QD16-SuHN73dEeiWGiYOd8ERwmw9U8QOQBll9DKVvovwlfMBG1qWEOWbSUW8XoDRa0mMZTyEguNhkxvytVyP-6t3c"/>
+</div>
+<div>
+<h4 class="font-bold">Master Gripper Kit</h4>
+<span class="text-on-surface-variant text-sm">$1,250.00</span>
+</div>
+</div>
+<!-- Bundle Item 3 -->
+<div class="p-6 rounded-3xl bg-on-surface text-white flex flex-col justify-center items-center text-center gap-6">
+<div class="space-y-1">
+<p class="text-surface-variant text-sm">TOTAL BUNDLE VALUE</p>
+<p class="text-4xl font-bold">$4,308.00</p>
+<p class="text-success text-sm font-semibold">SAVE 5.2% WITH AI PACK</p>
+</div>
+<button class="bg-white text-on-surface w-full py-4 rounded-xl font-bold hover:bg-surface-variant transition-colors">Add All to Fleet</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest py-16 border-t border-subtle">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12">
+<div class="col-span-2">
+<span class="font-headline-md text-headline-md font-bold tracking-tight text-on-surface mb-6 block">OmniOS</span>
+<p class="text-on-surface-variant text-sm max-w-xs">Automating the physical world through invisible excellence and neural precision.</p>
+</div>
+<div>
+<h5 class="font-bold mb-4">Platform</h5>
+<ul class="space-y-2 text-sm text-on-surface-variant">
+<li><a class="hover:text-secondary" href="#">Marketplace</a></li>
+<li><a class="hover:text-secondary" href="#">Security</a></li>
+<li><a class="hover:text-secondary" href="#">Fleet API</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold mb-4">Support</h5>
+<ul class="space-y-2 text-sm text-on-surface-variant">
+<li><a class="hover:text-secondary" href="#">Help Center</a></li>
+<li><a class="hover:text-secondary" href="#">Warranty</a></li>
+<li><a class="hover:text-secondary" href="#">Training</a></li>
+</ul>
+</div>
+<div class="col-span-2 lg:col-span-2">
+<h5 class="font-bold mb-4">Neural Updates</h5>
+<div class="flex gap-2">
+<input class="bg-white border border-subtle rounded-lg px-4 py-2 text-sm flex-grow outline-none focus:border-secondary" placeholder="Enter workspace email" type="email"/>
+<button class="bg-secondary text-white px-4 py-2 rounded-lg text-sm font-bold">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-gutter mt-16 pt-8 border-t border-subtle flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-on-surface-variant font-mono-label">
+<p>© 2024 OmniOS Systems Corp. All rights reserved.</p>
+<div class="flex gap-6">
+<a href="#">Privacy Protocol</a>
+<a href="#">Terms of Deployment</a>
+<a href="#">Ethics Policy</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for scroll reveals
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+    </script>
+</body></html>

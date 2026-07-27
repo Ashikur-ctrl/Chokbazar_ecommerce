@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Marketplace Explore | Kinetic AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#565e74",
+                        "primary-fixed": "#dae2fd",
+                        "border-subtle": "rgba(15, 23, 42, 0.08)",
+                        "on-secondary-fixed": "#00174b",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "on-surface": "#191c1e",
+                        "success": "#22C55E",
+                        "primary-fixed-dim": "#bec6e0",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-error-container": "#93000a",
+                        "on-background": "#191c1e",
+                        "on-tertiary-fixed": "#001f26",
+                        "surface-container-high": "#e6e8ea",
+                        "inverse-primary": "#bec6e0",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-container": "#131b2e",
+                        "secondary-container": "#316bf3",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "outline-variant": "#c6c6cd",
+                        "on-surface-variant": "#45464d",
+                        "on-primary-fixed": "#131b2e",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dark": "#020617",
+                        "on-primary-container": "#7c839b",
+                        "tertiary-container": "#001f26",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "inverse-on-surface": "#eff1f3",
+                        "glass-bg": "rgba(255, 255, 255, 0.7)",
+                        "surface-dim": "#d8dadc",
+                        "surface-variant": "#e0e3e5",
+                        "on-tertiary-fixed-variant": "#004e5c",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#fefcff",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-container": "#0090a9",
+                        "tertiary-fixed-dim": "#4cd7f6",
+                        "tertiary-fixed": "#acedff",
+                        "tertiary": "#000000",
+                        "outline": "#76777d",
+                        "inverse-surface": "#2d3133",
+                        "primary": "#000000",
+                        "background": "#f7f9fb",
+                        "surface-bright": "#f7f9fb",
+                        "surface": "#f7f9fb",
+                        "secondary-fixed": "#dbe1ff",
+                        "surface-container": "#eceef0",
+                        "secondary": "#0051d5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "80px",
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "mono-label": ["JetBrains Mono", "monospace"],
+                        "label-sm": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .glass-header { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); }
+        .linear-shadow { box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.02); }
+        .product-card-hover { transition: transform 150ms ease, box-shadow 150ms ease; }
+        .product-card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-glass-bg backdrop-blur-xl border-b border-subtle h-16 shadow-sm">
+<div class="flex items-center justify-between px-gutter h-16 w-full max-w-container mx-auto">
+<!-- Brand Logo -->
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary">AetherCommerce</span>
+<!-- Desktop Nav Links -->
+<div class="hidden md:flex items-center gap-6">
+<a class="font-body-md text-body-md text-secondary border-b-2 border-secondary pb-1 hover:text-secondary transition-colors duration-150" href="#">Discover</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors duration-150" href="#">Analytics</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors duration-150" href="#">Inventory</a>
+</div>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-low rounded-full transition-all">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-low rounded-full transition-all">shopping_cart</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden border border-subtle">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a technology executive in a well-lit minimalist environment. The background is a clean, neutral gray with soft gradient lighting, emphasizing a high-end corporate aesthetic. The subject is wearing a dark, tailored blazer, conveying authority and technical expertise. The image lighting is cinematic and refined, matching a modern enterprise UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-mxWev2Axi3EFnSYKp_LTyeKW_2_CI8tlqsKHu5mU-iN5LCEoIT8-vOTJJkuTwX0rLlxlrlYmJ7dcBR2LdULCz3orcArnR2Okxy61EPWN3eXWBN3Op4tx5vDee741Xd5_houKezT9N7KOptESf81wlLcs1fIvSziP2cd9Hje7NBINAEMgNrSzr5xiR8nj2rYV_VmynwCJO3SqwwW-ozF-irwsiVu4mDnNgdSY9x03cGhXNsQZZjm2I3Lsipv_hZBet_u2eydiT0o"/>
+</div>
+</div>
+</div>
+</nav>
+<div class="flex max-w-container mx-auto pt-16 min-h-screen">
+<!-- Side Navigation Bar -->
+<aside class="h-[calc(100vh-64px)] w-64 sticky top-16 left-0 border-r border-subtle bg-surface flex flex-col py-6 px-4 gap-2 hidden lg:flex">
+<div class="mb-4 px-2">
+<h3 class="font-headline-md text-headline-md text-primary">Categories</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">Filter by AI Capability</p>
+</div>
+<nav class="flex flex-col gap-1">
+<button class="flex items-center gap-3 px-3 py-2 bg-secondary-container text-on-secondary-container font-semibold rounded-lg text-label-sm transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span>All Models</span>
+</button>
+<button class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg text-label-sm transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+<span>Generative Art</span>
+</button>
+<button class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg text-label-sm transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[20px]">monitoring</span>
+<span>Data Insights</span>
+</button>
+<button class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg text-label-sm transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[20px]">settings_input_component</span>
+<span>Automation</span>
+</button>
+<button class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg text-label-sm transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[20px]">description</span>
+<span>Text Processing</span>
+</button>
+<button class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg text-label-sm transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined text-[20px]">shield</span>
+<span>Security</span>
+</button>
+</nav>
+<div class="mt-auto flex flex-col gap-1 border-t border-subtle pt-4">
+<button class="w-full bg-primary text-on-primary py-2.5 rounded-lg font-label-sm mb-4 active:scale-95 transition-all">Upgrade to Pro</button>
+<button class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg text-label-sm transition-all duration-150">
+<span class="material-symbols-outlined text-[20px]">help</span>
+<span>Help Center</span>
+</button>
+<button class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg text-label-sm transition-all duration-150">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>Settings</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 px- gutter py-8 overflow-x-hidden">
+<!-- AI Search Header Section -->
+<section class="max-w-4xl mx-auto mb-10">
+<div class="text-center mb-8">
+<h1 class="font-display-lg text-display-lg mb-2">Find your next edge.</h1>
+<p class="text-on-surface-variant text-body-lg">Explore the world's most advanced AI assets and hardware.</p>
+</div>
+<!-- Command Palette Style Search -->
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full bg-white border border-subtle rounded-xl py-4 pl-12 pr-16 text-lg focus:outline-none focus:ring-4 focus:ring-secondary/10 focus:border-secondary transition-all linear-shadow" placeholder="Search AI capabilities, hardware, or models..." type="text"/>
+<div class="absolute inset-y-0 right-4 flex items-center gap-2">
+<span class="font-mono-label text-mono-label bg-surface-container-high px-2 py-1 rounded text-outline border border-subtle">⌘ K</span>
+</div>
+</div>
+<!-- AI Suggestions -->
+<div class="mt-4 flex flex-wrap gap-2 justify-center">
+<span class="text-label-sm text-on-surface-variant">Try:</span>
+<button class="text-label-sm bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full transition-all">"Find high-performance workstations for neural rendering"</button>
+<button class="text-label-sm bg-surface-container-low hover:bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full transition-all">"Search for sustainable edge computing nodes"</button>
+</div>
+</section>
+<!-- Sorting & View Controls -->
+<div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 border-b border-subtle pb-4">
+<div class="flex items-center gap-6 overflow-x-auto hide-scrollbar w-full md:w-auto">
+<button class="font-label-sm text-secondary border-b-2 border-secondary pb-2 whitespace-nowrap">Relevance</button>
+<button class="font-label-sm text-on-surface-variant hover:text-primary pb-2 whitespace-nowrap transition-colors">Newest</button>
+<button class="font-label-sm text-on-surface-variant hover:text-primary pb-2 whitespace-nowrap transition-colors">AI Optimized Price</button>
+<button class="font-label-sm text-on-surface-variant hover:text-primary pb-2 whitespace-nowrap transition-colors">Popularity</button>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="font-label-sm">Showing 1,240 results</span>
+<div class="h-4 w-[1px] bg-subtle mx-2"></div>
+<button class="material-symbols-outlined text-[20px] p-1.5 hover:bg-surface-container-low rounded">grid_view</button>
+<button class="material-symbols-outlined text-[20px] p-1.5 hover:bg-surface-container-low rounded">view_list</button>
+</div>
+</div>
+<!-- Product Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<div class="bg-white border border-subtle rounded-xl overflow-hidden product-card-hover flex flex-col">
+<div class="relative h-56 w-full">
+<img class="w-full h-full object-cover" data-alt="A high-performance neural rendering server rack glowing with soft blue LED accents. The lighting is cold and clinical, highlighting the sleek metallic surface and intricate cooling vents. This minimalist technology object sits in a dark, clean studio environment, reflecting the high-scale engineering and premium quality of the AI marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADxuN4yk_I951xjN8bK_opzuC_Pf_q0Uxu_EoUy95WF88CgEjpr9YcY1ZbLXMA3MAuhQ3R6xtkWHlQb4dJZOb4IkmR3u_SdpuoDlaZD4gB2ko8B0MRtsEMXf2cutDpCmTl-rfuTblGNwLOdF80PEhO6u3oJ7jMA_6WHqYjFK4ItTIO9KxnZIxmqfHFZEgrldxglabkTIF35AAZibjpU29qMTFLlaNbCV35yTec9NCftYMcahI9geBX5KalfNk33Dpufs9HngDa6Es"/>
+<div class="absolute top-4 right-4 bg-glass-bg backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
+<span class="font-mono-label text-mono-label text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">bolt</span> 98% Compatibility
+                            </span>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-[18px] leading-tight">NeuralGrid Node X-1</h3>
+<span class="font-headline-md text-secondary">$2,499</span>
+</div>
+<p class="text-on-surface-variant text-label-sm mb-6 line-clamp-2">Optimized for real-time generative diffusion models and high-throughput LLM inference.</p>
+<div class="mt-auto flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-white bg-blue-100 flex items-center justify-center text-[10px] font-bold">N</div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-cyan-100 flex items-center justify-center text-[10px] font-bold">C</div>
+</div>
+<button class="text-secondary font-label-sm hover:underline flex items-center gap-1">
+                                View Details <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white border border-subtle rounded-xl overflow-hidden product-card-hover flex flex-col">
+<div class="relative h-56 w-full">
+<img class="w-full h-full object-cover" data-alt="An abstract visualization of secure data nodes floating in a dark digital space. Shimmering lines of cyan light connect complex geometric nodes, symbolizing robust AI security and automation. The aesthetic is extremely polished and futuristic, using a shallow depth of field to create a sense of professional depth and precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6QSg8x8Bv4AjG2sVcLRgA-E33U6ngZUpteEZoWxzXWhjQKO8VdOU8OcyC592IVrV1pEzvBNBC_AMhLcw4jh2kFC7PbeCVOsYVyIBK7FrctmpbGMcJm1_E93f97IDlsnwPhKh2TiYcbCgKX43IKWz2ZlNh_jtN0i_2xXZkuZlB6Hp-lpu5jZfvLkqvezh776Z2CHV5wWigcpijo-luyWr5MvwKO33JS9L2Q482TYgOZTP7kqZM86WUmyHY2K-M77YB7_TkbyS5AvU"/>
+<div class="absolute top-4 right-4 bg-glass-bg backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
+<span class="font-mono-label text-mono-label text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">shield</span> 99.9% Secure
+                            </span>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-[18px] leading-tight">Sentinel Guard L-4</h3>
+<span class="font-headline-md text-secondary">$840<span class="text-label-sm text-on-surface-variant">/mo</span></span>
+</div>
+<p class="text-on-surface-variant text-label-sm mb-6 line-clamp-2">Autonomous threat detection and automated security patching for distributed edge networks.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-on-surface-variant text-[12px] uppercase tracking-wider font-semibold">Security Tier A</span>
+<button class="text-secondary font-label-sm hover:underline flex items-center gap-1">
+                                View Details <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white border border-subtle rounded-xl overflow-hidden product-card-hover flex flex-col">
+<div class="relative h-56 w-full">
+<img class="w-full h-full object-cover" data-alt="Close-up of high-end circuitry and glass components of a modern AI processing unit. The microchips are illuminated by soft violet and blue light, highlighting the mathematical harmony of the hardware. The scene conveys 'Invisible Excellence' through its intricate detail and impeccable cleanliness, perfect for a high-fidelity technology marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfFx0Nr1sEmss5xDJBbJKJ6vaKetYOf1uTdmeHCL5Tk3fQtxxvBX0dfpQOz9xRUjYSLFfu8GfNYL48HwOALHmwsPpmjHbBIuLGOyq3dNnhIAM92uxjUVzKqKRdzvS8DG1zknW9U9RjNdMf2fL7qYCcYHmV-9YjkDW26RJdZXLjhHqZ-90fBKAiRgo1kUHo4uH0PmyzsidpXMUYZWn9rU7A__IfhqMnTuL0q1TpMJpfk8BZ9anjUtAp_bCYRIafK-vYbZgulLU_M8w"/>
+<div class="absolute top-4 right-4 bg-glass-bg backdrop-blur-md px-3 py-1 rounded-full border border-white/20">
+<span class="font-mono-label text-mono-label text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span> Top Rated
+                            </span>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-[18px] leading-tight">Synapse Core v2</h3>
+<span class="font-headline-md text-secondary">$1,200</span>
+</div>
+<p class="text-on-surface-variant text-label-sm mb-6 line-clamp-2">High-speed processing unit designed specifically for multimodal AI model orchestration.</p>
+<div class="mt-auto flex items-center justify-between">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-yellow-500 text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-label-sm font-semibold">4.9</span>
+</div>
+<button class="text-secondary font-label-sm hover:underline flex items-center gap-1">
+                                View Details <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-white border border-subtle rounded-xl overflow-hidden product-card-hover flex flex-col">
+<div class="relative h-56 w-full">
+<img class="w-full h-full object-cover" data-alt="A series of data visualization screens displaying thin, clean neon lines of analytical data in a dark, professional control room. The UI on the screens is minimal, following high-end productivity tool aesthetics. The environment is quiet and focused, emphasizing the precision of AI-driven insights and the power of AetherCommerce analytics tools." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOJ7G1gyl-q51X-1onbwgPAeTFXU9sWMX6N-LAxVcJzUThKm2ISY7hU3VYZIIqwIB4rLiTsvmnGm7mJ6sAYqbDr0GrhICBUEUdFI7C0CUBVMYKoID52bhPznZfbhUGMqWki627U8ETW4ulOMb9qRH06RuaojG_RjAizFOUZp3LaKd4gaGSVzMvyNUB6WlVwGfgxFASWl1_0vtVrA-kSkii1xOxSyv3pfqoj-g4-zIlrKT8hrlEiV9qAgE1gSqxgnpPEMnS3PJut0c"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-[18px] leading-tight">Insight Engine Pro</h3>
+<span class="font-headline-md text-secondary">$45<span class="text-label-sm text-on-surface-variant">/user</span></span>
+</div>
+<p class="text-on-surface-variant text-label-sm mb-6 line-clamp-2">Enterprise-grade analytics dashboard with predictive revenue forecasting and inventory optimization.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-on-surface-variant text-[12px] border border-subtle px-2 py-0.5 rounded">Software Asset</span>
+<button class="text-secondary font-label-sm hover:underline flex items-center gap-1">
+                                View Details <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="bg-white border border-subtle rounded-xl overflow-hidden product-card-hover flex flex-col">
+<div class="relative h-56 w-full">
+<img class="w-full h-full object-cover" data-alt="A futuristic globe shimmering with complex data patterns and orbital paths in a deep navy and electric blue palette. The lighting is sophisticated and atmospheric, representing global connectivity and high-scale neural networks. The aesthetic is rigorous and professional, suitable for a leading AI infrastructure marketplace interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCocH5sp2iSyN4Egqwe7OWOubS6U1wAxH0zGW2zy63jfR_DZUUHUCcvB1_MNeFqoNzMV1y-uSOc_HudSAgO3wfPojxSzVnqKZSQu0ufSqufeJA7wIhoXQ1hYRsZpnNZjwVHBIiIiuRo1YwWI4YpfKIGmIgREN4R4UIyZx2Wv_nD_PMylFXE4Er01uKqOZSlB-r5lNqg8SMfAKugVzSRrXH0I-DZUVeSPw434FTOhDb5xTXtQ4jy62B8_ConK3t0QpPV6xyJ2SyDH0Y"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-[18px] leading-tight">Global Mesh Router</h3>
+<span class="font-headline-md text-secondary">$6,200</span>
+</div>
+<p class="text-on-surface-variant text-label-sm mb-6 line-clamp-2">Ultra-low latency connectivity hardware for global AI training clusters and data synchronization.</p>
+<div class="mt-auto flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-success"></div>
+<span class="text-label-sm text-on-surface-variant">In Stock</span>
+</div>
+<button class="text-secondary font-label-sm hover:underline flex items-center gap-1">
+                                View Details <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="bg-white border border-subtle rounded-xl overflow-hidden product-card-hover flex flex-col">
+<div class="relative h-56 w-full">
+<img class="w-full h-full object-cover" data-alt="Close-up of a server blade with intricate gold and silver connections on a dark PCB board. The focus is sharp on the central processing unit, while the background falls away in a soft, professional blur. The image conveys 'Invisible Excellence' through its technical complexity and uncompromising cleanliness, perfectly aligning with a developer-centric productivity platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQWP3t78jnh7MPFK7x98pzOyDy-NxPYyq8rOVJ-SmTKVln6hpPVNDSxJnq3OqTKJwymhQl7T08lXH8p_OO0vRJhR_VCB52d8F3ZdO4FUjQG1OBEZ4oZIKOuAjpatcluicnrtIotQCy8ryWgYNPmWzqECpOl9ExNPKTVrQrwfjJ_1koAvDiL8CucHdSFFGYejKiojzpMfKthj3tG-kbg5CK5Jhg5pBb2pvgj5oYTOuBlQp8Z9dYhctMbcH36FZJux-L8Xr7LRj4BPk"/>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-[18px] leading-tight">Vertex Accelerator</h3>
+<span class="font-headline-md text-secondary">$4,150</span>
+</div>
+<p class="text-on-surface-variant text-label-sm mb-6 line-clamp-2">Specialized hardware acceleration for large-scale vertex and matrix computations in AI simulations.</p>
+<div class="mt-auto flex items-center justify-between">
+<span class="text-on-surface-variant text-[12px] border border-subtle px-2 py-0.5 rounded">V-Series Hub</span>
+<button class="text-secondary font-label-sm hover:underline flex items-center gap-1">
+                                View Details <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-12 flex justify-center items-center gap-4">
+<button class="p-2 border border-subtle rounded-lg hover:bg-surface-container-low transition-colors disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 rounded-lg bg-secondary text-white font-label-sm">1</button>
+<button class="w-10 h-10 rounded-lg border border-subtle hover:bg-surface-container-low font-label-sm transition-colors">2</button>
+<button class="w-10 h-10 rounded-lg border border-subtle hover:bg-surface-container-low font-label-sm transition-colors">3</button>
+<span class="px-2 text-on-surface-variant">...</span>
+<button class="w-10 h-10 rounded-lg border border-subtle hover:bg-surface-container-low font-label-sm transition-colors">48</button>
+</div>
+<button class="p-2 border border-subtle rounded-lg hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</main>
+</div>
+<!-- Micro-interaction Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.querySelector('input[type="text"]');
+            const searchContainer = searchInput.parentElement;
+
+            searchInput.addEventListener('focus', () => {
+                searchContainer.classList.add('scale-[1.01]');
+                searchContainer.style.transition = 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+            });
+
+            searchInput.addEventListener('blur', () => {
+                searchContainer.classList.remove('scale-[1.01]');
+            });
+
+            // Active category simulation
+            const navButtons = document.querySelectorAll('aside nav button');
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    navButtons.forEach(b => {
+                        b.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'font-semibold');
+                        b.classList.add('text-on-surface-variant', 'hover:bg-surface-container-low');
+                    });
+                    btn.classList.add('bg-secondary-container', 'text-on-secondary-container', 'font-semibold');
+                    btn.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-low');
+                });
+            });
+        });
+    </script>
+</body></html>

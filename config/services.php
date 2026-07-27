@@ -88,4 +88,31 @@ return [
         'base_url' => env('REDX_BASE_URL', 'https://openapi.redx.com.bd/v1'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Product Import (1688 / parse.bot)
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | AI Translation
+    |--------------------------------------------------------------------------
+    */
+
+    'anthropic' => [
+        'api_key' => env('ANTHROPIC_API_KEY'),
+    ],
+
+    'gemini' => [
+        'api_key' => env('GEMINI_API_KEY'),
+        'model' => env('GEMINI_MODEL', 'gemini-2.0-flash'),
+    ],
+
+    'import_1688' => [
+        'api_key' => env('IMPORT_1688_API_KEY'),
+        'base_url' => env('IMPORT_1688_BASE_URL', 'https://api.parse.bot/scraper/bce3cd9b-591a-4e87-a406-6e57ab0dd092'),
+        'markup_percent' => env('IMPORT_1688_MARKUP_PERCENT', 25),
+    ],
+
 ];

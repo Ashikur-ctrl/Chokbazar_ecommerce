@@ -8,17 +8,20 @@
     <title>Checkout - {{ config('app.name', 'E-Commerce') }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=dm+serif+display:400&family=dm+sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        (function(){const d=localStorage.getItem('darkMode')==='true'||(!('darkMode'in localStorage)&&window.matchMedia('(prefers-color-scheme:dark)').matches);if(d)document.documentElement.classList.add('dark');})();
+    </script>
 </head>
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
-        <nav class="bg-white border-b border-gray-100">
+<body class="font-sans antialiased bg-[#f6f1ec] text-[#1a1a1a]">
+    <div class="min-h-screen">
+        <nav class="bg-white/90 backdrop-blur-md border-b border-gray-100/80 sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex">
                         <div class="shrink-0 flex items-center">
-                            <a href="{{ route('shop.index') }}" class="text-xl font-bold text-gray-800">{{ config('app.name', 'E-Commerce') }}</a>
+                            <a href="{{ route('shop.index') }}" class="text-xl font-bold text-[#1a1a1a] font-display tracking-tight">Chokbazar</a>
                         </div>
                     </div>
                 </div>
@@ -27,14 +30,26 @@
 
         <main class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="mb-6">
-                    <nav class="flex" aria-label="Breadcrumb">
-                        <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                            <li><a href="{{ route('shop.index') }}" class="text-sm font-medium text-gray-700 hover:text-blue-600">Shop</a></li>
-                            <li><a href="{{ route('cart.index') }}" class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600">Cart</a></li>
-                            <li aria-current="page"><span class="ms-1 text-sm font-medium text-gray-500">Checkout</span></li>
-                        </ol>
-                    </nav>
+                <!-- Step Progress -->
+                <div class="mb-10">
+                    <div class="flex items-center justify-between max-w-lg mx-auto">
+                        <div class="step">
+                            <div class="step-indicator completed">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            <span class="text-sm font-medium text-brand-700 hidden sm:inline">Cart</span>
+                        </div>
+                        <div class="step-line active"></div>
+                        <div class="step">
+                            <div class="step-indicator active">2</div>
+                            <span class="text-sm font-medium text-brand-600 hidden sm:inline">Checkout</span>
+                        </div>
+                        <div class="step-line pending"></div>
+                        <div class="step">
+                            <div class="step-indicator pending">3</div>
+                            <span class="text-sm font-medium text-gray-400 hidden sm:inline">Confirmation</span>
+                        </div>
+                    </div>
                 </div>
 
                 <form method="POST" action="{{ route('checkout.store') }}" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -42,26 +57,26 @@
 
                     <div class="lg:col-span-2 space-y-6">
                         <!-- Customer Information -->
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="bg-white rounded-2xl border border-gray-100 shadow-card">
                             <div class="p-6">
-                                <h2 class="text-lg font-medium text-gray-900 mb-4">Customer Information</h2>
+                                <h2 class="text-lg font-bold text-[#1a1a1a] mb-4">Customer Information</h2>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label for="customer_name" class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                                        <label for="customer_name" class="block text-sm font-medium text-[#6b6b6b] mb-1">Full Name *</label>
                                         <input type="text" id="customer_name" name="customer_name" value="{{ old('customer_name', auth()->user()->name ?? '') }}"
-                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 @error('customer_name') border-red-500 @enderror" required>
+                                               class="w-full rounded-lg border-gray-200 bg-white px-3 py-2.5 text-sm focus:border-brand-500 focus:ring-brand-500 @error('customer_name') border-red-500 @enderror" required>
                                         @error('customer_name')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                                     </div>
                                     <div>
-                                        <label for="customer_email" class="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                        <label for="customer_email" class="block text-sm font-medium text-[#6b6b6b] mb-1">Email Address *</label>
                                         <input type="email" id="customer_email" name="customer_email" value="{{ old('customer_email', auth()->user()->email ?? '') }}"
-                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 @error('customer_email') border-red-500 @enderror" required>
+                                               class="w-full rounded-lg border-gray-200 bg-white px-3 py-2.5 text-sm focus:border-brand-500 focus:ring-brand-500 @error('customer_email') border-red-500 @enderror" required>
                                         @error('customer_email')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                                     </div>
                                     <div class="md:col-span-2">
-                                        <label for="customer_phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                                        <label for="customer_phone" class="block text-sm font-medium text-[#6b6b6b] mb-1">Phone Number *</label>
                                         <input type="tel" id="customer_phone" name="customer_phone" value="{{ old('customer_phone') }}"
-                                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 @error('customer_phone') border-red-500 @enderror" required>
+                                               class="w-full rounded-lg border-gray-200 bg-white px-3 py-2.5 text-sm focus:border-brand-500 focus:ring-brand-500 @error('customer_phone') border-red-500 @enderror" required>
                                         <p class="mt-1 text-xs text-gray-500">Required for delivery and OTP verification</p>
                                         @error('customer_phone')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                                     </div>
@@ -70,9 +85,9 @@
                         </div>
 
                         <!-- Shipping Address with BD District/Upazila -->
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="bg-white rounded-2xl border border-gray-100 shadow-card">
                             <div class="p-6">
-                                <h2 class="text-lg font-medium text-gray-900 mb-4">Shipping Address</h2>
+                                <h2 class="text-lg font-bold text-[#1a1a1a] mb-4">Shipping Address</h2>
 
                                 @auth
                                     @if(auth()->user()->addresses->count() > 0)
@@ -80,22 +95,22 @@
                                             <label class="block text-sm font-medium text-gray-700 mb-2">Saved Addresses</label>
                                             <div class="space-y-2">
                                                 @foreach(auth()->user()->addresses as $addr)
-                                                    <label class="flex items-start gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                                                    <label class="flex items-start gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50/30">
                                                         <input type="radio" name="saved_address" value="{{ $addr->id }}"
                                                                data-name="{{ $addr->name }}" data-phone="{{ $addr->phone }}"
                                                                data-district="{{ $addr->district }}" data-upazila="{{ $addr->upazila }}"
                                                                data-address="{{ $addr->address }}"
-                                                               class="mt-1 saved-address-radio">
+                                                               class="mt-1 saved-address-radio text-brand-600 focus:ring-brand-500">
                                                         <div>
-                                                            <p class="text-sm font-medium">{{ $addr->label }}</p>
-                                                            <p class="text-xs text-gray-500">{{ $addr->name }} — {{ $addr->phone }}</p>
-                                                            <p class="text-xs text-gray-500">
+                                                            <p class="text-sm font-medium text-[#1a1a1a]">{{ $addr->label }}</p>
+                                                            <p class="text-xs text-[#6b6b6b]">{{ $addr->name }} — {{ $addr->phone }}</p>
+                                                            <p class="text-xs text-[#6b6b6b]">
                                                                 {{ $addr->address }}, {{ $addr->upazila }}, {{ $addr->district }}
                                                             </p>
                                                         </div>
                                                     </label>
                                                 @endforeach
-                                                <hr class="my-2">
+                                                <hr class="my-2 border-gray-100">
                                             </div>
                                         </div>
                                     @endif
@@ -103,25 +118,25 @@
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label for="district" class="block text-sm font-medium text-gray-700 mb-1">District *</label>
+                                        <label for="district" class="block text-sm font-medium text-[#6b6b6b] mb-1">District *</label>
                                         <select id="district" name="district"
-                                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 @error('district') border-red-500 @enderror" required>
+                                                class="w-full rounded-lg border-gray-200 bg-white px-3 py-2.5 text-sm focus:border-brand-500 focus:ring-brand-500 @error('district') border-red-500 @enderror" required>
                                             <option value="">Select District</option>
                                         </select>
                                         @error('district')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                                     </div>
                                     <div>
-                                        <label for="upazila" class="block text-sm font-medium text-gray-700 mb-1">Upazila/Area *</label>
+                                        <label for="upazila" class="block text-sm font-medium text-[#6b6b6b] mb-1">Upazila/Area *</label>
                                         <select id="upazila" name="upazila"
-                                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 @error('upazila') border-red-500 @enderror" required>
+                                                class="w-full rounded-lg border-gray-200 bg-white px-3 py-2.5 text-sm focus:border-brand-500 focus:ring-brand-500 @error('upazila') border-red-500 @enderror" required>
                                             <option value="">Select Upazila</option>
                                         </select>
                                         @error('upazila')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                                     </div>
                                     <div class="md:col-span-2">
-                                        <label for="shipping_address" class="block text-sm font-medium text-gray-700 mb-1">Full Address (Road, Area, Building) *</label>
+                                        <label for="shipping_address" class="block text-sm font-medium text-[#6b6b6b] mb-1">Full Address (Road, Area, Building) *</label>
                                         <textarea id="shipping_address" name="shipping_address" rows="3"
-                                                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 @error('shipping_address') border-red-500 @enderror" required>{{ old('shipping_address') }}</textarea>
+                                                  class="w-full rounded-lg border-gray-200 bg-white px-3 py-2.5 text-sm focus:border-brand-500 focus:ring-brand-500 @error('shipping_address') border-red-500 @enderror" required>{{ old('shipping_address') }}</textarea>
                                         @error('shipping_address')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                                     </div>
                                 </div>
@@ -139,36 +154,36 @@
                         </div>
 
                         <!-- Payment Methods -->
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="bg-white rounded-2xl border border-gray-100 shadow-card">
                             <div class="p-6">
-                                <h2 class="text-lg font-medium text-gray-900 mb-4">Payment Method</h2>
-                                <div class="space-y-4">
-                                    <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
-                                        <input type="radio" name="payment_method" value="cod" checked class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                <h2 class="text-lg font-bold text-[#1a1a1a] mb-4">Payment Method</h2>
+                                <div class="space-y-3">
+                                    <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50/30 transition-colors">
+                                        <input type="radio" name="payment_method" value="cod" checked class="h-4 w-4 text-brand-600 focus:ring-brand-500">
                                         <div class="ml-3">
-                                            <span class="text-sm font-medium text-gray-900">Cash on Delivery (COD)</span>
-                                            <p class="text-xs text-gray-500 mt-0.5">Pay when you receive your order. OTP verification required.</p>
+                                            <span class="text-sm font-semibold text-[#1a1a1a]">Cash on Delivery (COD)</span>
+                                            <p class="text-xs text-[#6b6b6b] mt-0.5">Pay when you receive your order. OTP verification required.</p>
                                         </div>
                                     </label>
-                                    <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
-                                        <input type="radio" name="payment_method" value="sslcommerz" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                    <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50/30 transition-colors">
+                                        <input type="radio" name="payment_method" value="sslcommerz" class="h-4 w-4 text-brand-600 focus:ring-brand-500">
                                         <div class="ml-3">
-                                            <span class="text-sm font-medium text-gray-900">SSLCommerz</span>
-                                            <p class="text-xs text-gray-500 mt-0.5">Pay via cards, mobile banking, or internet banking</p>
+                                            <span class="text-sm font-semibold text-[#1a1a1a]">SSLCommerz</span>
+                                            <p class="text-xs text-[#6b6b6b] mt-0.5">Pay via cards, mobile banking, or internet banking</p>
                                         </div>
                                     </label>
-                                    <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
-                                        <input type="radio" name="payment_method" value="bkash" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                    <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50/30 transition-colors">
+                                        <input type="radio" name="payment_method" value="bkash" class="h-4 w-4 text-brand-600 focus:ring-brand-500">
                                         <div class="ml-3">
-                                            <span class="text-sm font-medium text-gray-900">bKash</span>
-                                            <p class="text-xs text-gray-500 mt-0.5">Pay directly with your bKash account</p>
+                                            <span class="text-sm font-semibold text-[#1a1a1a]">bKash</span>
+                                            <p class="text-xs text-[#6b6b6b] mt-0.5">Pay directly with your bKash account</p>
                                         </div>
                                     </label>
-                                    <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-50">
-                                        <input type="radio" name="payment_method" value="nagad" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500">
+                                    <label class="flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:bg-gray-50 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50/30 transition-colors">
+                                        <input type="radio" name="payment_method" value="nagad" class="h-4 w-4 text-brand-600 focus:ring-brand-500">
                                         <div class="ml-3">
-                                            <span class="text-sm font-medium text-gray-900">Nagad</span>
-                                            <p class="text-xs text-gray-500 mt-0.5">Pay directly with your Nagad account</p>
+                                            <span class="text-sm font-semibold text-[#1a1a1a]">Nagad</span>
+                                            <p class="text-xs text-[#6b6b6b] mt-0.5">Pay directly with your Nagad account</p>
                                         </div>
                                     </label>
                                 </div>
@@ -178,67 +193,67 @@
 
                     <!-- Order Summary (same as before) -->
                     <div class="space-y-6">
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="bg-white rounded-2xl border border-gray-100 shadow-card">
                             <div class="p-6">
-                                <h2 class="text-lg font-medium text-gray-900 mb-4">Order Summary</h2>
+                                <h2 class="text-lg font-bold text-[#1a1a1a] mb-4">Order Summary</h2>
                                 <div class="space-y-3 mb-4">
                                     @foreach($cart->items as $item)
                                         <div class="flex items-center space-x-3">
                                             <div class="flex-shrink-0">
                                                 @if($item->product->image)
-                                                    <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-12 h-12 object-cover rounded">
+                                                    <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-12 h-12 object-cover rounded-lg">
                                                 @else
-                                                    <div class="w-12 h-12 bg-gray-200 rounded flex items-center justify-center"><span class="text-xs text-gray-500">No img</span></div>
+                                                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center"><span class="text-xs text-[#6b6b6b]">No img</span></div>
                                                 @endif
                                             </div>
                                             <div class="flex-1 min-w-0">
-                                                <p class="text-sm font-medium text-gray-900 truncate">{{ $item->product->name }}</p>
-                                                <p class="text-sm text-gray-500">Qty: {{ $item->quantity }}</p>
+                                                <p class="text-sm font-medium text-[#1a1a1a] truncate">{{ $item->product->name }}</p>
+                                                <p class="text-sm text-[#6b6b6b]">Qty: {{ $item->quantity }}</p>
                                             </div>
-                                            <div class="text-sm font-medium text-gray-900">{{ taka($item->subtotal) }}</div>
+                                            <div class="text-sm font-semibold text-[#1a1a1a]">{{ taka($item->subtotal) }}</div>
                                         </div>
                                     @endforeach
                                 </div>
 
-                                <div class="border-t border-gray-200 pt-4 space-y-2">
+                                <div class="border-t border-gray-100 pt-4 space-y-2">
                                     <div class="flex justify-between text-sm">
-                                        <span class="text-gray-600">Subtotal</span>
-                                        <span class="text-gray-900">{{ taka($cart->subtotal) }}</span>
+                                        <span class="text-[#6b6b6b]">Subtotal</span>
+                                        <span class="text-[#1a1a1a]">{{ taka($cart->subtotal) }}</span>
                                     </div>
                                     <div class="flex justify-between text-sm">
-                                        <span class="text-gray-600">Shipping</span>
-                                        <span class="text-gray-900">{{ taka($cart->shipping_amount) }}</span>
+                                        <span class="text-[#6b6b6b]">Shipping</span>
+                                        <span class="text-[#1a1a1a]">{{ taka($cart->shipping_amount) }}</span>
                                     </div>
                                     <div class="flex justify-between text-sm">
-                                        <span class="text-gray-600">Tax</span>
-                                        <span class="text-gray-900">{{ taka($cart->tax_amount) }}</span>
+                                        <span class="text-[#6b6b6b]">Tax</span>
+                                        <span class="text-[#1a1a1a]">{{ taka($cart->tax_amount) }}</span>
                                     </div>
                                     @if($cart->discount_amount > 0)
                                         <div class="flex justify-between text-sm">
-                                            <span class="text-gray-600">Discount</span>
-                                            <span class="text-green-600">-{{ taka($cart->discount_amount) }}</span>
+                                            <span class="text-[#6b6b6b]">Discount</span>
+                                            <span class="text-emerald-600">-{{ taka($cart->discount_amount) }}</span>
                                         </div>
                                     @endif
-                                    <div class="border-t border-gray-200 pt-2 flex justify-between text-lg font-medium">
-                                        <span class="text-gray-900">Total</span>
-                                        <span class="text-gray-900">{{ taka($cart->grand_total) }}</span>
+                                    <div class="border-t border-gray-100 pt-2 flex justify-between text-lg font-bold">
+                                        <span class="text-[#1a1a1a]">Total</span>
+                                        <span class="text-brand-600">{{ taka($cart->grand_total) }}</span>
                                     </div>
                                 </div>
 
                                 @if(config('shop.return_policy'))
-                                    <div class="mt-4 p-3 bg-gray-50 rounded-md text-xs text-gray-500">
+                                    <div class="mt-4 p-3 rounded-xl bg-gray-50 text-xs text-[#6b6b6b]">
                                         {{ config('shop.return_policy') }}
                                     </div>
                                 @endif
                             </div>
                         </div>
 
-                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md transition-colors">
-                            Place Order
+                        <button type="submit" class="w-full rounded-xl bg-gradient-to-r from-brand-600 to-brand-700 px-6 py-3.5 text-sm font-bold text-white hover:from-brand-700 hover:to-brand-800 transition-all duration-200 active:scale-[0.98] shadow-card">
+                            Place Order — {{ taka($cart->grand_total) }}
                         </button>
 
                         <div class="text-center">
-                            <a href="{{ route('cart.index') }}" class="text-sm text-gray-600 hover:text-gray-900">← Back to Cart</a>
+                            <a href="{{ route('cart.index') }}" class="text-sm text-[#6b6b6b] hover:text-brand-600 transition-colors">← Back to Cart</a>
                         </div>
                     </div>
                 </form>

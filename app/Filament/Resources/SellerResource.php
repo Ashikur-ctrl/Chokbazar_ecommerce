@@ -12,7 +12,7 @@ use Filament\Tables\Table;
 
 class SellerResource extends Resource
 {
-    public static function getNavigationIcon(): string | \BackedEnum | null { return 'heroicon-o-store'; }
+    public static function getNavigationIcon(): string | \BackedEnum | null { return 'heroicon-o-building-storefront'; }
 
     public static function getNavigationGroup(): string | \UnitEnum | null { return 'Marketplace'; }
 

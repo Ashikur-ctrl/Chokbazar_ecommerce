@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Order Confirmed | OmniOS Kinetic AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#76777d",
+                    "on-secondary-container": "#fefcff",
+                    "surface-container-high": "#e6e8ea",
+                    "secondary-container": "#316bf3",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed-variant": "#003ea8",
+                    "border-subtle": "rgba(15, 23, 42, 0.08)",
+                    "surface-variant": "#e0e3e5",
+                    "surface-bright": "#f7f9fb",
+                    "outline-variant": "#c6c6cd",
+                    "on-surface": "#191c1e",
+                    "on-background": "#191c1e",
+                    "primary": "#000000",
+                    "on-primary-fixed": "#131b2e",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "surface-dim": "#d8dadc",
+                    "tertiary-fixed": "#acedff",
+                    "primary-fixed": "#dae2fd",
+                    "primary-fixed-dim": "#bec6e0",
+                    "secondary": "#0051d5",
+                    "on-tertiary-fixed": "#001f26",
+                    "background": "#f7f9fb",
+                    "surface-container-highest": "#e0e3e5",
+                    "primary-container": "#131b2e",
+                    "surface-container-low": "#f2f4f6",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#2d3133",
+                    "on-secondary-fixed": "#00174b",
+                    "inverse-primary": "#bec6e0",
+                    "on-tertiary-fixed-variant": "#004e5c",
+                    "tertiary": "#000000",
+                    "tertiary-fixed-dim": "#4cd7f6",
+                    "on-surface-variant": "#45464d",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#dbe1ff",
+                    "surface-tint": "#565e74",
+                    "on-tertiary-container": "#0090a9",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "glass-bg": "rgba(255, 255, 255, 0.7)",
+                    "error": "#ba1a1a",
+                    "surface": "#f7f9fb",
+                    "on-error-container": "#93000a",
+                    "inverse-on-surface": "#eff1f3",
+                    "tertiary-container": "#001f26",
+                    "surface-dark": "#020617",
+                    "secondary-fixed-dim": "#b4c5ff",
+                    "surface-container": "#eceef0",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-container": "#7c839b",
+                    "success": "#22C55E"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-gap": "80px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "mono-label": ["JetBrains Mono"],
+                    "body-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["36px", {"lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "mono-label": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .linear-shadow {
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.05);
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(15, 23, 42, 0.08);
+      }
+      .stepper-line {
+        height: 2px;
+        background: #e0e3e5;
+        flex: 1;
+        margin: 0 12px;
+      }
+      .stepper-line.active {
+        background: #0051d5;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- TopNavBar (Shared Component: COMPONENTS_3) -->
+<nav class="fixed top-0 w-full z-50 bg-glass-bg backdrop-blur-md border-b border-subtle shadow-sm h-16">
+<div class="flex justify-between items-center px-gutter max-w-container-max mx-auto h-full">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold tracking-tight text-on-surface">OmniOS</span>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md" href="#">Marketplace</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md" href="#">Inventory</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md" href="#">Analytics</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md" href="#">Logistics</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-primary">shopping_cart</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-primary">account_circle</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-section-gap px-4 md:px-gutter max-w-4xl mx-auto">
+<!-- Hero Section -->
+<section class="text-center mb-12">
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-success/10 text-success mb-6">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h1 class="font-display-lg text-display-lg mb-2">Order Confirmed</h1>
+<p class="font-mono-label text-mono-label text-on-surface-variant uppercase tracking-widest">Order ID: #KNC-2024-8892</p>
+</section>
+<!-- Centerpiece Animation -->
+<section class="relative w-full h-[400px] mb-16 rounded-xl overflow-hidden bg-surface-container-lowest linear-shadow flex items-center justify-center">
+<!-- STITCH_THREEJS_START:ANIMATION_10 class="absolute inset-0 w-full h-full" -->
+<div class="absolute inset-0 w-full h-full" style="display:block;">
+<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+<div id="threejs-container-ANIMATION_10" style="width:100%;height:100%"></div>
+<script>
+(function() {
+  const container = document.getElementById('threejs-container-ANIMATION_10');
+  const devicePixelRatio = window.devicePixelRatio || 1;
+  
+const width = container.clientWidth || window.innerWidth;
+const height = container.clientHeight || window.innerHeight;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+renderer.setSize(width, height);
+renderer.setPixelRatio(window.devicePixelRatio);
+container.appendChild(renderer.domElement);
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0x2563EB, 1);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
+
+// Create a premium "Package" box
+const geometry = new THREE.BoxGeometry(2, 1.2, 2);
+
+// Custom "Kinetic" blue material with subtle glow
+const material = new THREE.MeshPhongMaterial({
+    color: 0x0F172A,
+    specular: 0x2563EB,
+    shininess: 100,
+    transparent: true,
+    opacity: 0.9
+});
+
+const box = new THREE.Mesh(geometry, material);
+scene.add(box);
+
+// Add some "tape" or details to the box using simple lines/planes
+const tapeGeometry = new THREE.PlaneGeometry(2.1, 0.3);
+const tapeMaterial = new THREE.MeshPhongMaterial({ color: 0x2563EB, side: THREE.DoubleSide });
+const tape = new THREE.Mesh(tapeGeometry, tapeMaterial);
+tape.position.y = 0.55;
+tape.rotation.x = Math.PI / 2;
+box.add(tape);
+
+const tapeVertical = new THREE.Mesh(new THREE.PlaneGeometry(0.3, 1.3), tapeMaterial);
+tapeVertical.position.z = 1.01;
+box.add(tapeVertical);
+
+camera.position.z = 5;
+camera.position.y = 1;
+camera.lookAt(0, 0, 0);
+
+// Animation Loop
+function animate() {
+    requestAnimationFrame(animate);
+    
+    // Floating and rotating motion
+    box.rotation.y += 0.005;
+    box.rotation.x += 0.002;
+    box.position.y = Math.sin(Date.now() * 0.002) * 0.1;
+    
+    renderer.render(scene, camera);
+}
+
+animate();
+
+// Handle Resize
+window.addEventListener('resize', () => {
+    const newWidth = container.clientWidth || window.innerWidth;
+    const newHeight = container.clientHeight || window.innerHeight;
+    camera.aspect = newWidth / newHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(newWidth, newHeight);
+});
+
+// Cleanup (handled by platform, but good practice)
+return () => {
+    renderer.dispose();
+    geometry.dispose();
+    material.dispose();
+};
+
+})();
+</script>
+</div>
+<!-- STITCH_THREEJS_END:ANIMATION_10 -->
+<!-- Overlay visual cue for interactivity -->
+<div class="absolute bottom-6 left-6 flex items-center gap-2 px-3 py-1.5 bg-white/80 backdrop-blur-sm rounded-full border border-subtle">
+<span class="material-symbols-outlined text-sm">3d_rotation</span>
+<span class="text-label-sm font-label-sm">Interactive Package View</span>
+</div>
+</section>
+<!-- Status & Estimate -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-16">
+<div class="md:col-span-2 glass-card rounded-xl p-8 linear-shadow">
+<h3 class="font-headline-md text-headline-md mb-8">Order Journey</h3>
+<!-- Stepper -->
+<div class="flex items-center justify-between mb-12">
+<div class="flex flex-col items-center gap-3 relative">
+<div class="w-10 h-10 rounded-full bg-secondary text-on-secondary flex items-center justify-center z-10">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-secondary">Confirmed</span>
+</div>
+<div class="stepper-line active"></div>
+<div class="flex flex-col items-center gap-3 relative">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 text-secondary flex items-center justify-center z-10 border-2 border-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Processing</span>
+</div>
+<div class="stepper-line"></div>
+<div class="flex flex-col items-center gap-3 relative opacity-40">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center z-10">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<span class="font-label-sm text-label-sm">Shipping</span>
+</div>
+<div class="stepper-line"></div>
+<div class="flex flex-col items-center gap-3 relative opacity-40">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center z-10">
+<span class="material-symbols-outlined">home_pin</span>
+</div>
+<span class="font-label-sm text-label-sm">Delivery</span>
+</div>
+</div>
+<div class="bg-secondary-container/5 border border-secondary/10 rounded-lg p-6 flex items-start gap-4">
+<span class="material-symbols-outlined text-secondary">auto_awesome</span>
+<div>
+<h4 class="font-label-sm text-label-sm font-bold text-secondary uppercase tracking-tight">AI Estimate</h4>
+<p class="font-body-lg text-body-lg mt-1">Expected arrival: <span class="font-bold">tomorrow, Oct 25th by 2:00 PM</span>.</p>
+</div>
+</div>
+</div>
+<!-- AI Insights Card -->
+<div class="glass-card rounded-xl p-8 linear-shadow flex flex-col">
+<h3 class="font-headline-md text-headline-md mb-6">What's Next</h3>
+<div class="space-y-6 flex-grow">
+<div class="flex gap-4 group cursor-pointer">
+<div class="mt-1">
+<span class="material-symbols-outlined text-secondary group-hover:scale-110 transition-transform">school</span>
+</div>
+<div>
+<p class="font-body-md text-body-md leading-snug">Your Neural Processor setup guide is ready.</p>
+<span class="text-secondary font-label-sm text-label-sm hover:underline">Open Guide</span>
+</div>
+</div>
+<div class="flex gap-4 group cursor-pointer">
+<div class="mt-1">
+<span class="material-symbols-outlined text-success group-hover:scale-110 transition-transform">eco</span>
+</div>
+<div>
+<p class="font-body-md text-body-md leading-snug">Track your carbon impact for this delivery.</p>
+<span class="text-success font-label-sm text-label-sm hover:underline">View Dashboard</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-subtle">
+<p class="text-on-surface-variant text-label-sm font-label-sm">System Status: <span class="text-success">All Nodes Active</span></p>
+</div>
+</div>
+</div>
+<!-- Order Summary -->
+<section class="mb-16">
+<h3 class="font-headline-md text-headline-md mb-6 px-2">Purchase Details</h3>
+<div class="glass-card rounded-xl overflow-hidden linear-shadow">
+<div class="divide-y divide-subtle">
+<!-- Item 1 -->
+<div class="p-6 flex items-center gap-6 bg-white/40">
+<div class="w-20 h-20 bg-surface-container rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional studio product shot of a futuristic Neural Processor chip with glowing blue circuitry paths and a brushed titanium finish, set against a clean white minimalist background in light-mode aesthetic. High-end hardware industrial design with soft shadows and sharp focus on intricate technical details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANANt-DRJklOAaDpnT8cO1jLkZp-IgshuP8cyBVHJgfHS1HcZMbc3mMBrpQWlJLne2HBaUMcR67S5-zi_n4Jt8qCGRzdnHMWI4l7LuxPiE5CoUWuIyrmJ04M9K6THyL9v8mLA-55JZyZhogWmqCixG3-yzMhjBIVxGEvQ1xMgKyG-2ZOuTjgzsI_MtmrblFKPSN4iio5ewQ0J9BGu-m4jXy_Dos7rypWd-4ipy8gU-Nz3gjWkUMBo8-zpagj6FzPiMxMPRysAYuaY"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-body-lg text-body-lg font-semibold">Neural Processor V2</h4>
+<p class="text-on-surface-variant font-label-sm text-label-sm">OmniCore Series • Enterprise Edition</p>
+</div>
+<span class="font-mono-label text-body-md font-bold">$1,299.00</span>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="p-6 flex items-center gap-6 bg-white/40">
+<div class="w-20 h-20 bg-surface-container rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A sleek minimalist ergonomic task chair with white mesh backing and polished chrome supports, featuring fluid organic curves. The lighting is bright and airy, typical of a modern executive workspace design. Soft daylight illuminates the chair's high-quality fabrics and precision-engineered base against a neutral grey floor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAADqTiYO2Z9SCvLVqF67Ck4GJNxejlI-r1eBwOJ9Vzvv2a5IXm1WZHwbH1bxkTH7imIKxi16BPdR6JQP92jIGwmN8O75OGLCeEBTJN69iHeXFjsH3qTRnAlTf5Pn5UPx3ei_F72BoEbwoUFGM2UwopZuTrlf_FVKVvTHbP3LXnGkP46sMklaiyvhehbfTme2MU9dG8_eNxVMZTopuwx90EUw33OjDDxHuEnoHLIIX2rTMTLbS-6rEtU54BVekRbJ3Z_IeWLG7TTfA"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-body-lg text-body-lg font-semibold">Aero Chair Elite</h4>
+<p class="text-on-surface-variant font-label-sm text-label-sm">Lunar Grey • Adaptive Support</p>
+</div>
+<span class="font-mono-label text-body-md font-bold">$849.00</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-8 bg-surface-container-low/50">
+<div class="flex justify-between mb-2">
+<span class="text-on-surface-variant">Subtotal</span>
+<span class="font-mono-label">$2,148.00</span>
+</div>
+<div class="flex justify-between mb-4">
+<span class="text-on-surface-variant">Priority Logistics</span>
+<span class="font-mono-label">Free</span>
+</div>
+<div class="flex justify-between pt-4 border-t border-subtle">
+<span class="font-headline-md text-headline-md">Total Paid</span>
+<span class="font-headline-md text-headline-md text-secondary">$2,148.00</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Final Actions -->
+<div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+<button class="w-full md:w-auto px-12 py-4 bg-secondary text-on-secondary rounded-full font-body-lg font-bold hover:bg-on-secondary-fixed-variant transition-all active:scale-95 shadow-lg shadow-secondary/20">
+                Track Order
+            </button>
+<button class="w-full md:w-auto px-12 py-4 bg-transparent border-2 border-subtle hover:bg-surface-container text-on-surface rounded-full font-body-lg font-semibold transition-all active:scale-95">
+                Return to Home
+            </button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-subtle py-12">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-1">
+<span class="font-headline-md text-headline-md font-bold text-primary">OmniOS</span>
+<p class="mt-4 text-on-surface-variant font-label-sm text-label-sm">Precision engineered logistics and AI computing solutions for the modern enterprise.</p>
+</div>
+<div>
+<h5 class="font-label-sm text-label-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">Support</h5>
+<ul class="space-y-4 font-body-md text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Help Center</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Shipping Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Returns</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-sm text-label-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">Company</h5>
+<ul class="space-y-4 font-body-md text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Sustainability</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Privacy</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-label-sm text-label-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">Newsletter</h5>
+<div class="flex gap-2">
+<input class="bg-surface-container border-none rounded-lg font-label-sm px-4 flex-grow focus:ring-2 focus:ring-secondary/20" placeholder="Email" type="email"/>
+<button class="p-2 bg-primary text-white rounded-lg">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-gutter mt-12 pt-8 border-t border-subtle flex flex-col md:flex-row justify-between items-center gap-4 text-on-surface-variant text-label-sm font-label-sm">
+<p>© 2024 OmniOS Kinetic AI. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors" href="#">Twitter</a>
+<a class="hover:text-primary transition-colors" href="#">LinkedIn</a>
+<a class="hover:text-primary transition-colors" href="#">GitHub</a>
+</div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                // Subtle lift or scale effect can be added here
+            });
+        });
+
+        // Simulating some content loading or dynamic AI updates
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log("OmniOS Order Confirmation Initialized.");
+            // We could trigger some subtle CSS transitions here if needed
+        });
+    </script>
+</body></html>

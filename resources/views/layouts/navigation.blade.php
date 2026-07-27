@@ -43,11 +43,11 @@
                         <a href="{{ route('dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 transition duration-150 ease-in-out {{ request()->routeIs('dashboard') ? 'border-brand-500 text-brand-600' : '' }}">
                             Dashboard
                         </a>
-                        <a href="{{ route('orders.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out {{ request()->routeIs('orders.*') ? 'border-indigo-400 text-gray-900' : '' }}">
+                        <a href="{{ route('orders.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 transition duration-150 ease-in-out {{ request()->routeIs('orders.*') ? 'border-brand-500 text-brand-600' : '' }}">
                             Orders
                         </a>
                         @if(auth()->user()->isAdmin())
-                            <a href="{{ route('admin-legacy.dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out {{ request()->routeIs('admin-legacy.*') ? 'border-indigo-400 text-gray-900' : '' }}">
+                            <a href="{{ route('admin-legacy.dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-bold leading-5 text-slate-600 hover:text-brand-600 hover:border-brand-300 transition duration-150 ease-in-out {{ request()->routeIs('admin-legacy.*') ? 'border-brand-500 text-brand-600' : '' }}">
                                 Admin
                             </a>
                         @endif
@@ -107,27 +107,27 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <a href="{{ route('shop.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('shop.*') ? 'border-indigo-400 text-indigo-700 bg-indigo-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
+            <a href="{{ route('shop.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('shop.*') ? 'border-brand-400 text-brand-700 bg-brand-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
                 Shop
             </a>
-            <a href="{{ route('cart.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('cart.*') ? 'border-indigo-400 text-indigo-700 bg-indigo-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
+            <a href="{{ route('cart.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('cart.*') ? 'border-brand-400 text-brand-700 bg-brand-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
                 Cart
                 @auth
                     <span id="cart-count-mobile" class="ml-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full hidden">0</span>
                 @endauth
             </a>
             @auth
-                <a href="{{ route('dashboard') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('dashboard') ? 'border-indigo-400 text-indigo-700 bg-indigo-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
+                <a href="{{ route('dashboard') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('dashboard') ? 'border-brand-400 text-brand-700 bg-brand-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
                     Dashboard
                 </a>
-                <a href="{{ route('orders.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('orders.*') ? 'border-indigo-400 text-indigo-700 bg-indigo-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
+                <a href="{{ route('orders.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('orders.*') ? 'border-brand-400 text-brand-700 bg-brand-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
                     Orders
                 </a>
                 <a href="{{ route('wishlist.index') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('wishlist.*') ? 'border-brand-400 text-brand-700 bg-brand-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
                     Wishlist
                 </a>
                 @if(auth()->user()->isAdmin())
-                    <a href="{{ route('admin-legacy.dashboard') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin-legacy.*') ? 'border-indigo-400 text-indigo-700 bg-indigo-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
+                    <a href="{{ route('admin-legacy.dashboard') }}" class="block pl-3 pr-4 py-2 border-l-4 text-base font-medium {{ request()->routeIs('admin-legacy.*') ? 'border-brand-400 text-brand-700 bg-brand-50' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} transition duration-150 ease-in-out">
                         Admin
                     </a>
                 @endif

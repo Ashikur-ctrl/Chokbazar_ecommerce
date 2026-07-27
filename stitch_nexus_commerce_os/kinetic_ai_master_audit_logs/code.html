@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Audit Trail Logs | Kinetic AI Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#eceef0",
+                    "surface-bright": "#f7f9fb",
+                    "secondary-container": "#316bf3",
+                    "on-secondary-fixed-variant": "#003ea8",
+                    "on-tertiary-fixed-variant": "#004e5c",
+                    "surface-container-low": "#f2f4f6",
+                    "on-background": "#191c1e",
+                    "surface-dark": "#020617",
+                    "surface-dim": "#d8dadc",
+                    "success": "#22C55E",
+                    "on-surface": "#191c1e",
+                    "surface-variant": "#e0e3e5",
+                    "background": "#f7f9fb",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed": "#001f26",
+                    "on-surface-variant": "#45464d",
+                    "primary-container": "#131b2e",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "secondary-fixed": "#dbe1ff",
+                    "error": "#ba1a1a",
+                    "on-primary-container": "#7c839b",
+                    "error-container": "#ffdad6",
+                    "outline": "#76777d",
+                    "primary": "#000000",
+                    "on-tertiary-container": "#0090a9",
+                    "on-primary-fixed": "#131b2e",
+                    "surface-tint": "#565e74",
+                    "primary-fixed": "#dae2fd",
+                    "tertiary-container": "#001f26",
+                    "on-primary": "#ffffff",
+                    "outline-variant": "#c6c6cd",
+                    "tertiary": "#000000",
+                    "secondary": "#0051d5",
+                    "on-secondary-container": "#fefcff",
+                    "on-error-container": "#93000a",
+                    "glass-bg": "rgba(255, 255, 255, 0.7)",
+                    "surface": "#f7f9fb",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-secondary-fixed": "#00174b",
+                    "border-subtle": "rgba(15, 23, 42, 0.08)",
+                    "tertiary-fixed-dim": "#4cd7f6",
+                    "tertiary-fixed": "#acedff",
+                    "surface-container-high": "#e6e8ea",
+                    "inverse-surface": "#2d3133",
+                    "secondary-fixed-dim": "#b4c5ff",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#e0e3e5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "container-max": "1440px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "section-gap": "80px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "mono-label": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["13px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "mono-label": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+        .high-density-row:hover {
+            background-color: #f1f5f9;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-glass-bg backdrop-blur-md border-b border-subtle shadow-sm h-16">
+<div class="flex justify-between items-center px-gutter max-w-container-max mx-auto h-full">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold tracking-tight text-on-surface">OmniOS</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Marketplace</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Inventory</a>
+<a class="text-secondary font-semibold border-b-2 border-secondary pb-1 font-body-md text-body-md" href="#">Analytics</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Logistics</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border-none rounded-lg text-label-sm font-label-sm w-64 focus:ring-2 focus:ring-secondary/20" placeholder="Global search..." type="text"/>
+</div>
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant">shopping_cart</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex pt-16 h-screen">
+<!-- SideNavBar -->
+<aside class="h-full w-64 fixed left-0 top-16 bg-surface border-r border-subtle hidden lg:flex flex-col gap-unit py-6 px-4">
+<div class="flex items-center gap-3 px-2 mb-6">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm font-bold text-on-surface">Acme Corp</p>
+<p class="text-[11px] text-on-surface-variant">Enterprise Plan</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-transform duration-200 hover:translate-x-1 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 bg-secondary-container/10 text-secondary font-bold rounded-lg transition-transform duration-200 hover:translate-x-1 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">precision_manufacturing</span>
+                    Operations
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-transform duration-200 hover:translate-x-1 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+                    Catalog
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-transform duration-200 hover:translate-x-1 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+                    Customers
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-transform duration-200 hover:translate-x-1 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+                    AI Insights
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-transform duration-200 hover:translate-x-1 font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                    Settings
+                </a>
+</nav>
+<div class="mt-auto">
+<button class="w-full py-3 bg-secondary text-on-secondary rounded-lg font-label-sm text-label-sm font-semibold flex items-center justify-center gap-2 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                    New Command
+                </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 lg:ml-64 p-gutter overflow-y-auto">
+<div class="max-w-container-max mx-auto space-y-6">
+<!-- Breadcrumbs & Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="space-y-1">
+<nav class="flex items-center gap-2 text-on-surface-variant text-[12px] font-medium uppercase tracking-wider">
+<span>Admin</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span>Analytics</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-secondary">Audit Logs</span>
+</nav>
+<h1 class="font-display-lg text-display-lg text-primary-container tracking-tight">Audit Trail Logs</h1>
+<p class="text-on-surface-variant font-body-md text-body-md">Expanded system ledger and AI override history.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 py-2 bg-surface border border-subtle rounded-lg text-label-sm font-label-sm hover:bg-surface-container-low transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                            Download PDF
+                        </button>
+<button class="px-4 py-2 bg-secondary text-white rounded-lg text-label-sm font-label-sm hover:bg-blue-700 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">ios_share</span>
+                            Export CSV
+                        </button>
+</div>
+</div>
+<!-- Filters Bento -->
+<section class="glass-panel rounded-xl p-6 shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Search -->
+<div class="flex flex-col gap-2">
+<label class="text-label-sm font-bold text-on-surface px-1">Semantic Search</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-white border border-subtle rounded-lg text-label-sm focus:ring-2 focus:ring-secondary/10 outline-none" placeholder="Search by ID, User, or Event..." type="text"/>
+</div>
+</div>
+<!-- Date Range -->
+<div class="flex flex-col gap-2">
+<label class="text-label-sm font-bold text-on-surface px-1">Time Period</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">calendar_today</span>
+<input class="w-full pl-10 pr-4 py-2 bg-white border border-subtle rounded-lg text-label-sm cursor-pointer hover:bg-surface-container-low transition-colors outline-none" readonly="" type="text" value="Oct 24, 2023 - Oct 31, 2023"/>
+</div>
+</div>
+<!-- Multi-select Filter -->
+<div class="flex flex-col gap-2">
+<label class="text-label-sm font-bold text-on-surface px-1">Severity &amp; Source</label>
+<div class="flex gap-2">
+<select class="flex-1 px-3 py-2 bg-white border border-subtle rounded-lg text-label-sm focus:ring-2 focus:ring-secondary/10 outline-none">
+<option>All Severities</option>
+<option>High</option>
+<option>Medium</option>
+<option>Low</option>
+</select>
+<select class="flex-1 px-3 py-2 bg-white border border-subtle rounded-lg text-label-sm focus:ring-2 focus:ring-secondary/10 outline-none">
+<option>All Sources</option>
+<option>AI_CMD</option>
+<option>SYS_LVL</option>
+<option>SEC_AUTH</option>
+</select>
+</div>
+</div>
+<!-- Status Filter -->
+<div class="flex flex-col gap-2">
+<label class="text-label-sm font-bold text-on-surface px-1">Action Type</label>
+<div class="flex items-center gap-2">
+<select class="w-full px-3 py-2 bg-white border border-subtle rounded-lg text-label-sm focus:ring-2 focus:ring-secondary/10 outline-none">
+<option>All Actions</option>
+<option>Override</option>
+<option>Access</option>
+<option>Update</option>
+<option>Deletion</option>
+</select>
+<button class="p-2 bg-surface-container-low hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Log Table Container -->
+<section class="bg-white border border-subtle rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full border-collapse text-left">
+<thead class="bg-primary-container text-on-primary-container">
+<tr>
+<th class="px-6 py-4 font-bold text-label-sm uppercase tracking-wider">Timestamp</th>
+<th class="px-6 py-4 font-bold text-label-sm uppercase tracking-wider">Source/User</th>
+<th class="px-6 py-4 font-bold text-label-sm uppercase tracking-wider">Event Description</th>
+<th class="px-6 py-4 font-bold text-label-sm uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 font-bold text-label-sm uppercase tracking-wider">Reference ID</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-subtle">
+<!-- Row 1 -->
+<tr class="high-density-row transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-mono-label text-mono-label text-on-surface">2023-10-31T14:22:05Z</span>
+<span class="text-[11px] text-outline font-medium">2 mins ago</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full">AI_CMD</span>
+<span class="text-label-sm text-on-surface">NeuralPath-4</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-label-sm text-on-surface-variant max-w-md line-clamp-1">Adjusted regional threshold for London-NW logistics cluster to optimize delivery latency.</p>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-success">
+<span class="w-2 h-2 rounded-full bg-success"></span>
+<span class="text-label-sm font-bold">Success</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<a class="text-secondary font-mono-label hover:underline" href="#">#AX922</a>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-surface-container-low rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="high-density-row transition-colors bg-error-container/5">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-mono-label text-mono-label text-on-surface">2023-10-31T14:18:12Z</span>
+<span class="text-[11px] text-outline font-medium">6 mins ago</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-bold rounded-full">SEC_AUTH</span>
+<span class="text-label-sm text-on-surface">Admin_Root</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-label-sm text-on-surface-variant max-w-md">Multiple failed login attempts detected from unrecognized IP 192.168.1.104. Geo-block engaged.</p>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-error">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="text-label-sm font-bold">Failure</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<a class="text-secondary font-mono-label hover:underline" href="#">#ER041</a>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-surface-container-low rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="high-density-row transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-mono-label text-mono-label text-on-surface">2023-10-31T13:45:30Z</span>
+<span class="text-[11px] text-outline font-medium">39 mins ago</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] font-bold rounded-full">SYS_LVL</span>
+<span class="text-label-sm text-on-surface">AutoScaler_V3</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-label-sm text-on-surface-variant max-w-md line-clamp-1">Database migration complete for schema 'V2_Customers_PII'. All instances synced.</p>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-success">
+<span class="w-2 h-2 rounded-full bg-success"></span>
+<span class="text-label-sm font-bold">Success</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<a class="text-secondary font-mono-label hover:underline" href="#">#SY883</a>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-surface-container-low rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="high-density-row transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-mono-label text-mono-label text-on-surface">2023-10-31T13:12:00Z</span>
+<span class="text-[11px] text-outline font-medium">1.2 hours ago</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full">AI_CMD</span>
+<span class="text-label-sm text-on-surface">PredictiveSentry</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-label-sm text-on-surface-variant max-w-md line-clamp-1">Initiated proactive kernel patch on Node-B12 following drift detection in I/O patterns.</p>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-amber-500">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+<span class="text-label-sm font-bold">Warning</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<a class="text-secondary font-mono-label hover:underline" href="#">#PX002</a>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-surface-container-low rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="high-density-row transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-mono-label text-mono-label text-on-surface">2023-10-31T12:05:55Z</span>
+<span class="text-[11px] text-outline font-medium">2.3 hours ago</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-slate-100 text-slate-700 text-[10px] font-bold rounded-full">SYS_LVL</span>
+<span class="text-label-sm text-on-surface">System_Default</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-label-sm text-on-surface-variant max-w-md line-clamp-1">Regular weekly backup sequence initiated. Targets: Cloud-Archive-Alpha.</p>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-success">
+<span class="w-2 h-2 rounded-full bg-success"></span>
+<span class="text-label-sm font-bold">Success</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<a class="text-secondary font-mono-label hover:underline" href="#">#BK551</a>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-surface-container-low rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="high-density-row transition-colors">
+<td class="px-6 py-4">
+<div class="flex flex-col">
+<span class="font-mono-label text-mono-label text-on-surface">2023-10-31T10:44:02Z</span>
+<span class="text-[11px] text-outline font-medium">4 hours ago</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full">AI_CMD</span>
+<span class="text-label-sm text-on-surface">NeuralPath-4</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<p class="text-label-sm text-on-surface-variant max-w-md line-clamp-1">Re-routed traffic to backup gateway for EMEA sector following connectivity spike.</p>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2 text-success">
+<span class="w-2 h-2 rounded-full bg-success"></span>
+<span class="text-label-sm font-bold">Success</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<a class="text-secondary font-mono-label hover:underline" href="#">#AX819</a>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="p-1 hover:bg-surface-container-low rounded transition-colors">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-surface-bright flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-subtle">
+<span class="text-label-sm text-on-surface-variant font-medium">Showing <span class="text-on-surface font-bold">1 - 25</span> of 2,492 entries</span>
+<div class="flex items-center gap-1">
+<button class="p-2 border border-subtle rounded-lg hover:bg-surface-container-low text-on-surface-variant transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 bg-secondary text-white rounded-lg text-label-sm font-bold">1</button>
+<button class="w-10 h-10 hover:bg-surface-container-low rounded-lg text-label-sm font-medium transition-colors">2</button>
+<button class="w-10 h-10 hover:bg-surface-container-low rounded-lg text-label-sm font-medium transition-colors">3</button>
+<span class="px-2 text-on-surface-variant">...</span>
+<button class="w-10 h-10 hover:bg-surface-container-low rounded-lg text-label-sm font-medium transition-colors">100</button>
+<button class="p-2 border border-subtle rounded-lg hover:bg-surface-container-low text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-label-sm text-on-surface-variant">Jump to page</span>
+<input class="w-16 px-2 py-1.5 border border-subtle rounded-lg text-label-sm text-center focus:ring-2 focus:ring-secondary/10 outline-none" type="number" value="1"/>
+</div>
+</div>
+</section>
+<!-- Status Legend / Footer Info -->
+<div class="flex flex-wrap gap-x-8 gap-y-4 pt-4 border-t border-subtle opacity-80">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded bg-success"></span>
+<span class="text-label-sm text-on-surface-variant font-medium">No critical overrides pending</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded bg-amber-500"></span>
+<span class="text-label-sm text-on-surface-variant font-medium">System performance under watch</span>
+</div>
+<div class="flex items-center gap-2 text-secondary hover:underline cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">live_help</span>
+<span class="text-label-sm font-medium">Audit documentation</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interaction Script -->
+<script>
+        // Simple hover effect for table rows
+        const rows = document.querySelectorAll('.high-density-row');
+        rows.forEach(row => {
+            row.addEventListener('click', () => {
+                // Future expansion: open detail sidebar/modal
+                console.log('Opening details for row...');
+            });
+        });
+
+        // Search highlight simulation
+        const searchInput = document.querySelector('input[placeholder*="Search by ID"]');
+        searchInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if (text.includes(val)) {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body></html>

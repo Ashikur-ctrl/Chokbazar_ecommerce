@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Rate limiter for 1688 product import source
+        RateLimiter::for('source-1688-fetch', function ($job) {
+            return Limit::perMinute(30);
+        });
+
         // Query logging for local development
         if (app()->environment('local')) {
             DB::listen(function ($query) {

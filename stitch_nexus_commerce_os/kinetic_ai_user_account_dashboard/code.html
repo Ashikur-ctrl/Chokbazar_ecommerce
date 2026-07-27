@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Dashboard | Kinetic AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "tertiary": "#000000",
+                        "tertiary-fixed": "#acedff",
+                        "on-tertiary-fixed-variant": "#004e5c",
+                        "inverse-on-surface": "#eff1f3",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#fefcff",
+                        "secondary": "#0051d5",
+                        "surface-container": "#eceef0",
+                        "surface-bright": "#f7f9fb",
+                        "tertiary-fixed-dim": "#4cd7f6",
+                        "on-surface-variant": "#45464d",
+                        "inverse-surface": "#2d3133",
+                        "secondary-container": "#316bf3",
+                        "outline-variant": "#c6c6cd",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#131b2e",
+                        "secondary-fixed": "#dbe1ff",
+                        "on-background": "#191c1e",
+                        "surface-dark": "#020617",
+                        "surface-container-highest": "#e0e3e5",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#0090a9",
+                        "primary-fixed-dim": "#bec6e0",
+                        "inverse-primary": "#bec6e0",
+                        "outline": "#76777d",
+                        "surface-dim": "#d8dadc",
+                        "primary": "#000000",
+                        "glass-bg": "rgba(255, 255, 255, 0.7)",
+                        "success": "#22C55E",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "surface-variant": "#e0e3e5",
+                        "surface-container-high": "#e6e8ea",
+                        "on-primary-container": "#7c839b",
+                        "on-secondary-fixed": "#00174b",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#001f26",
+                        "surface-container-low": "#f2f4f6",
+                        "border-subtle": "rgba(15, 23, 42, 0.08)",
+                        "on-surface": "#191c1e",
+                        "surface-tint": "#565e74",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#131b2e",
+                        "surface": "#f7f9fb",
+                        "primary-fixed": "#dae2fd",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "on-tertiary-fixed": "#001f26",
+                        "background": "#f7f9fb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "container-max": "1440px",
+                        "gutter": "24px",
+                        "section-gap": "80px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Inter"],
+                        "mono-label": ["JetBrains Mono"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["36px", { "lineHeight": "42px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "mono-label": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                        "label-sm": ["13px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+            color: #191c1e;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+        }
+        .linear-shadow {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab {
+            background: rgba(49, 107, 243, 0.1);
+            color: #0051d5;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-xl bg-glass-bg border-b border-border-subtle shadow-sm">
+<div class="flex items-center justify-between px-gutter py-unit h-16 max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg tracking-tighter text-primary">Kinetic AI</span>
+<div class="hidden md:flex items-center bg-surface-container-low px-4 py-2 rounded-full border border-border-subtle w-96">
+<span class="material-symbols-outlined text-outline mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full p-0" placeholder="Search products, orders, or AI insights..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full border border-secondary p-0.5 overflow-hidden active:scale-95 transition-transform cursor-pointer">
+<img class="w-full h-full object-cover rounded-full" data-alt="A clean, professional portrait of a tech-savvy male executive with short dark hair and a friendly expression, set against a minimalist studio background with soft directional lighting. The aesthetic is high-end, featuring a crisp white shirt and a blurred architectural backdrop in neutral tones, reflecting Kinetic AI's premium brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0K71STjrXCPery94Bxxftg8vLyHjW8SXDQWoG6NSAIw-E6PqLZlCZphxEaoVKusfagIDI2eOl-La5ufHjgo3r-yNo29BykWywQ9XJ_QiaeGMiPRiodOGdKpRFEktopF55EtUYdh9zQ1rNckSGWxJg7_gHQlykqBm0Z31p3ENg1prjjoopF2oRz_r5R0iXdoxxmamyarIXzSKrH1jzvUm4u9PHoxhnbVGglK5DKLxT0OSA-vOnfTsN67KHAPo-IVMYutrNrJgcEM0"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Sidebar & Content Wrapper -->
+<div class="flex pt-16 min-h-screen">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 bg-surface-container-lowest border-r border-border-subtle pt-20 flex flex-col p-4 gap-2">
+<div class="px-4 mb-6">
+<h2 class="font-headline-md text-headline-md text-primary">Overview</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Personal Command Center</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2 bg-secondary-container/10 text-secondary rounded-lg font-medium transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-sm text-label-sm">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label-sm text-label-sm">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-label-sm text-label-sm">AI Recommendations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">location_on</span>
+<span class="font-label-sm text-label-sm">Addresses</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-low rounded-lg transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 flex flex-col gap-1">
+<button class="w-full py-3 bg-secondary text-on-secondary rounded-xl font-medium text-label-sm flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+                    Launch AI Campaign
+                </button>
+<div class="flex flex-col gap-1 mt-4">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-secondary font-mono-label text-mono-label uppercase tracking-widest transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+                        Support
+                    </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-secondary font-mono-label text-mono-label uppercase tracking-widest transition-colors" href="#">
+<span class="material-symbols-outlined">description</span>
+                        Documentation
+                    </a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 flex-1 p-gutter bg-surface">
+<div class="max-w-6xl mx-auto space-y-gutter">
+<!-- Greeting & Summary Bento -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Welcome Card -->
+<div class="md:col-span-2 glass-card rounded-xl p-8 flex flex-col justify-between linear-shadow relative overflow-hidden h-64">
+
+<div class="relative z-10">
+<h1 class="font-display-lg text-display-lg tracking-tight mb-2">Welcome back, John.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">Your Kinetic AI engine has analyzed 42 new market signals since your last visit.</p>
+</div>
+<div class="relative z-10 flex gap-4">
+<div class="bg-secondary/10 px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">trending_up</span>
+<span class="text-secondary font-medium text-label-sm">Smart Shopping Active</span>
+</div>
+<div class="bg-success/10 px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-success text-sm">check_circle</span>
+<span class="text-success font-medium text-label-sm">Privacy Vault Secured</span>
+</div>
+</div>
+</div>
+<!-- Rewards Card -->
+<div class="glass-card rounded-xl p-6 flex flex-col linear-shadow border-t-4 border-t-secondary relative overflow-hidden h-64">
+<div class="flex justify-between items-start mb-6">
+<div>
+<p class="font-mono-label text-mono-label uppercase tracking-widest text-on-surface-variant">Kinetic Elite</p>
+<p class="font-headline-md text-headline-md text-primary mt-1">Tier Platinum</p>
+</div>
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div class="mt-auto">
+<div class="flex justify-between text-label-sm mb-2">
+<span>14,250 Points</span>
+<span class="text-on-surface-variant">750 to next tier</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 85%"></div>
+</div>
+<button class="mt-4 text-secondary font-medium text-label-sm flex items-center hover:underline">
+                                Redeem rewards <span class="material-symbols-outlined text-sm ml-1">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- AI Insights Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="glass-card rounded-xl p-6 linear-shadow flex items-center gap-6">
+<div class="w-16 h-16 rounded-xl bg-secondary/5 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl">inventory_2</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Next Predicted Restock</p>
+<h3 class="font-headline-md text-headline-md text-primary">Organic Coffee Beans</h3>
+<p class="font-body-md text-body-md text-secondary">Predicted for Oct 14th • 2 days away</p>
+</div>
+</div>
+<div class="glass-card rounded-xl p-6 linear-shadow flex items-center gap-6">
+<div class="w-16 h-16 rounded-xl bg-success/5 flex items-center justify-center text-success">
+<span class="material-symbols-outlined text-3xl">savings</span>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">AI Price Optimization</p>
+<h3 class="font-headline-md text-headline-md text-primary">Saved $124.50</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Automated coupons applied this month</p>
+</div>
+</div>
+</div>
+<!-- Recent Orders -->
+<section>
+<div class="flex items-center justify-between mb-4 px-2">
+<h2 class="font-headline-md text-headline-md text-primary">Recent Orders</h2>
+<a class="text-secondary font-medium text-label-sm hover:underline" href="#">View All Orders</a>
+</div>
+<div class="space-y-3">
+<!-- Order Item -->
+<div class="glass-card rounded-xl p-4 flex flex-wrap items-center justify-between linear-shadow hover:bg-white transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container rounded-lg overflow-hidden border border-border-subtle">
+<img class="w-full h-full object-cover" data-alt="A high-resolution, minimalist product shot of a premium tech accessory, like noise-canceling headphones or a sleek ergonomic mouse, against a soft gray studio background. The lighting is crisp and modern, emphasizing the clean lines and metallic finishes of the device in a light-mode commercial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoVfsLKOlFFm5HFRBuB6XZ0zdCYEXKy3yGBc7XP8cFzXEz7uA9qXT6KevW0jIY0OJflXzYKAS0Rt50YY7m2TRP3r_diIVSRuiwImzM6g34KEueBKTl0ZT9FOMcmjdZtxKBFzpH58AM2Yb7NbsxtesVYoaTkk91Uc1J_6awHsNjEavPdYjriOUc_thear2p32Z0vnJ_oEJJSUo8Uf9oFm03axFO8Rd8A9fdF79dDzTkT9aqo0YOfbi0JB3fVUFCtaGIC3FvFQ_O_k0"/>
+</div>
+<div>
+<h4 class="font-medium text-primary">Order #KNT-90234</h4>
+<p class="text-label-sm text-on-surface-variant">2 items • $245.00</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="hidden lg:block text-right">
+<p class="text-label-sm text-on-surface-variant">Placed on</p>
+<p class="text-body-md font-medium">Oct 10, 2024</p>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-secondary/10 rounded-full">
+<span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
+<span class="text-secondary font-medium text-label-sm">In Transit</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+<!-- Order Item -->
+<div class="glass-card rounded-xl p-4 flex flex-wrap items-center justify-between linear-shadow hover:bg-white transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container rounded-lg overflow-hidden border border-border-subtle">
+<img class="w-full h-full object-cover" data-alt="Close-up of high-end consumer electronics, showcasing a sleek obsidian-colored smartphone or tablet with reflections of a clean, bright office environment. The lighting is professionally staged to highlight the smooth surface and premium build quality, consistent with a modern minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZwnn9DQzJH00o3d0y3QnMv0_0sUw9D3gBo_DLDtZDmwh9Z_XKSQLATn-i5HIq4kqQsPa458kj4gUsEFn4iS81Dr0tAF6zLOCnAwU4VgCwgDbdYB_kw1e5DU6tddgFuaTYLIQkBwVl1RslgRn0j146sUwDwo-WkuIqSa72BRSzbPmsebK53Ni8M--G18bvH4OJHPcEK1PlpZywwsXQ0KsZxzqmA01gQJReU7Nyy8f6TN_4tfsR0CHHLljk8fYhQjPFBTd-dAzC_a8"/>
+</div>
+<div>
+<h4 class="font-medium text-primary">Order #KNT-88121</h4>
+<p class="text-label-sm text-on-surface-variant">1 item • $1,299.00</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="hidden lg:block text-right">
+<p class="text-label-sm text-on-surface-variant">Placed on</p>
+<p class="text-body-md font-medium">Sep 28, 2024</p>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded-full">
+<span class="w-2 h-2 bg-outline rounded-full"></span>
+<span class="text-on-surface-variant font-medium text-label-sm">Delivered</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:translate-x-1 transition-transform">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Recommendations Grid -->
+<section>
+<div class="flex items-center justify-between mb-6 px-2">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-md text-headline-md text-primary">Curated for You</h2>
+<span class="bg-secondary/10 text-secondary text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider">AI Insight</span>
+</div>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined">refresh</span>
+</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<!-- Rec Item -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden border border-border-subtle mb-3">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A professional product photograph of a modern, minimalist smart home device on a clean white marble surface. The object is illuminated by soft, diffused daylight from a nearby window, creating gentle shadows and a sense of calm, high-end domestic living. The color palette is composed of soft whites, cool grays, and a touch of metallic silver." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArAAbC4rqY__vGUSaog8x-OfTq-8Bp_HZ22zrODyw1Qe7p7cSI-CxzevaDz8L31Djwfv1y9gfrcTWLs_xDFnw452dG-Icirmkl8VzJ95cuNOe-138V_79zwlpxrCMF_MDJUd93fhY7DFF6VBwRJWyjq1c8aGNniQ_0537HfcZBcYSdXru4qyU8S2H_B8yb7ji0XrHOFDPSQP5h37tsdpo3h22sdptCKGOLlIsIkr2QfAYJzejbv3QYW0P4G-uGrWEEAI1_uvbilfE"/>
+<button class="absolute top-3 right-3 bg-white/80 backdrop-blur-md p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-secondary">favorite</span>
+</button>
+</div>
+<h4 class="font-medium text-primary">Kinetic Hub Pro</h4>
+<p class="text-label-sm text-on-surface-variant mb-1">Smart Living</p>
+<div class="flex items-center justify-between">
+<span class="font-bold text-primary">$189.00</span>
+<span class="text-[11px] text-success font-semibold">98% Match</span>
+</div>
+</div>
+<!-- Rec Item -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden border border-border-subtle mb-3">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A studio shot of premium leather accessories, like a designer wallet or laptop sleeve, arranged artistically on a textured light-colored stone background. The scene is bright and airy, with subtle warm highlights that emphasize the quality of the leather and the precision of the stitching. A clean, high-fashion aesthetic for a discerning shopper." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7A4v4DlzkxxFRN-w2YMHdaKhBKWm-rHItDbWKg_d2ZujmopDn9oop57mcrcLcI6klgF99ahKPZfZuaaOyZgpIENLOfjyWQwLMcxkvPj7CQOHjs0FX7ucPGGlq-QtbZbnkTAC8XbODdL70J4u2jIfcw4HEoyaim49DHfuOEwBoDYBcws4afy4LSHmyaMV_mPVGLT7cufQqH7iTuZOpCAw3Z8q-iEwBu4Fg09S3jwX9mk0QGVzXxeBKqpa6sqR2CaxqasrKWc4owUw"/>
+<button class="absolute top-3 right-3 bg-white/80 backdrop-blur-md p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-secondary">favorite</span>
+</button>
+</div>
+<h4 class="font-medium text-primary">Aura Leather Sleeve</h4>
+<p class="text-label-sm text-on-surface-variant mb-1">Accessories</p>
+<div class="flex items-center justify-between">
+<span class="font-bold text-primary">$85.00</span>
+<span class="text-[11px] text-success font-semibold">95% Match</span>
+</div>
+</div>
+<!-- Rec Item -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden border border-border-subtle mb-3">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Sophisticated packaging for a high-end skincare product, featuring frosted glass and minimalist typography. The bottle is set against a backdrop of clean lines and neutral tones, with soft, elegant lighting that suggests purity and advanced science. The overall mood is luxurious and meticulously organized, appealing to a premium consumer base." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7KZau0asrRXIw5MG8s4f0Alkuc5FNJwGfOJ0jNhvikLADr1DGy2-MoQzdqq-PrjZxF9T6o7gt-VZ8GH3zr9AywspY19bYNfbgrlMGrAANYofp1Jda4bVVqt6_m8NSyjUT8DdxYvsytfxmUAzTPd_5026CfHe1h1iqRe1-I-FUHOfMY_rPxq6sACSPQgmYkluCrceL9vsDZj49KzbcDV8edSYvsSQt05M198sHOWZwb8mEJEE_C8R3lIy7MmU7DKitSNw0v4KbEpw"/>
+<button class="absolute top-3 right-3 bg-white/80 backdrop-blur-md p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-secondary">favorite</span>
+</button>
+</div>
+<h4 class="font-medium text-primary">Serum Elemental</h4>
+<p class="text-label-sm text-on-surface-variant mb-1">Personal Care</p>
+<div class="flex items-center justify-between">
+<span class="font-bold text-primary">$120.00</span>
+<span class="text-[11px] text-success font-semibold">92% Match</span>
+</div>
+</div>
+<!-- Rec Item -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden border border-border-subtle mb-3">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An elegant, slim mechanical watch resting on a piece of brushed metal. The design is stark and modern, with a monochromatic color scheme of blacks and grays. The focus is sharp on the intricate dial, and the background is softly blurred. High-key lighting creates a professional, catalog-style image for an executive-level product." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwLHNYXD2eys9rmv0nruNnLybIyQtUb9BLAk25QKzyjPg13ZvY3eUS8zvkNsLV90ImZ_8rSCRlQlUFymvhzBsb1tZJ85dIvAXsgzjKx9lp_B7tm_DgUIwmpz_UB9RCgZwcelyYLQCT8zy4RqU1lklslNfulBb7vyc8wgGdmQ6q7SUl7J-hAciiMSumMAmJEArVEBp2ETihNn9qTc8aA4ZK0lh3B_FirrQnQfEiTJbZIM7lof-BV7mbeR4j1VbTAkyRQgZ4YKnZ3ag"/>
+<button class="absolute top-3 right-3 bg-white/80 backdrop-blur-md p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-secondary">favorite</span>
+</button>
+</div>
+<h4 class="font-medium text-primary">Chronos Minimal</h4>
+<p class="text-label-sm text-on-surface-variant mb-1">Timepieces</p>
+<div class="flex items-center justify-between">
+<span class="font-bold text-primary">$450.00</span>
+<span class="text-[11px] text-success font-semibold">89% Match</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="w-full py-section-gap border-t border-border-subtle bg-surface mt-12">
+<div class="max-w-container-max mx-auto px-gutter flex flex-col md:flex-row justify-between items-center">
+<div class="mb-4 md:mb-0">
+<span class="font-headline-md text-headline-md text-primary">Kinetic AI</span>
+<p class="font-mono-label text-mono-label uppercase tracking-widest text-on-surface-variant mt-2">© 2024 Kinetic AI. All rights reserved.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-mono-label text-mono-label uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms</a>
+<a class="font-mono-label text-mono-label uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="font-mono-label text-mono-label uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors" href="#">Status</a>
+<a class="font-mono-label text-mono-label uppercase tracking-widest text-on-surface-variant hover:text-secondary transition-colors" href="#">Contact</a>
+</div>
+</div>
+</footer>
+</main>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple scroll effect for top app bar
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+
+        // Hover effect for side nav items
+        document.querySelectorAll('aside nav a').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                if (!link.classList.contains('bg-secondary-container/10')) {
+                    link.style.transform = 'translateX(4px)';
+                }
+            });
+            link.addEventListener('mouseleave', () => {
+                link.style.transform = 'translateX(0px)';
+            });
+        });
+    </script>
+</body></html>

@@ -132,6 +132,35 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/{order}/verify-otp', [CheckoutController::class, 'showOtpForm'])->name('orders.otp');
     Route::post('/orders/{order}/verify-otp', [CheckoutController::class, 'verifyOtp'])->name('orders.otp.verify');
     Route::post('/orders/{order}/resend-otp', [CheckoutController::class, 'resendOtp'])->name('orders.otp.resend');
+
+    // Notifications
+    Route::get('/my/notifications', function (\Illuminate\Http\Request $request) {
+        $query = \App\Models\AdminNotification::query();
+        if ($type = $request->query('type')) {
+            $query->where('type', $type);
+        }
+        $notifications = $query->latest()->paginate(25);
+        return view('notifications.index', compact('notifications'));
+    })->name('notifications');
+    Route::post('/my/notifications/read-all', function () {
+        \App\Models\AdminNotification::whereNull('read_at')->update(['read_at' => now()]);
+        return back()->with('success', 'All notifications marked as read.');
+    })->name('notifications.read-all');
+
+    // Audit log
+    Route::get('/my/audit-log', function (\Illuminate\Http\Request $request) {
+        $query = \Spatie\Activitylog\Models\Activity::query()->with('causer');
+
+        if ($request->filled('event')) {
+            $query->where('event', $request->event);
+        }
+        if ($request->filled('user_id')) {
+            $query->where('causer_id', $request->user_id)->where('causer_type', 'App\\Models\\User');
+        }
+
+        $activities = $query->latest()->paginate(30);
+        return view('audit-log.index', compact('activities'));
+    })->name('audit-log');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin-legacy')->name('admin-legacy.')->group(function () {

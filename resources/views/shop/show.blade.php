@@ -9,8 +9,11 @@
     {!! $productSeo->renderMeta() !!}
     {!! $productSeo->renderJsonLd() !!}
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=dm+serif+display:400&family=dm+sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=noto+sans+bengali:100..900&display=swap" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        (function(){const d=localStorage.getItem('darkMode')==='true'||(!('darkMode'in localStorage)&&window.matchMedia('(prefers-color-scheme:dark)').matches);if(d)document.documentElement.classList.add('dark');})();
+    </script>
 </head>
 <body class="bg-gray-50 font-sans text-gray-900 antialiased">
     <div class="min-h-screen has-bottom-nav">
@@ -265,9 +268,117 @@
                 </div>
             </div>
 
+            @php
+                $avgRating = $product->approvedReviews->avg('rating') ?? 0;
+                $reviewCount = $product->approvedReviews->count();
+            @endphp
+
+            <!-- Sticky Sub-Nav -->
+            <nav class="sticky top-16 z-30 -mx-4 sm:-mx-6 lg:-mx-8 mt-10 mb-10 bg-white/90 backdrop-blur-md border-b border-gray-100">
+                <div class="flex items-center gap-6 sm:gap-8 overflow-x-auto hide-scrollbar px-4 sm:px-6 lg:px-8 h-12 text-sm">
+                    <a href="#description" class="shrink-0 h-full flex items-center border-b-2 border-brand-600 font-semibold text-brand-600">Description</a>
+                    <a href="#ai-summary" class="shrink-0 h-full flex items-center border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition-colors">AI Summary</a>
+                    @if($reviewCount > 0)
+                    <a href="#reviews" class="shrink-0 h-full flex items-center border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition-colors">Reviews ({{ $reviewCount }})</a>
+                    @endif
+                    <a href="#bundles" class="shrink-0 h-full flex items-center border-b-2 border-transparent text-gray-500 hover:text-gray-800 transition-colors">Frequently Bought</a>
+                </div>
+            </nav>
+
+            <!-- AI Review Summary -->
+            @if($reviewCount > 0)
+            <section class="mt-10" id="ai-summary" data-animate>
+                <div class="rounded-2xl border border-gray-100 bg-white p-6 sm:p-8 shadow-card">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-12 h-12 rounded-2xl bg-brand-100 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-900">AI Review Summary</h2>
+                            <p class="text-sm text-gray-500">Based on {{ $reviewCount }} verified {{ Str::plural('review', $reviewCount) }}</p>
+                        </div>
+                        <div class="ml-auto flex items-center gap-3">
+                            <div class="flex items-center gap-1">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <svg class="w-4 h-4 {{ $i <= round($avgRating) ? 'text-amber-400' : 'text-gray-200' }}" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                @endfor
+                            </div>
+                            <span class="text-sm font-bold text-gray-900">{{ number_format($avgRating, 1) }}</span>
+                        </div>
+                    </div>
+
+                    @php
+                        $highRated = $product->approvedReviews->where('rating', '>=', 4);
+                        $lowRated = $product->approvedReviews->where('rating', '<=', 2);
+                        $keywords = [];
+                        $painPoints = [];
+                        foreach ($highRated as $r) {
+                            preg_match_all('/\b(great|excellent|amazing|love|perfect|fast|quality|reliable|beautiful|comfortable|durable|easy|best|awesome|good|nice|clean|smooth|impressive|recommend)\b/i', $r->comment ?? $r->title ?? '', $m);
+                            $keywords = array_merge($keywords, $m[0]);
+                        }
+                        foreach ($lowRated as $r) {
+                            preg_match_all('/\b(bad|poor|terrible|awful|broken|slow|cheap|ugly|uncomfortable|cheaply|damage|delay|wrong|missing|defective|disappointed|waste)\b/i', $r->comment ?? $r->title ?? '', $m);
+                            $painPoints = array_merge($painPoints, $m[0]);
+                        }
+                        $topKeywords = array_count_values(array_map('strtolower', $keywords));
+                        arsort($topKeywords);
+                        $topPainPoints = array_count_values(array_map('strtolower', $painPoints));
+                        arsort($topPainPoints);
+                    @endphp
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        @if(count($topKeywords) > 0)
+                        <div class="p-6 rounded-2xl bg-emerald-50/50 border border-emerald-100">
+                            <div class="flex items-center gap-2 mb-5">
+                                <svg class="w-5 h-5 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                                <h3 class="font-bold text-emerald-800 text-sm">What Buyers Love</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                @foreach(array_slice($topKeywords, 0, 8) as $word => $count)
+                                    <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-medium">
+                                        {{ $word }}
+                                        <span class="text-emerald-400 text-[10px] font-bold">{{ $count }}</span>
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+
+                        @if(count($topPainPoints) > 0)
+                        <div class="p-6 rounded-2xl bg-amber-50/50 border border-amber-100">
+                            <div class="flex items-center gap-2 mb-5">
+                                <svg class="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                                <h3 class="font-bold text-amber-800 text-sm">Considerations</h3>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                @foreach(array_slice($topPainPoints, 0, 6) as $word => $count)
+                                    <span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-medium">
+                                        {{ $word }}
+                                        <span class="text-amber-400 text-[10px] font-bold">{{ $count }}</span>
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+
+                        @if(count($topKeywords) === 0 && count($topPainPoints) === 0)
+                        <div class="md:col-span-2 text-center py-8 text-gray-400">
+                            <svg class="w-10 h-10 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                            <p class="text-sm">Review sentiment analysis will appear as more reviews are added.</p>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </section>
+            @endif
+
             <!-- Description -->
             @if($product->description)
-                <section class="mt-10" data-animate>
+                <section class="mt-10" id="description" data-animate>
                     <div class="rounded-2xl border border-gray-100 bg-white p-6 sm:p-8 shadow-card">
                         <h2 class="text-xl font-bold text-gray-900 mb-4">Description</h2>
                         <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed whitespace-pre-line">
@@ -278,7 +389,7 @@
             @endif
 
             <!-- Reviews -->
-            <section class="mt-10" data-animate>
+            <section class="mt-10" id="reviews" data-animate>
                 <div class="rounded-2xl border border-gray-100 bg-white p-6 sm:p-8 shadow-card">
                     <h2 class="text-xl font-bold text-gray-900 mb-6">Reviews ({{ $product->reviews_count ?? 0 }})</h2>
 
@@ -360,9 +471,10 @@
                 </div>
             @endauth
 
-            <div class="mt-8">
+            <!-- Smart Bundles -->
+            <section class="mt-10" id="bundles" data-animate>
                 <x-frequently-bought-together :product="$product" />
-            </div>
+            </section>
 
             <div class="mt-8">
                 <x-similar-products :product="$product" />
