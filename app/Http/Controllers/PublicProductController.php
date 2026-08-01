@@ -14,7 +14,8 @@ class PublicProductController extends Controller
     public function index(Request $request)
     {
         $query = Product::with(['category', 'images'])
-            ->withCount(['orderItems', 'wishlists'])
+            ->withAvg('approvedReviews as average_rating', 'rating')
+            ->withCount(['orderItems', 'wishlists', 'approvedReviews as reviews_count'])
             ->active()
             ->inStock();
 
@@ -43,8 +44,8 @@ class PublicProductController extends Controller
         }
 
         // Sort options
-        $sortBy = $request->get('sort', 'name');
-        $sortDirection = $request->get('direction', 'asc');
+        $sortBy = $request->get('sort', 'latest');
+        $sortDirection = $request->get('direction', 'desc');
 
         switch ($sortBy) {
             case 'price':
@@ -59,8 +60,11 @@ class PublicProductController extends Controller
                     ->orderBy('order_items_count', $sortDirection);
                 break;
             case 'name':
-            default:
                 $query->orderBy('name', $sortDirection);
+                break;
+            case 'latest':
+            default:
+                $query->latest();
                 break;
         }
 

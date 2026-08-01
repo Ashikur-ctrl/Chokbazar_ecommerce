@@ -1,6 +1,6 @@
 {{-- Settings page renders automatically via Filament's form system --}}
 <x-filament-panels::page>
-    <x-filament-panels::form wire:submit="save">
+    <form wire:submit="save">
         {{ $this->form }}
 
         <div class="flex justify-end">
@@ -8,5 +8,5 @@
                 Save Settings
             </x-filament::button>
         </div>
-    </x-filament-panels::form>
+    </form>
 </x-filament-panels::page>

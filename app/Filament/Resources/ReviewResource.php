@@ -19,7 +19,7 @@ class ReviewResource extends Resource
 
     protected static ?string $model = Review::class;
 
-    public static function form(Schema $schema): Schema
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([

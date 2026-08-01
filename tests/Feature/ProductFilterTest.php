@@ -23,4 +23,12 @@ class ProductFilterTest extends TestCase
 
         $this->assertGreaterThanOrEqual(2, count($response->json('products')));
     }
+
+    public function test_filter_api_respects_per_page_parameter()
+    {
+        $response = $this->getJson('/api/products/filter?per_page=15');
+
+        $response->assertStatus(200);
+        $this->assertEquals(15, $response->json('meta.per_page'));
+    }
 }

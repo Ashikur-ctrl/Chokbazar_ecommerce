@@ -42,12 +42,12 @@
             <!-- Product Detail -->
             <div class="grid gap-8 lg:grid-cols-[1fr_1.1fr]">
                 <!-- Left: Gallery -->
-                <div x-data="productGallery({ images: {{ json_encode($product->images->map(fn($img) => asset('storage/' . $img->image_path))->values()) }} })"
+                <div x-data="productGallery({ images: {{ json_encode($product->images->map(fn($img) => $img->image_url)->values()) }} })"
                      class="space-y-4">
                     <div class="relative aspect-square overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-card">
                         <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-50 to-brand-50 p-4">
                             @if($product->image)
-                                <img :src="currentImage || '{{ asset('storage/' . $product->image) }}'"
+                                <img :src="currentImage || '{{ $product->image_url }}'"
                                      alt="{{ $product->name }}"
                                      class="h-full w-full object-contain transition-opacity duration-300"
                                      @click="openLightbox()" style="cursor:zoom-in">

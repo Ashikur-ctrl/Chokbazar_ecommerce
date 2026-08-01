@@ -21,7 +21,7 @@ class CustomerResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    public static function form(Schema $schema): Schema
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([

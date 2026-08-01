@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 
@@ -133,16 +133,7 @@ class Product extends Model
     // Scopes
     public function scopeActive($query)
     {
-        $query->where('is_active', true);
-
-        if (Schema::hasColumn('products', 'visibility_status')) {
-            $query->where(function ($query) {
-                $query->whereNull('visibility_status')
-                    ->orWhere('visibility_status', 'active');
-            });
-        }
-
-        return $query;
+        return $query->where('is_active', true);
     }
 
     public function scopeFeatured($query)
@@ -158,10 +149,14 @@ class Product extends Model
     public function scopeSourcingType($query, string $type)
     {
         if ($type === 'local') {
-            return $query->whereIn('sourcing_type', ['local', 'both']);
+            return $query->where(function ($q) {
+                $q->whereIn('sourcing_type', ['local', 'both'])->orWhereNull('sourcing_type');
+            });
         }
         if ($type === 'import') {
-            return $query->whereIn('sourcing_type', ['import', 'both']);
+            return $query->where(function ($q) {
+                $q->whereIn('sourcing_type', ['import', 'both'])->orWhereNull('sourcing_type');
+            });
         }
         return $query;
     }
@@ -283,8 +278,24 @@ class Product extends Model
             && $this->fob_price_usd !== null;
     }
 
-    public function getIsLocallyAvailableAttribute(): bool
+    public function getImageUrlAttribute(): string
     {
-        return in_array($this->sourcing_type, ['local', 'both']);
+        if (! $this->image) {
+            return asset('images/placeholder.svg');
+        }
+
+        if (Str::startsWith($this->image, ['http://', 'https://'])) {
+            return $this->image;
+        }
+
+        if (Str::startsWith($this->image, 'images/')) {
+            return asset($this->image);
+        }
+
+        if (file_exists(public_path('images/' . $this->image))) {
+            return asset('images/' . $this->image);
+        }
+
+        return asset('storage/' . $this->image);
     }
 }

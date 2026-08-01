@@ -21,7 +21,7 @@ class PromotionResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    public static function form(Schema $schema): Schema
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([

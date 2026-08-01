@@ -13,6 +13,7 @@ class ProductController extends Controller
     {
         $query = Product::with(['category', 'images'])
             ->withCount(['orderItems', 'wishlists'])
+            ->withAvg('approvedReviews as average_rating', 'rating')
             ->active()
             ->inStock();
 
@@ -53,23 +54,13 @@ class ProductController extends Controller
             }
         }
 
-        $products = $query->paginate(12);
-
-        // Optional rating filter applied after query to avoid complex SQL
         if ($request->filled('rating_min')) {
             $min = (float) $request->rating_min;
-            $filtered = $products->filter(function ($product) use ($min) {
-                return $product->average_rating >= $min;
-            });
-
-            $products = new LengthAwarePaginator(
-                $filtered->values(),
-                $filtered->count(),
-                $products->perPage(),
-                $products->currentPage(),
-                ['path' => $request->url(), 'query' => $request->query()]
-            );
+            $query->having('average_rating', '>=', $min);
         }
+
+        $perPage = max(1, min((int) $request->input('per_page', 12), 1000));
+        $products = $query->paginate($perPage);
 
         // Determine wishlist state for current user for products on this page
         $userId = auth()->id();

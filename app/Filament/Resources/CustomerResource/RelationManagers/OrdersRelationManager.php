@@ -14,7 +14,7 @@ class OrdersRelationManager extends RelationManager
 
     protected static ?string $title = 'Order History';
 
-    public function form(Schema $schema): Schema
+    public function form(Schema $form): Schema
     {
         return $form
             ->schema([]);

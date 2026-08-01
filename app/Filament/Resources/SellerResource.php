@@ -19,7 +19,7 @@ class SellerResource extends Resource
 
     protected static ?string $model = Seller::class;
 
-    public static function form(Schema $schema): Schema
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([

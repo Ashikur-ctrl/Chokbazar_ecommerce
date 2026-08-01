@@ -125,7 +125,8 @@
                             @if(request('search')) <input type="hidden" name="search" value="{{ request('search') }}"> @endif
                             @if(request('category')) <input type="hidden" name="category" value="{{ request('category') }}"> @endif
                             <select name="sort" class="rounded-lg border-gray-200 bg-white text-sm focus:border-brand-500 focus:ring-brand-500">
-                                <option value="name" @selected(request('sort', 'name') === 'name')>Name</option>
+                                <option value="latest" @selected(request('sort', 'latest') === 'latest')>Newest Arrivals</option>
+                                <option value="name" @selected(request('sort') === 'name')>Name</option>
                                 <option value="price" @selected(request('sort') === 'price')>Price</option>
                                 <option value="rating" @selected(request('sort') === 'rating')>Rating</option>
                                 <option value="popularity" @selected(request('sort') === 'popularity')>Popularity</option>

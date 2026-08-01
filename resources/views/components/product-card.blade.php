@@ -9,7 +9,7 @@
     <a href="{{ route('shop.product', $product) }}" class="block aspect-[4/3] overflow-hidden bg-gradient-to-br from-brand-50 to-brand-50/50 relative">
         @if ($product->image)
             <img
-                src="{{ asset('storage/' . $product->image) }}"
+                src="{{ $product->image_url }}"
                 alt="{{ $product->name }}"
                 class="h-full w-full object-cover transition-all duration-500 group-hover:scale-105"
                 loading="lazy"

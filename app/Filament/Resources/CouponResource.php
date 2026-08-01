@@ -19,7 +19,7 @@ class CouponResource extends Resource
 
     protected static ?string $model = Coupon::class;
 
-    public static function form(Schema $schema): Schema
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([

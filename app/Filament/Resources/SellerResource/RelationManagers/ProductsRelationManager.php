@@ -14,7 +14,7 @@ class ProductsRelationManager extends RelationManager
 
     protected static ?string $title = 'Product Listings';
 
-    public function form(Schema $schema): Schema
+    public function form(Schema $form): Schema
     {
         return $form
             ->schema([]);

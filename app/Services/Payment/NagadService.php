@@ -20,25 +20,31 @@ class NagadService
         $this->baseUrl = $sandbox
             ? 'https://sandbox.mynagad.com/api-contract/api/v2'
             : 'https://api.mynagad.com/api-contract/api/v2';
-        $this->merchantId = config('services.nagad.merchant_id', '');
-        $this->merchantNumber = config('services.nagad.merchant_number', '');
-        $this->publicKey = config('services.nagad.public_key', '');
-        $this->privateKey = config('services.nagad.private_key', '');
+        $this->merchantId = (string) (config('services.nagad.merchant_id') ?? '');
+        $this->merchantNumber = (string) (config('services.nagad.merchant_number') ?? '');
+        $this->publicKey = (string) (config('services.nagad.public_key') ?? '');
+        $this->privateKey = (string) (config('services.nagad.private_key') ?? '');
     }
 
     protected function generateSensitiveData(array $data): string
     {
+        if (empty($this->publicKey)) {
+            return '';
+        }
         $json = json_encode($data);
         $encrypted = null;
-        openssl_public_encrypt($json, $encrypted, $this->publicKey);
-        return base64_encode($encrypted);
+        @openssl_public_encrypt($json, $encrypted, $this->publicKey);
+        return base64_encode($encrypted ?? '');
     }
 
     protected function generateSignature(string $data): string
     {
+        if (empty($this->privateKey)) {
+            return '';
+        }
         $signature = null;
-        openssl_sign($data, $signature, $this->privateKey, OPENSSL_ALGO_SHA256);
-        return base64_encode($signature);
+        @openssl_sign($data, $signature, $this->privateKey, OPENSSL_ALGO_SHA256);
+        return base64_encode($signature ?? '');
     }
 
     public function createPayment(Order $order): array

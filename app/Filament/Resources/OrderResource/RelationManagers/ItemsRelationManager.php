@@ -14,7 +14,7 @@ class ItemsRelationManager extends RelationManager
 
     protected static ?string $title = 'Order Items';
 
-    public function form(Schema $schema): Schema
+    public function form(Schema $form): Schema
     {
         return $form
             ->schema([

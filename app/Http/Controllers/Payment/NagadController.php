@@ -27,7 +27,7 @@ class NagadController extends Controller
             return redirect($result['gateway_url']);
         }
 
-        return back()->with('error', $result['message']);
+        return redirect()->route('checkout.index')->with('error', $result['message']);
     }
 
     public function callback(Request $request)

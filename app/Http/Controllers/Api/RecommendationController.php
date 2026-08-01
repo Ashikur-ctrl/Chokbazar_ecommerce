@@ -22,7 +22,7 @@ class RecommendationController extends Controller
     public function personalized(Request $request): JsonResponse
     {
         $userId = auth()->id();
-        $sessionId = $request->session()->getId();
+        $sessionId = $request->hasSession() ? $request->session()->getId() : ($request->header('X-Session-ID') ?? 'api-guest');
         $limit = $request->get('limit', 10);
 
         $recommendations = $this->recommendationService->getUserBasedRecommendations(
@@ -55,7 +55,7 @@ class RecommendationController extends Controller
     public function productBased(Request $request, int $productId): JsonResponse
     {
         $userId = auth()->id();
-        $sessionId = $request->session()->getId();
+        $sessionId = $request->hasSession() ? $request->session()->getId() : ($request->header('X-Session-ID') ?? 'api-guest');
         $limit = $request->get('limit', 10);
 
         $recommendations = $this->recommendationService->getProductBasedRecommendations(
@@ -153,7 +153,7 @@ class RecommendationController extends Controller
         ]);
 
         $userId = auth()->id();
-        $sessionId = $request->session()->getId();
+        $sessionId = $request->hasSession() ? $request->session()->getId() : ($request->header('X-Session-ID') ?? 'api-guest');
 
         $this->recommendationService->recordBehavior(
             $userId,

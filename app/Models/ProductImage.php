@@ -27,6 +27,22 @@ class ProductImage extends Model
     // Accessor for full image URL
     public function getImageUrlAttribute()
     {
+        if (!$this->image_path) {
+            return null;
+        }
+
+        if (\Illuminate\Support\Str::startsWith($this->image_path, ['http://', 'https://'])) {
+            return $this->image_path;
+        }
+
+        if (\Illuminate\Support\Str::startsWith($this->image_path, 'images/')) {
+            return asset($this->image_path);
+        }
+
+        if (file_exists(public_path('images/' . $this->image_path))) {
+            return asset('images/' . $this->image_path);
+        }
+
         return asset('storage/' . $this->image_path);
     }
 }

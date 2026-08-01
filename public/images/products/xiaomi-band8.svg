@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c1917"/>
+      <stop offset="100%" stop-color="#292524"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="450" fill="url(#bg)"/>
+  <!-- Strap -->
+  <rect x="270" y="50" width="60" height="320" rx="10" fill="#44403c"/>
+  <!-- Dial Capsule -->
+  <rect x="250" y="140" width="100" height="170" rx="45" fill="#09090b" stroke="#f97316" stroke-width="4"/>
+  <rect x="260" y="155" width="80" height="140" rx="35" fill="#18181b"/>
+  <!-- Screen Elements -->
+  <text x="300" y="210" font-family="monospace" font-size="32" font-weight="bold" fill="#f97316" text-anchor="middle">10:45</text>
+  <path d="M 280 240 Q 300 230 320 245" stroke="#ef4444" stroke-width="4" fill="none"/>
+  <text x="300" y="270" font-family="sans-serif" font-size="14" fill="#a8a29e" text-anchor="middle">7,820 steps</text>
+  <!-- Title Badge -->
+  <rect x="150" y="380" width="300" height="45" rx="10" fill="rgba(255,255,255,0.08)"/>
+  <text x="300" y="408" font-family="sans-serif" font-size="18" font-weight="bold" fill="#ffffff" text-anchor="middle">Xiaomi Smart Band 8</text>
+</svg>

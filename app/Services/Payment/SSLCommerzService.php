@@ -14,9 +14,9 @@ class SSLCommerzService
 
     public function __construct()
     {
-        $this->storeId = config('services.sslcommerz.store_id', '');
-        $this->storePassword = config('services.sslcommerz.store_password', '');
-        $this->sandbox = config('services.sslcommerz.sandbox', true);
+        $this->storeId = (string) (config('services.sslcommerz.store_id') ?? '');
+        $this->storePassword = (string) (config('services.sslcommerz.store_password') ?? '');
+        $this->sandbox = (bool) config('services.sslcommerz.sandbox', true);
     }
 
     protected function baseUrl(): string

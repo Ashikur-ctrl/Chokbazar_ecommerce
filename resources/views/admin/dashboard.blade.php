@@ -25,14 +25,14 @@
         <!-- Quick Links -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4" data-animate>
             @php $links = [
-                ['Analytics', 'admin.analytics', 'analytics'],
-                ['Inventory', 'admin.inventory', 'inventory'],
-                ['Customers', 'admin.customers', 'customers'],
-                ['Expenses', 'admin.expenses', 'expenses'],
-                ['Reports', 'admin.reports', 'reports'],
-                ['Notifications', 'admin.notifications', 'notifications'],
-                ['Sellers', 'admin.sellers.index', 'sellers'],
-                ['Fulfillment', 'admin.fulfillment.index', 'fulfillment'],
+                ['Analytics', 'admin-legacy.analytics', 'analytics'],
+                ['Inventory', 'admin-legacy.inventory', 'inventory'],
+                ['Customers', 'admin-legacy.customers', 'customers'],
+                ['Expenses', 'admin-legacy.expenses', 'expenses'],
+                ['Reports', 'admin-legacy.reports', 'reports'],
+                ['Notifications', 'admin-legacy.notifications', 'notifications'],
+                ['Sellers', 'admin-legacy.sellers.index', 'sellers'],
+                ['Fulfillment', 'admin-legacy.fulfillment.index', 'fulfillment'],
             ]; @endphp
             @foreach($links as $link)
                 <a href="{{ route($link[1]) }}"

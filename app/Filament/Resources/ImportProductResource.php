@@ -5,6 +5,9 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ImportProductResource\Pages;
 use App\Models\ImportProduct;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\ProductImage;
+use Filament\Forms;
 use Filament\Actions\Action;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Resource;
@@ -88,15 +91,46 @@ class ImportProductResource extends Resource
                     ->color('success')
                     ->icon('heroicon-o-check')
                     ->visible(fn (ImportProduct $record) => $record->status === 'ready_for_review')
-                    ->requiresConfirmation()
-                    ->action(function (ImportProduct $record) {
+                    ->form([
+                        Forms\Components\Select::make('category_id')
+                            ->label('Category')
+                            ->options(fn () => Category::active()->pluck('name', 'id'))
+                            ->default(fn () => Category::first()?->id)
+                            ->required()
+                            ->searchable(),
+                    ])
+                    ->action(function (ImportProduct $record, array $data) {
+                        $firstCategory = $data['category_id'] ?? Category::first()?->id ?? 1;
+
                         $product = Product::create([
-                            'name' => $record->title_en,
-                            'description' => $record->description_en,
-                            'price' => $record->price_bdt,
-                            'images' => collect($record->images)->pluck('local_path')->all(),
-                            // map SKU/variant data into your Product/Variant schema here
+                            'name' => $record->title_en ?: 'Imported Product',
+                            'description' => $record->description_en ?: ($record->title_en ?: 'Imported Product'),
+                            'price' => $record->price_bdt ?: 0,
+                            'category_id' => $firstCategory,
+                            'sourcing_type' => 'import',
+                            'fob_price_usd' => $record->price_cny ? round($record->price_cny / 7.2, 2) : null,
+                            'is_active' => true,
+                            'stock' => 0,
                         ]);
+
+                        if (!empty($record->images)) {
+                            foreach ($record->images as $index => $img) {
+                                $path = is_array($img) ? ($img['local_path'] ?? null) : $img;
+                                if ($path) {
+                                    ProductImage::create([
+                                        'product_id' => $product->id,
+                                        'image_path' => $path,
+                                        'alt_text' => $product->name,
+                                        'is_primary' => $index === 0,
+                                        'sort_order' => $index,
+                                    ]);
+
+                                    if ($index === 0) {
+                                        $product->update(['image' => $path]);
+                                    }
+                                }
+                            }
+                        }
 
                         $record->update([
                             'status' => 'approved',
@@ -125,17 +159,49 @@ class ImportProductResource extends Resource
                     Tables\Actions\BulkAction::make('approve_selected')
                         ->label('Approve selected')
                         ->color('success')
-                        ->requiresConfirmation()
-                        ->action(function ($records) {
+                        ->form([
+                            Forms\Components\Select::make('category_id')
+                                ->label('Category')
+                                ->options(fn () => Category::active()->pluck('name', 'id'))
+                                ->default(fn () => Category::first()?->id)
+                                ->required()
+                                ->searchable(),
+                        ])
+                        ->action(function ($records, array $data) {
+                            $firstCategory = $data['category_id'] ?? Category::first()?->id ?? 1;
+
                             foreach ($records as $record) {
                                 if ($record->status !== 'ready_for_review') continue;
 
                                 $product = Product::create([
-                                    'name' => $record->title_en,
-                                    'description' => $record->description_en,
-                                    'price' => $record->price_bdt,
-                                    'images' => collect($record->images)->pluck('local_path')->all(),
+                                    'name' => $record->title_en ?: 'Imported Product',
+                                    'description' => $record->description_en ?: ($record->title_en ?: 'Imported Product'),
+                                    'price' => $record->price_bdt ?: 0,
+                                    'category_id' => $firstCategory,
+                                    'sourcing_type' => 'import',
+                                    'fob_price_usd' => $record->price_cny ? round($record->price_cny / 7.2, 2) : null,
+                                    'is_active' => true,
+                                    'stock' => 0,
                                 ]);
+
+                                if (!empty($record->images)) {
+                                    foreach ($record->images as $index => $img) {
+                                        $path = is_array($img) ? ($img['local_path'] ?? null) : $img;
+                                        if ($path) {
+                                            ProductImage::create([
+                                                'product_id' => $product->id,
+                                                'image_path' => $path,
+                                                'alt_text' => $product->name,
+                                                'is_primary' => $index === 0,
+                                                'sort_order' => $index,
+                                            ]);
+
+                                            if ($index === 0) {
+                                                $product->update(['image' => $path]);
+                                            }
+                                        }
+                                    }
+                                }
 
                                 $record->update([
                                     'status' => 'approved',

@@ -21,10 +21,10 @@ class BkashService
         $this->baseUrl = $sandbox
             ? 'https://tokenized.sandbox.bka.sh/v1.2.0-beta'
             : 'https://tokenized.pay.bka.sh/v1.2.0-beta';
-        $this->appKey = config('services.bkash.app_key', '');
-        $this->appSecret = config('services.bkash.app_secret', '');
-        $this->username = config('services.bkash.username', '');
-        $this->password = config('services.bkash.password', '');
+        $this->appKey = (string) (config('services.bkash.app_key') ?? '');
+        $this->appSecret = (string) (config('services.bkash.app_secret') ?? '');
+        $this->username = (string) (config('services.bkash.username') ?? '');
+        $this->password = (string) (config('services.bkash.password') ?? '');
     }
 
     public function grantToken(): ?string

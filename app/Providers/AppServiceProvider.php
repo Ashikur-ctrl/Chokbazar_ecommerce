@@ -52,5 +52,15 @@ class AppServiceProvider extends ServiceProvider
         Product::deleted($clearCachedQueries);
         Category::saved($clearCachedQueries);
         Category::deleted($clearCachedQueries);
+
+        // Merge guest cart into user account on authentication
+        \Illuminate\Support\Facades\Event::listen(
+            [\Illuminate\Auth\Events\Login::class, \Illuminate\Auth\Events\Registered::class],
+            function ($event) {
+                if (isset($event->user?->id)) {
+                    app(\App\Services\CartService::class)->transferCartToUser($event->user->id);
+                }
+            }
+        );
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
+})->middleware('auth');
 
 // Public recommendation routes (throttled) — auth optional, fallback to session-based
 Route::middleware('throttle:60,1')->group(function () {

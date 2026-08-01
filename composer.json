@@ -17,7 +17,7 @@
         "laravel/scout": "^11.3",
         "laravel/tinker": "^3.0",
         "predis/predis": "^2.3",
-        "spatie/laravel-activitylog": "*",
+        "spatie/laravel-activitylog": "^4.0",
         "spatie/laravel-permission": "^8.3",
         "stichoza/google-translate-php": "^5.2",
         "stripe/stripe-php": "^20.1"
