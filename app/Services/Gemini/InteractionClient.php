@@ -25,25 +25,19 @@ class InteractionClient
             return null;
         }
 
-        $payload = [
-            'model' => config('services.gemini.model'),
-            'input' => $input,
-            'store' => false,
-        ];
-
-        if (!empty($tools)) {
-            $payload['tools'] = $tools;
-        }
-
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
-            'x-goog-api-key' => $apiKey,
         ])
             ->timeout($timeout)
-            ->post('https://generativelanguage.googleapis.com/v1beta2/interactions', $payload);
+            ->post('https://generativelanguage.googleapis.com/v1beta/models/' . config('services.gemini.model') . ':generateContent?key=' . $apiKey, [
+                'contents' => [[
+                    'parts' => $this->buildParts($input),
+                ]],
+                'tools' => $tools ?: null,
+            ]);
 
         if (!$response->successful()) {
-            Log::warning("Gemini Interactions API failed ({$response->status()})");
+            Log::warning("Gemini API failed ({$response->status()})");
 
             return null;
         }
@@ -55,21 +49,39 @@ class InteractionClient
         ];
     }
 
-    private function outputText(Response $response): string
+    /**
+     * Convert the app's input shape (text + image parts) into the
+     * generateContent parts format: text becomes {"text": "..."} and image
+     * becomes {"inline_data": {"mime_type": "...", "data": "..."}}.
+     *
+     * @param array<int, array<string, mixed>>|string $input
+     * @return array<int, array<string, mixed>>
+     */
+    private function buildParts(array|string $input): array
     {
-        $steps = collect($response->json('steps', []));
-        $modelOutput = $steps
-            ->filter(fn (array $step) => ($step['type'] ?? null) === 'model_output')
-            ->last();
-
-        if (!$modelOutput) {
-            return '';
+        if (is_string($input)) {
+            return [['text' => $input]];
         }
 
-        return collect($modelOutput['content'] ?? [])
-            ->where('type', 'text')
+        return collect($input)->map(function (array $part): array {
+            if (($part['type'] ?? null) === 'image') {
+                return [
+                    'inline_data' => [
+                        'mime_type' => $part['mime_type'] ?? 'image/jpeg',
+                        'data' => $part['data'] ?? '',
+                    ],
+                ];
+            }
+
+            return ['text' => $part['text'] ?? ''];
+        })->values()->all();
+    }
+
+    private function outputText(Response $response): string
+    {
+        return collect($response->json('candidates.0.content.parts', []))
+            ->filter(fn (array $part) => filled($part['text'] ?? null))
             ->pluck('text')
-            ->filter()
             ->implode("\n");
     }
 
@@ -78,15 +90,8 @@ class InteractionClient
      */
     private function sourceUrls(Response $response): array
     {
-        $steps = collect($response->json('steps', []));
-
-        return $steps
-            ->flatMap(function (array $step) {
-                return collect($step['content'] ?? [])
-                    ->flatMap(fn (array $content) => collect($content['annotations'] ?? [])
-                        ->pluck('url'));
-            })
-            ->merge($steps->pluck('url'))
+        return collect($response->json('candidates.0.groundingMetadata.groundingChunks', []))
+            ->pluck('web.uri')
             ->filter()
             ->unique()
             ->values()
