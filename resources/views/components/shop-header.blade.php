@@ -135,7 +135,7 @@
                     <div class="grid grid-cols-2 gap-4">
                         @php $headerCategories = \App\Models\Category::active()->orderBy('name')->get(); @endphp
                         @foreach($headerCategories as $cat)
-                            <a href="{{ route('shop.index', ['category' => $cat->id]) }}" class="flex items-center gap-3 p-2 rounded-lg hover:bg-brand-50 transition-colors group">
+                            <a href="{{ route('shop.index', ['category' => $cat->slug]) }}" class="flex items-center gap-3 p-2 rounded-lg hover:bg-brand-50 transition-colors group">
                                 <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-50 to-brand-50 flex items-center justify-center text-sm font-bold text-brand-600 group-hover:scale-110 transition-transform">
                                     {{ strtoupper(substr($cat->name, 0, 1)) }}
                                 </div>

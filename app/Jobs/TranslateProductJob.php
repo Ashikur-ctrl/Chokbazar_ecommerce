@@ -3,12 +3,12 @@
 namespace App\Jobs;
 
 use App\Models\ImportProduct;
+use App\Services\Gemini\InteractionClient;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class TranslateProductJob implements ShouldQueue
@@ -31,9 +31,9 @@ class TranslateProductJob implements ShouldQueue
         }
 
         try {
-            $apiKey = config('services.gemini.api_key');
+            $client = app(InteractionClient::class);
 
-            if ($apiKey) {
+            if ($client->hasApiKey()) {
                 $prompt = <<<PROMPT
                     Translate the following product title and description from Chinese to natural,
                     sales-ready English suitable for a Bangladesh e-commerce marketplace.
@@ -44,22 +44,10 @@ class TranslateProductJob implements ShouldQueue
                     Description: {$item->description_cn}
                     PROMPT;
 
-                $response = Http::withHeaders([
-                    'content-type' => 'application/json',
-                ])
-                    ->timeout(30)
-                    ->post('https://generativelanguage.googleapis.com/v1beta/models/' . config('services.gemini.model') . ':generateContent?key=' . $apiKey, [
-                        'contents' => [
-                            [
-                                'parts' => [
-                                    ['text' => $prompt],
-                                ],
-                            ],
-                        ],
-                    ]);
+                $interaction = $client->create($prompt, timeout: 30);
 
-                if ($response->successful()) {
-                    $text = $response->json('candidates.0.content.parts.0.text', '');
+                if ($interaction) {
+                    $text = $interaction['text'] ?? '';
                     $clean = trim(str_replace(['```json', '```'], '', $text));
                     $parsed = json_decode($clean, true);
 
@@ -75,7 +63,7 @@ class TranslateProductJob implements ShouldQueue
                     }
                 }
 
-                Log::warning("Translation API failed ({$response->status()}), falling back to raw Chinese");
+                Log::warning('Translation API failed, falling back to raw Chinese');
             } else {
                 Log::info('No AI translation key configured, falling back to raw Chinese');
             }

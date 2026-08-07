@@ -32,7 +32,7 @@
     </url>
     @foreach($categories as $category)
     <url>
-        <loc>{{ route('shop.index', ['category' => $category->id]) }}</loc>
+        <loc>{{ route('shop.index', ['category' => $category->slug]) }}</loc>
         <priority>0.8</priority>
         <changefreq>daily</changefreq>
     </url>

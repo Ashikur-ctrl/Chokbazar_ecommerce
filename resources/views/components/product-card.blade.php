@@ -64,7 +64,7 @@
     <div class="p-4">
         {{-- Category --}}
         @if($product->category)
-            <a href="{{ route('shop.index', ['category' => $product->category_id]) }}" class="text-[10px] font-semibold uppercase tracking-wider text-brand-600 hover:text-brand-700 transition-colors">
+            <a href="{{ route('shop.index', ['category' => $product->category->slug ?? $product->category_id]) }}" class="text-[10px] font-semibold uppercase tracking-wider text-brand-600 hover:text-brand-700 transition-colors">
                 {{ $product->category->name }}
             </a>
         @endif

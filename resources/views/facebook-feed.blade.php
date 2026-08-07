@@ -13,9 +13,9 @@
         <g:image_link>{{ $product->image ? asset('storage/'.$product->image) : asset('images/placeholder.png') }}</g:image_link>
         <g:condition>new</g:condition>
         <g:availability>{{ $product->stock > 0 ? 'in stock' : 'out of stock' }}</g:availability>
-        <g:price>{{ number_format($product->current_price, 2) }} BDT</g:price>
+        <g:price>{{ number_format($product->current_price, 2, '.', '') }} BDT</g:price>
         @if($product->sale_price)
-        <g:sale_price>{{ number_format($product->sale_price, 2) }} BDT</g:sale_price>
+        <g:sale_price>{{ number_format($product->sale_price, 2, '.', '') }} BDT</g:sale_price>
         @endif
         <g:brand>{{ config('app.name') }}</g:brand>
         <g:gtin>{{ $product->sku ?: '' }}</g:gtin>

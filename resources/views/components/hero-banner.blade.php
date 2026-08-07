@@ -47,7 +47,7 @@
                         <select name="category" onchange="if(this.value) window.location=this.value" class="rounded-lg bg-white/10 px-4 py-3 text-sm text-white backdrop-blur-sm border border-white/20 focus:outline-none focus:ring-2 focus:ring-amber-400 appearance-none cursor-pointer">
                             <option value="" class="text-gray-800">All Categories</option>
                             @foreach ($categories as $cat)
-                                <option value="{{ route('shop.index', ['category' => $cat->id]) }}" class="text-gray-800">{{ $cat->name }}</option>
+                                <option value="{{ route('shop.index', ['category' => $cat->slug]) }}" class="text-gray-800">{{ $cat->name }}</option>
                             @endforeach
                         </select>
                     @endif

@@ -9,6 +9,7 @@ class ImportProduct extends Model
 {
     protected $fillable = [
         'import_batch_id',
+        'seller_id',
         'source_offer_id',
         'raw_payload',
         'title_cn',
@@ -47,9 +48,17 @@ class ImportProduct extends Model
         return $this->belongsTo(\App\Models\Product::class);
     }
 
+    public function seller(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Seller::class);
+    }
+
     public function markFailed(string $reason): void
     {
-        $this->update(['error_message' => $reason]);
+        $this->update([
+            'status' => 'failed',
+            'error_message' => $reason,
+        ]);
         $this->batch->incrementFailed();
     }
 }

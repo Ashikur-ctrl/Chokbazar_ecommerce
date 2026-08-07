@@ -19,6 +19,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 
 class ImportProductResource extends Resource
 {
@@ -28,16 +29,17 @@ class ImportProductResource extends Resource
 
     public static function getNavigationGroup(): string | \UnitEnum | null { return 'Imports'; }
 
-    public static function getNavigationLabel(): string { return '1688 Review Queue'; }
+    public static function getNavigationLabel(): string { return 'Product Import Review Queue'; }
 
     protected static ?int $navigationSort = 99;
 
     // Only surface items that are actually ready for a human decision —
-    // pending/fetched/translated/etc. are still mid-pipeline.
+    // pending/fetched/translated/etc. are still mid-pipeline. Failed items are
+    // included so reviewers can see and retry them.
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->whereIn('status', ['ready_for_review', 'approved', 'rejected']);
+            ->whereIn('status', ['ready_for_review', 'approved', 'rejected', 'failed']);
     }
 
     public static function table(Table $table): Table
@@ -55,6 +57,21 @@ class ImportProductResource extends Resource
                     ->limit(50)
                     ->wrap(),
 
+                Tables\Columns\TextColumn::make('batch.source')
+                    ->label('Source')
+                    ->badge()
+                    ->color(fn (?string $state) => match ($state) {
+                        'folder' => 'info',
+                        'seller_ai' => 'success',
+                        '1688' => 'warning',
+                        default => 'gray',
+                    }),
+
+                Tables\Columns\TextColumn::make('seller.company_name')
+                    ->label('Seller')
+                    ->searchable()
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('price_cny')
                     ->label('CNY')
                     ->money('CNY'),
@@ -70,6 +87,7 @@ class ImportProductResource extends Resource
                         'ready_for_review' => 'warning',
                         'approved' => 'success',
                         'rejected' => 'danger',
+                        'failed' => 'danger',
                         default => 'gray',
                     }),
 
@@ -78,11 +96,23 @@ class ImportProductResource extends Resource
                     ->sortable(),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('source')
+                    ->label('Source')
+                    ->options([
+                        '1688' => '1688',
+                        'folder' => 'Folder',
+                        'seller_ai' => 'Seller AI Upload',
+                    ])
+                    ->query(fn (Builder $query, array $data): Builder => filled($data['value'] ?? null)
+                        ? $query->whereHas('batch', fn (Builder $query) => $query->where('source', $data['value']))
+                        : $query),
+
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'ready_for_review' => 'Ready for review',
                         'approved' => 'Approved',
                         'rejected' => 'Rejected',
+                        'failed' => 'Failed',
                     ]),
             ])
             ->actions([
@@ -98,46 +128,15 @@ class ImportProductResource extends Resource
                             ->default(fn () => Category::first()?->id)
                             ->required()
                             ->searchable(),
+                        Forms\Components\TextInput::make('price_bdt')
+                            ->label('Price (BDT)')
+                            ->numeric()
+                            ->minValue(0)
+                            ->default(fn (ImportProduct $record) => $record->price_bdt)
+                            ->required(),
                     ])
                     ->action(function (ImportProduct $record, array $data) {
-                        $firstCategory = $data['category_id'] ?? Category::first()?->id ?? 1;
-
-                        $product = Product::create([
-                            'name' => $record->title_en ?: 'Imported Product',
-                            'description' => $record->description_en ?: ($record->title_en ?: 'Imported Product'),
-                            'price' => $record->price_bdt ?: 0,
-                            'category_id' => $firstCategory,
-                            'sourcing_type' => 'import',
-                            'fob_price_usd' => $record->price_cny ? round($record->price_cny / 7.2, 2) : null,
-                            'is_active' => true,
-                            'stock' => 0,
-                        ]);
-
-                        if (!empty($record->images)) {
-                            foreach ($record->images as $index => $img) {
-                                $path = is_array($img) ? ($img['local_path'] ?? null) : $img;
-                                if ($path) {
-                                    ProductImage::create([
-                                        'product_id' => $product->id,
-                                        'image_path' => $path,
-                                        'alt_text' => $product->name,
-                                        'is_primary' => $index === 0,
-                                        'sort_order' => $index,
-                                    ]);
-
-                                    if ($index === 0) {
-                                        $product->update(['image' => $path]);
-                                    }
-                                }
-                            }
-                        }
-
-                        $record->update([
-                            'status' => 'approved',
-                            'product_id' => $product->id,
-                            'reviewed_by' => auth()->id(),
-                            'reviewed_at' => now(),
-                        ]);
+                        static::approveImportProduct($record, $data);
                     }),
 
                 Action::make('reject')
@@ -173,42 +172,7 @@ class ImportProductResource extends Resource
                             foreach ($records as $record) {
                                 if ($record->status !== 'ready_for_review') continue;
 
-                                $product = Product::create([
-                                    'name' => $record->title_en ?: 'Imported Product',
-                                    'description' => $record->description_en ?: ($record->title_en ?: 'Imported Product'),
-                                    'price' => $record->price_bdt ?: 0,
-                                    'category_id' => $firstCategory,
-                                    'sourcing_type' => 'import',
-                                    'fob_price_usd' => $record->price_cny ? round($record->price_cny / 7.2, 2) : null,
-                                    'is_active' => true,
-                                    'stock' => 0,
-                                ]);
-
-                                if (!empty($record->images)) {
-                                    foreach ($record->images as $index => $img) {
-                                        $path = is_array($img) ? ($img['local_path'] ?? null) : $img;
-                                        if ($path) {
-                                            ProductImage::create([
-                                                'product_id' => $product->id,
-                                                'image_path' => $path,
-                                                'alt_text' => $product->name,
-                                                'is_primary' => $index === 0,
-                                                'sort_order' => $index,
-                                            ]);
-
-                                            if ($index === 0) {
-                                                $product->update(['image' => $path]);
-                                            }
-                                        }
-                                    }
-                                }
-
-                                $record->update([
-                                    'status' => 'approved',
-                                    'product_id' => $product->id,
-                                    'reviewed_by' => auth()->id(),
-                                    'reviewed_at' => now(),
-                                ]);
+                                static::approveImportProduct($record, ['category_id' => $firstCategory]);
                             }
                         }),
                 ]),
@@ -223,7 +187,8 @@ class ImportProductResource extends Resource
                 Section::make('Source Data')
                     ->columnSpan(1)
                     ->schema([
-                        Text::make('source_offer_id')->label('1688 Offer ID'),
+                        Text::make('batch.source')->label('Source')->badge(),
+                        Text::make('source_offer_id')->label('Source ID'),
                         Text::make('title_cn')->label('Title (CN)'),
                         Text::make('description_cn')->label('Description (CN)')->html(),
                         Text::make('price_cny')->label('Price (CNY)'),
@@ -236,6 +201,8 @@ class ImportProductResource extends Resource
                         Text::make('description_en')->label('Description (EN)')->html(),
                         Text::make('fx_rate_used')->label('FX Rate Used'),
                         Text::make('price_bdt')->label('Price (BDT with markup)'),
+                        Text::make('sku_data.market_notes')->label('AI Market Notes'),
+                        Text::make('seller.company_name')->label('Seller'),
                     ]),
 
                 Section::make('Images')
@@ -262,6 +229,53 @@ class ImportProductResource extends Resource
                         Text::make('created_at')->label('Imported At')->dateTime(),
                     ]),
             ]);
+    }
+
+    protected static function approveImportProduct(ImportProduct $record, array $data): void
+    {
+        $firstCategory = $data['category_id'] ?? Category::first()?->id ?? 1;
+        $isFolderImport = in_array($record->batch?->source, ['folder', 'seller_ai'], true);
+        $priceBdt = is_numeric($data['price_bdt'] ?? null) ? (float) $data['price_bdt'] : (float) ($record->price_bdt ?: 0);
+        $fxRate = Cache::get('fx_rate_cny_bdt') ?? 7.2;
+
+        $product = Product::create([
+            'name' => $record->title_en ?: 'Imported Product',
+            'description' => $record->description_en ?: ($record->title_en ?: 'Imported Product'),
+            'price' => max(0, $priceBdt),
+            'category_id' => $firstCategory,
+            'seller_id' => $record->seller_id,
+            'sourcing_type' => $isFolderImport ? 'local' : 'import',
+            'fob_price_usd' => !$isFolderImport && $record->price_cny ? round($record->price_cny / $fxRate, 2) : null,
+            'is_active' => true,
+            'stock' => $isFolderImport ? 1 : 0,
+            'tags' => $record->sku_data['tags'] ?? null,
+        ]);
+
+        if (!empty($record->images)) {
+            foreach ($record->images as $index => $img) {
+                $path = is_array($img) ? ($img['local_path'] ?? null) : $img;
+                if ($path) {
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_path' => $path,
+                        'alt_text' => $product->name,
+                        'is_primary' => $index === 0,
+                        'sort_order' => $index,
+                    ]);
+
+                    if ($index === 0) {
+                        $product->update(['image' => $path]);
+                    }
+                }
+            }
+        }
+
+        $record->update([
+            'status' => 'approved',
+            'product_id' => $product->id,
+            'reviewed_by' => auth()->id(),
+            'reviewed_at' => now(),
+        ]);
     }
 
     public static function getPages(): array

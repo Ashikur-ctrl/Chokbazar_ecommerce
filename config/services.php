@@ -106,7 +106,14 @@ return [
 
     'gemini' => [
         'api_key' => env('GEMINI_API_KEY'),
-        'model' => env('GEMINI_MODEL', 'gemini-2.0-flash'),
+        'model' => env('GEMINI_MODEL', 'gemini-3.6-flash'),
+        'search_grounding' => env('GEMINI_SEARCH_GROUNDING', false),
+    ],
+
+    'social' => [
+        'facebook_url' => env('SOCIAL_FACEBOOK_URL'),
+        'instagram_url' => env('SOCIAL_INSTAGRAM_URL'),
+        'youtube_url' => env('SOCIAL_YOUTUBE_URL'),
     ],
 
     'import_1688' => [

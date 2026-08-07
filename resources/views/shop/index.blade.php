@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo-icon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo-icon.svg') }}">
+
     @php
         $seo = \App\Services\SeoHelper::make();
         if (isset($selectedCategory) && $selectedCategory) {

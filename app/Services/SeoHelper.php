@@ -115,9 +115,9 @@ class SeoHelper
     {
         $this->title = ($category->seo_title ?? $category->name) . ' - ' . config('app.name');
         $this->description = $category->seo_description ?? ($category->description ?? '');
-        $this->url = route('shop.index', ['category' => $category->id]);
+        $this->url = route('shop.index', ['category' => $category->slug]);
         $this->type = 'website';
-        $this->canonical = route('shop.index', ['category' => $category->id]);
+        $this->canonical = route('shop.index', ['category' => $category->slug]);
 
         $this->addJsonLd([
             '@context' => 'https://schema.org',

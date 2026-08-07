@@ -18,6 +18,7 @@ use App\Http\Controllers\Seller\DashboardController as SellerDashboardController
 use App\Http\Controllers\Seller\ProductController as SellerProductController;
 use App\Http\Controllers\Seller\OrderController as SellerOrderController;
 use App\Http\Controllers\Seller\ProfileController as SellerProfileController;
+use App\Http\Controllers\Seller\AiProductUploadController as SellerAiProductUploadController;
 use App\Http\Controllers\Payment\SSLCommerzController;
 use App\Http\Controllers\Payment\BkashController;
 use App\Http\Controllers\Payment\NagadController;
@@ -247,6 +248,10 @@ Route::prefix('seller')->name('seller.')->group(function () {
 Route::middleware(['auth', 'seller'])->prefix('seller')->name('seller.')->group(function () {
     Route::post('/logout', [SellerAuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [SellerDashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/ai-products', [SellerAiProductUploadController::class, 'index'])->name('ai-products.index');
+    Route::post('/ai-products', [SellerAiProductUploadController::class, 'store'])->name('ai-products.store');
+    Route::post('/ai-products/{importProduct}/retry', [SellerAiProductUploadController::class, 'retry'])->name('ai-products.retry');
+    Route::delete('/ai-products/{importProduct}', [SellerAiProductUploadController::class, 'destroy'])->name('ai-products.destroy');
     Route::resource('products', SellerProductController::class)->except(['show'])->names([
         'index' => 'products.index',
         'create' => 'products.create',

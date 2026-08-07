@@ -13,6 +13,8 @@ class PublicProductController extends Controller
      */
     public function index(Request $request)
     {
+        $selectedCategory = $this->resolveCategory($request->query('category'));
+
         $query = Product::with(['category', 'images'])
             ->withAvg('approvedReviews as average_rating', 'rating')
             ->withCount(['orderItems', 'wishlists', 'approvedReviews as reviews_count'])
@@ -20,8 +22,8 @@ class PublicProductController extends Controller
             ->inStock();
 
         // Filter by category
-        if ($request->has('category') && $request->category) {
-            $query->where('category_id', $request->category);
+        if ($selectedCategory) {
+            $query->where('category_id', $selectedCategory->id);
         }
 
         // Search by name or description
@@ -78,12 +80,6 @@ class PublicProductController extends Controller
         $categories = cache()->remember('categories_active', 3600, function () {
             return Category::active()->withCount('products')->get();
         });
-        $selectedCategory = null;
-
-        if ($request->has('category') && $request->category) {
-            $selectedCategory = Category::find($request->category);
-        }
-
         // Determine wishlist state for current user for server-rendered grid
         $wishlistedIds = [];
         if (auth()->check()) {
@@ -94,6 +90,20 @@ class PublicProductController extends Controller
         }
 
         return view('shop.index', compact('products', 'categories', 'selectedCategory', 'wishlistedIds', 'sourcingMode'));
+    }
+
+    private function resolveCategory(mixed $category): ?Category
+    {
+        if (!$category) {
+            return null;
+        }
+
+        return Category::active()
+            ->where(function ($query) use ($category) {
+                $query->where('slug', $category)
+                    ->when(is_numeric($category), fn ($query) => $query->orWhere('id', (int) $category));
+            })
+            ->first();
     }
 
     /**

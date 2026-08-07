@@ -43,3 +43,7 @@ Thumbs.db
 /vendor
 /.vscode
 /.zed
+
+# Generated sitemap/robots (Blade routes + cron generate the live versions)
+/public/sitemap.xml
+/public/robots.txt

@@ -1,6 +1,6 @@
 @props(['category', 'image' => null, 'count' => null])
 
-<a href="{{ route('shop.index', ['category' => $category->id]) }}"
+<a href="{{ route('shop.index', ['category' => $category->slug]) }}"
    {{ $attributes->merge(['class' => 'group relative overflow-hidden rounded-xl bg-white border border-gray-100/80 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5']) }}>
     <div class="aspect-[4/3] overflow-hidden bg-gradient-to-br from-brand-50 to-brand-50/50">
         @if($image)

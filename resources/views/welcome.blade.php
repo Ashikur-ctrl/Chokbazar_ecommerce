@@ -4,6 +4,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+        <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo-icon.svg') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/logo-icon.svg') }}">
+
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         @fonts

@@ -4,6 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo-icon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo-icon.svg') }}">
+
     @php $productSeo = \App\Services\SeoHelper::make()->forProduct($product); @endphp
     <title>{{ $productSeo->getTitle() }}</title>
     {!! $productSeo->renderMeta() !!}
@@ -25,7 +30,7 @@
                 <a href="{{ route('shop.index') }}" class="hover:text-brand-600 transition-colors">Shop</a>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 @if($product->category)
-                    <a href="{{ route('shop.index', ['category' => $product->category_id]) }}" class="hover:text-brand-600 transition-colors">{{ $product->category->name }}</a>
+                    <a href="{{ route('shop.index', ['category' => $product->category->slug ?? $product->category_id]) }}" class="hover:text-brand-600 transition-colors">{{ $product->category->name }}</a>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 @endif
                 <span class="text-gray-900 font-medium truncate max-w-[200px]">{{ $product->name }}</span>
@@ -455,7 +460,7 @@
             <!-- Related Products -->
             @if(isset($relatedProducts) && $relatedProducts->count() > 0)
                 <section class="mt-12" data-animate>
-                    <x-section-header title="Related Products" actionUrl="{{ route('shop.index', ['category' => $product->category_id]) }}" actionLabel="View All" />
+                    <x-section-header title="Related Products" actionUrl="{{ route('shop.index', ['category' => $product->category->slug ?? $product->category_id]) }}" actionLabel="View All" />
                     <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                         @foreach($relatedProducts as $related)
                             <x-product-card :product="$related" />

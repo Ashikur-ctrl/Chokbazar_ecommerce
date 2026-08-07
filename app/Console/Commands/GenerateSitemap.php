@@ -25,7 +25,7 @@ class GenerateSitemap extends Command
         $xml .= '<url><loc>' . $base . '/contact</loc><priority>0.5</priority><changefreq>monthly</changefreq></url>';
 
         foreach (Category::active()->get() as $category) {
-            $xml .= '<url><loc>' . $base . '/shop?category=' . $category->id . '</loc><priority>0.8</priority><changefreq>daily</changefreq></url>';
+            $xml .= '<url><loc>' . $base . '/shop?category=' . $category->slug . '</loc><priority>0.8</priority><changefreq>daily</changefreq></url>';
         }
 
         foreach (Product::active()->select('slug', 'updated_at')->cursor() as $product) {

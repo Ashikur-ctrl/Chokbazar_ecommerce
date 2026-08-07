@@ -114,7 +114,7 @@
             </div>
 
             <div class="text-sm text-gray-500 bg-gray-50 rounded-lg p-4">
-                By registering, you agree to our <a href="#" class="text-brand-600 hover:underline">Terms of Service</a>.
+                By registering, you agree to follow Chokbazar seller policies. <a href="{{ route('contact') }}" class="text-brand-600 hover:underline">Contact support</a> if you need details before applying.
                 Your account will be reviewed by an admin before you can start selling.
             </div>
 
