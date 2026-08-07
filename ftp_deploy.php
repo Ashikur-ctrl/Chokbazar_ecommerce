@@ -96,6 +96,7 @@ echo "════════════════════════�
 
 $createdDirs = [];
 $count = 0;
+$failed = 0;
 
 foreach ($localFiles as $f) {
     $remotePath = $remoteRoot . '/' . $f['path'];
@@ -103,14 +104,33 @@ foreach ($localFiles as $f) {
 
     ensureRemoteDir($ftp, dirname($remotePath), $createdDirs);
 
-    echo "  [put] {$f['path']}\n";
     if (!ftp_put($ftp, $remotePath, $localPath, FTP_BINARY)) {
-        ftp_put($ftp, $remotePath, $localPath, FTP_ASCII);
+        // One retry, still binary — ASCII mangles PHP/UTF-8 files.
+        if (!ftp_put($ftp, $remotePath, $localPath, FTP_BINARY)) {
+            echo "  [FAIL] {$f['path']}\n";
+            $failed++;
+            continue;
+        }
     }
     $count++;
 }
 
-echo "\n✔ $count file(s) uploaded.\n";
+echo "\n✔ $count file(s) uploaded." . ($failed ? " ⚠ $failed FAILED." : "") . "\n";
+
+// Verify critical files by size (catches silent partial/failed uploads).
+if (!$failed) {
+    echo "\nVerifying uploaded sizes...\n";
+    $mismatches = 0;
+    foreach ($localFiles as $f) {
+        if (!in_array($f['path'], ['routes/web.php', 'config/services.php', 'app/Http/Controllers/Seller/AiProductUploadController.php', 'app/Jobs/AnalyzeFolderImportProductJob.php', 'app/Services/Gemini/InteractionClient.php'], true)) continue;
+        $remoteSize = @ftp_size($ftp, $remoteRoot . '/' . $f['path']);
+        if ($remoteSize !== $f['size']) {
+            echo "  [MISMATCH] {$f['path']}: local={$f['size']} remote=" . var_export($remoteSize, true) . "\n";
+            $mismatches++;
+        }
+    }
+    echo $mismatches ? "⚠ $mismatches size mismatch(es) — redeploy needed.\n" : "✔ All critical file sizes match.\n";
+}
 
 $doMigrate = in_array('--all', $argv);
 $doCache = in_array('--all', $argv);
