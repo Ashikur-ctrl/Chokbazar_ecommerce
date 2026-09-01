@@ -1,17 +1,15 @@
 <!-- Product Recommendations Component -->
-<div class="mt-8" x-data="recommendationsComponent()">
+<div class="mt-8" x-data="recommendationsComponent('{{ $title ?? 'Recommended for You' }}', '{{ $position ?? 'home_page' }}')">
     <h3 class="text-lg font-semibold text-slate-900 mb-4" x-text="title"></h3>
 
-    <!-- Loading State -->
     <div x-show="loading" class="flex items-center justify-center py-8">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-600"></div>
         <span class="ml-2 text-slate-600">Loading recommendations...</span>
     </div>
 
-    <!-- Recommendations Grid -->
     <div x-show="!loading && recommendations.length > 0" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <template x-for="product in recommendations" :key="product.id">
-            <a :href="'/shop/products/' + product.slug" class="group rounded-lg border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
+            <a :href="'/shop/product/' + product.slug" class="group rounded-lg border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div class="aspect-square overflow-hidden rounded-md bg-slate-100 mb-3">
                     <img :src="'/storage/' + (product.image || 'placeholder.jpg')" :alt="product.name"
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform">
@@ -28,17 +26,17 @@
         </template>
     </div>
 
-    <!-- Empty State -->
     <div x-show="!loading && recommendations.length === 0" class="text-center py-8 text-slate-600">
         <p>No recommendations available at this time.</p>
     </div>
 
     <script>
-        function recommendationsComponent() {
+        function recommendationsComponent(title, position) {
             return {
                 recommendations: [],
                 loading: false,
-                title: 'Recommended for You',
+                title: title,
+                position: position,
 
                 init() {
                     this.loadRecommendations();
@@ -47,10 +45,13 @@
                 async loadRecommendations() {
                     this.loading = true;
                     try {
-                        const response = await fetch('/api/recommendations?limit=8');
+                        const url = new URL('/api/recommendations/personalized', window.location.origin);
+                        url.searchParams.set('limit', '8');
+                        url.searchParams.set('position', this.position);
+
+                        const response = await fetch(url.toString());
                         const data = await response.json();
-                        this.recommendations = data.recommendations;
-                        this.title = 'Recommended for You';
+                        this.recommendations = data.recommendations || [];
                     } catch (error) {
                         console.error('Error loading recommendations:', error);
                     } finally {

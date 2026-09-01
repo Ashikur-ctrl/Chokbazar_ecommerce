@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\RecommendationController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductImportController;
+use App\Http\Controllers\Api\RecommendationController;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
@@ -18,40 +20,43 @@ Route::middleware('throttle:60,1')->group(function () {
     Route::get('/recommendations/frequently-bought/{productId}', [RecommendationController::class, 'frequentlyBoughtTogether'])->where('productId', '[0-9]+');
     Route::get('/recommendations/popular', [RecommendationController::class, 'popular']);
     Route::post('/recommendations/behavior', [RecommendationController::class, 'recordBehavior']);
+    Route::post('/recommendations/click', [RecommendationController::class, 'recordClick']);
+    Route::get('/recommendations/analytics', [RecommendationController::class, 'analytics']);
 });
 
 // Public product filter API (rate limited)
 Route::get('/products/filter', [ProductController::class, 'filter'])->middleware('throttle:30,1');
 
 // Global search for command palette
-Route::get('/search', function (\Illuminate\Http\Request $request) {
+Route::get('/search', function (Request $request) {
     $query = $request->query('q');
     $limit = min((int) $request->query('limit', 8), 20);
 
-    if (!$query || strlen($query) < 2) {
+    if (! $query || strlen($query) < 2) {
         return response()->json([]);
     }
 
-    $products = \App\Models\Product::where('is_active', true)
+    $products = Product::where('is_active', true)
         ->where('visibility_status', 'published')
         ->where(function ($q) use ($query) {
             $q->where('name', 'like', "%{$query}%")
-              ->orWhere('sku', 'like', "%{$query}%")
-              ->orWhere('short_description', 'like', "%{$query}%");
+                ->orWhere('sku', 'like', "%{$query}%")
+                ->orWhere('short_description', 'like', "%{$query}%");
         })
         ->limit($limit)
         ->get(['id', 'name', 'slug', 'price', 'sale_price', 'image', 'sku']);
 
     return response()->json($products->map(function ($product) {
         $price = $product->sale_price ?: $product->price;
+
         return [
             'id' => $product->id,
             'type' => 'Product',
             'name' => $product->name,
             'url' => route('shop.show', $product->slug),
-            'subtitle' => 'SKU: ' . ($product->sku ?? 'N/A'),
-            'image' => $product->image ? asset('storage/' . $product->image) : null,
-            'price' => '৳' . number_format($price, 0),
+            'subtitle' => 'SKU: '.($product->sku ?? 'N/A'),
+            'image' => $product->image ? asset('storage/'.$product->image) : null,
+            'price' => '৳'.number_format($price, 0),
             'badge' => $product->sale_price ? 'Sale' : null,
             'icon' => 'inventory_2',
         ];
@@ -61,7 +66,7 @@ Route::get('/search', function (\Illuminate\Http\Request $request) {
 // Public location API for checkout
 Route::get('/locations/districts', function () {
     return response()->json(
-        \Illuminate\Support\Facades\DB::table('districts_upazilas')
+        DB::table('districts_upazilas')
             ->distinct()
             ->pluck('district')
             ->sort()
@@ -69,13 +74,14 @@ Route::get('/locations/districts', function () {
     );
 });
 
-Route::get('/locations/upazilas', function (\Illuminate\Http\Request $request) {
+Route::get('/locations/upazilas', function (Request $request) {
     $district = $request->query('district');
-    if (!$district) {
+    if (! $district) {
         return response()->json([]);
     }
+
     return response()->json(
-        \Illuminate\Support\Facades\DB::table('districts_upazilas')
+        DB::table('districts_upazilas')
             ->where('district', $district)
             ->pluck('upazila')
             ->sort()

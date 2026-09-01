@@ -11,7 +11,6 @@
                 </div>
             @endif
 
-            <!-- Recommendation Types -->
             <div class="mb-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
                     <h3 class="text-lg font-semibold text-slate-900 mb-2">Personalized</h3>
@@ -54,7 +53,6 @@
                 </div>
             </div>
 
-            <!-- Recommendations Display -->
             <div id="recommendations-container" class="hidden">
                 <div class="mb-4 flex items-center justify-between">
                     <h3 id="recommendations-title" class="text-xl font-semibold text-slate-900">Recommendations</h3>
@@ -62,11 +60,9 @@
                 </div>
 
                 <div id="recommendations-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                    <!-- Recommendations will be loaded here -->
                 </div>
             </div>
 
-            <!-- Analytics Section -->
             <div class="mt-12 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
                 <h3 class="text-lg font-semibold text-slate-900 mb-4">Recommendation Analytics</h3>
 
@@ -97,7 +93,7 @@
     <script>
         async function loadRecommendations(type) {
             try {
-                const response = await fetch(`/api/recommendations/${type}`);
+                const response = await fetch(`/api/recommendations/${type}?limit=8`);
                 const data = await response.json();
 
                 displayRecommendations(data.recommendations, `${type.replace('_', ' ').toUpperCase()} Recommendations`);
@@ -112,7 +108,7 @@
             const productId = document.getElementById('pb-product-id').value;
 
             try {
-                const response = await fetch(`/api/recommendations/similar/${productId}`);
+                const response = await fetch(`/api/recommendations/similar/${productId}?limit=8`);
                 const data = await response.json();
 
                 displayRecommendations(data.recommendations, `Similar to Product #${productId}`);
@@ -127,7 +123,7 @@
             const productId = document.getElementById('fbt-product-id').value;
 
             try {
-                const response = await fetch(`/api/recommendations/frequently-bought/${productId}`);
+                const response = await fetch(`/api/recommendations/frequently-bought/${productId}?limit=5`);
                 const data = await response.json();
 
                 displayRecommendations(data.recommendations, `Frequently Bought with Product #${productId}`);
@@ -164,30 +160,16 @@
 
         async function loadAnalytics() {
             try {
-                // This would need a backend endpoint for analytics
-                // For now, just show placeholder
                 document.getElementById('total-behaviors').textContent = 'Loading...';
                 document.getElementById('unique-users').textContent = 'Loading...';
                 document.getElementById('unique-products').textContent = 'Loading...';
 
-                // Simulate loading
-                setTimeout(() => {
-                    document.getElementById('total-behaviors').textContent = '2,847';
-                    document.getElementById('unique-users').textContent = '423';
-                    document.getElementById('unique-products').textContent = '156';
-                }, 1000);
-            } catch (error) {
-                console.error('Error loading analytics:', error);
-            }
-        }
-    </script>
-</x-app-layout>
- // Simulate loading
-                setTimeout(() => {
-                    document.getElementById('total-behaviors').textContent = '2,847';
-                    document.getElementById('unique-users').textContent = '423';
-                    document.getElementById('unique-products').textContent = '156';
-                }, 1000);
+                const response = await fetch('/api/recommendations/analytics');
+                const data = await response.json();
+
+                document.getElementById('total-behaviors').textContent = data.total_behaviors || '0';
+                document.getElementById('unique-users').textContent = data.unique_users || '0';
+                document.getElementById('unique-products').textContent = data.unique_products || '0';
             } catch (error) {
                 console.error('Error loading analytics:', error);
             }

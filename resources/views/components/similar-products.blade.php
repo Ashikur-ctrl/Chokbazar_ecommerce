@@ -1,16 +1,14 @@
 <!-- Similar Products Component -->
-<div class="mt-8" x-data="similarProductsComponent()">
+<div class="mt-8" x-data="similarProductsComponent({{ $product->id }})">
     <h3 class="text-lg font-semibold text-slate-900 mb-4">Customers Also Viewed</h3>
 
-    <!-- Loading State -->
     <div x-show="loading" class="flex items-center justify-center py-4">
         <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-600"></div>
     </div>
 
-    <!-- Products Grid -->
     <div x-show="!loading && products.length > 0" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <template x-for="product in products" :key="product.id">
-            <a :href="'/shop/products/' + product.slug" class="group rounded-lg border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
+            <a :href="'/shop/product/' + product.slug" class="group rounded-lg border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div class="aspect-square overflow-hidden rounded-md bg-slate-100 mb-3">
                     <img :src="'/storage/' + (product.image || 'placeholder.jpg')" :alt="product.name"
                          class="w-full h-full object-cover group-hover:scale-105 transition-transform">
@@ -27,20 +25,19 @@
         </template>
     </div>
 
+    <div x-show="!loading && products.length === 0" class="text-center py-8 text-slate-600">
+        <p>No similar products found.</p>
+    </div>
+
     <script>
-        function similarProductsComponent() {
+        function similarProductsComponent(productId) {
             return {
                 products: [],
                 loading: false,
-                productId: null,
+                productId: productId,
 
                 init() {
-                    // Get product ID from URL or data attribute
-                    const urlMatch = window.location.pathname.match(/\/shop\/products\/(\d+)/);
-                    if (urlMatch) {
-                        this.productId = urlMatch[1];
-                        this.loadSimilarProducts();
-                    }
+                    this.loadSimilarProducts();
                 },
 
                 async loadSimilarProducts() {
@@ -50,7 +47,7 @@
                     try {
                         const response = await fetch(`/api/recommendations/similar/${this.productId}?limit=8`);
                         const data = await response.json();
-                        this.products = data.recommendations;
+                        this.products = data.recommendations || [];
                     } catch (error) {
                         console.error('Error loading similar products:', error);
                     } finally {
