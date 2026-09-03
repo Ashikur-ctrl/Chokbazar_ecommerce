@@ -1,12 +1,22 @@
 
 # Agent/IDE configs
-.agents/
+.agents/*
+!.agents/skills/
+!.agents/skills/graphify/
+!.agents/skills/graphify/**
 /auth.json
 Chokbazar_ecommerce
-.claude/
+.claude/*
+!.claude/skills/
+!.claude/skills/graphify/
+!.claude/skills/graphify/**
+!.claude/settings.json
+!.claude/CLAUDE.md
 /.codex
 .commandcode/
-/.cursor/
+/.cursor/*
+!/.cursor/rules/
+!/.cursor/rules/graphify.mdc
 # Deployment artifacts
 design-plan.md
 .DS_Store

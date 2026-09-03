@@ -257,9 +257,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if($product->seller->slug)
-                                    <a href="{{ route('seller.show', $product->seller) }}" class="text-sm font-semibold text-brand-600 hover:text-brand-700">Visit Store</a>
-                                @endif
                             </div>
                         </div>
                     @endif
